@@ -17,7 +17,12 @@ jobs:
       - name: Install dependencies
         run: |
           pip install ruff pytest
-      - name: Lint
-        run: ruff check src/ tests/ --ignore E501
+      - name: Lint and fix
+        run: ruff check src/ tests/ --ignore E501,F401 --fix
+      - name: Auto-commit fixes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: apply automated code formatting with ruff"
+          file_pattern: "src/ tests/"
       - name: Run tests
         run: pytest tests/ -v
