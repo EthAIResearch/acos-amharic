@@ -2,8 +2,8 @@
 Shared-encoder, dual-head token classification model for joint ATE + OTE.
 """
 import torch
-import torch.nn as nn
-from transformers import AutoModel, AutoConfig
+from torch import nn
+from transformers import AutoConfig, AutoModel
 
 NUM_BIO_LABELS = 3  # O, B, I
 

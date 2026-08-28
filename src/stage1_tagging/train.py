@@ -16,15 +16,15 @@ Amharic-native baseline comparison.
 import argparse
 import json
 import os
-import torch
-from torch.utils.data import DataLoader
-from transformers import AutoTokenizer, get_linear_schedule_with_warmup
-from tqdm import tqdm
 
+import torch
+from align import decode_subword_predictions
+from bio_labels import decode_bio_spans
 from dataset_tagging import TaggingDataset, collate_fn
 from model_tagging import JointTaggingModel
-from bio_labels import decode_bio_spans
-from align import decode_subword_predictions
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
 
 def span_prf(pred_spans_per_ex, gold_spans_per_ex):

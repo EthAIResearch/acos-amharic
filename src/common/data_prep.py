@@ -14,10 +14,10 @@ This script:
   3. Writes clean JSONL files (train/dev/test) ready for tokenizer alignment.
   4. Prints before/after category distribution so the mapping is auditable.
 """
-import json
 import argparse
+import json
 from collections import Counter, defaultdict
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 SENTIMENT_MAP = {"0": "NEUTRAL", "1": "POSITIVE", "2": "NEGATIVE"}
 
