@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this dataset or code, please cite as below."
+title: "Amharic ACOS: Aspect-Category-Opinion-Sentiment Quadruple Extraction for Amharic"
+authors:
+  - family-names: "<your last name>"
+    given-names: "<your first name>"
+date-released: 2026-01-01
+url: "https://github.com/<your-username>/amharic-acos"

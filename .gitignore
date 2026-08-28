@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Data (raw TSVs likely hosted externally -- see data/README.md)
+data/raw/*.tsv
+data/prepared/*.jsonl
+
+# Model checkpoints (large -- use Git LFS or external hosting)
+results/**/*.pt
+results/**/*.bin
+*.ckpt
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# OS/editor
+.DS_Store
+.vscode/
