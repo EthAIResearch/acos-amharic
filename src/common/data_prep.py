@@ -18,7 +18,6 @@ import json
 import argparse
 from collections import Counter, defaultdict
 from dataclasses import dataclass, asdict
-from typing import List, Tuple
 
 SENTIMENT_MAP = {"0": "NEUTRAL", "1": "POSITIVE", "2": "NEGATIVE"}
 
@@ -53,8 +52,8 @@ class Quad:
 @dataclass
 class Example:
     text: str
-    tokens: List[str]
-    quads: List[Quad]
+    tokens: list[str]
+    quads: list[Quad]
 
 
 def parse_quad_field(field: str) -> Quad:
@@ -64,7 +63,7 @@ def parse_quad_field(field: str) -> Quad:
     return Quad(a_start, a_end, cat, SENTIMENT_MAP[sent], o_start, o_end)
 
 
-def parse_tsv(path: str) -> List[Example]:
+def parse_tsv(path: str) -> list[Example]:
     examples = []
     with open(path, encoding="utf-8") as f:
         for line in f:
@@ -86,7 +85,7 @@ def canonical_category(raw_cat: str) -> str:
     return MANUAL_CATEGORY_MERGE.get(fine, fine)
 
 
-def build_category_mapping(train_examples: List[Example]) -> dict:
+def build_category_mapping(train_examples: list[Example]) -> dict:
     """Build raw_category -> final_category mapping, applying the MIN_CATEGORY_COUNT
     threshold (computed on TRAIN only, then reused for dev/test for consistency)."""
     counts = Counter()
@@ -103,14 +102,14 @@ def build_category_mapping(train_examples: List[Example]) -> dict:
     return final_mapping
 
 
-def apply_mapping(examples: List[Example], mapping: dict) -> List[Example]:
+def apply_mapping(examples: list[Example], mapping: dict) -> list[Example]:
     for ex in examples:
         for q in ex.quads:
             q.category = mapping.get(q.category, "OTHER")
     return examples
 
 
-def report_distribution(examples: List[Example], label: str):
+def report_distribution(examples: list[Example], label: str):
     counts = Counter(q.category for ex in examples for q in ex.quads)
     total = sum(counts.values())
     print(f"\n--- {label}: category distribution after canonicalization ({total} quads) ---")
@@ -118,7 +117,7 @@ def report_distribution(examples: List[Example], label: str):
         print(f"  {cat}: {c} ({100*c/total:.1f}%)")
 
 
-def write_jsonl(examples: List[Example], path: str):
+def write_jsonl(examples: list[Example], path: str):
     with open(path, "w", encoding="utf-8") as f:
         for ex in examples:
             rec = {

@@ -2,14 +2,12 @@
 Word-level BIO tags -> subword-level BIO tags, using a HF fast tokenizer's word_ids().
 Requires: transformers (fast tokenizer). Run in your GPU environment, not this sandbox.
 """
-from typing import List, Dict
-
 LABEL2ID = {"O": 0, "B": 1, "I": 2}
 ID2LABEL = {v: k for k, v in LABEL2ID.items()}
 IGNORE_INDEX = -100  # HF loss ignores this automatically
 
 
-def align_labels_to_subwords(word_ids: List[int], word_tags: List[str]) -> List[int]:
+def align_labels_to_subwords(word_ids: list[int], word_tags: list[str]) -> list[int]:
     """
     word_ids: output of tokenizer(...).word_ids(batch_index=i) -- one entry per
         subword token, giving the source word index (or None for special tokens).
@@ -34,11 +32,11 @@ def align_labels_to_subwords(word_ids: List[int], word_tags: List[str]) -> List[
     return label_ids
 
 
-def decode_subword_predictions(word_ids: List[int], pred_ids: List[int]) -> List[str]:
+def decode_subword_predictions(word_ids: list[int], pred_ids: list[int]) -> list[str]:
     """Inverse: take the model's per-subword predictions and reduce back to one
     tag per word (using the first subword's prediction for each word -- the
     standard convention for token classification with subword tokenizers)."""
-    word_tags: Dict[int, str] = {}
+    word_tags: dict[int, str] = {}
     for wid, pid in zip(word_ids, pred_ids):
         if wid is None:
             continue

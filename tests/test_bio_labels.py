@@ -1,5 +1,4 @@
-import sys
-import os
+import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "common"))
 from bio_labels import build_word_bio, decode_bio_spans
 

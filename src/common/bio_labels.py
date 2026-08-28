@@ -4,10 +4,7 @@ Pure Python, no tokenizer dependency -- this is tested locally. The subword
 alignment step (word-level BIO -> subword-level BIO using a HF fast tokenizer's
 word_ids()) lives in align.py and needs to run where transformers is installed.
 """
-from typing import List, Tuple
-
-
-def build_word_bio(n_tokens: int, spans: List[Tuple[int, int]]) -> List[str]:
+def build_word_bio(n_tokens: int, spans: list[tuple[int, int]]) -> list[str]:
     """spans: list of (start, end) word-index spans, end EXCLUSIVE, -1 spans skipped
     (implicit terms have no span to tag). Overlapping spans from different quads
     are simply unioned onto the same tag sequence -- pairing is resolved in stage 2."""
@@ -23,7 +20,7 @@ def build_word_bio(n_tokens: int, spans: List[Tuple[int, int]]) -> List[str]:
     return tags
 
 
-def decode_bio_spans(tags: List[str]) -> List[Tuple[int, int]]:
+def decode_bio_spans(tags: list[str]) -> list[tuple[int, int]]:
     """Inverse of build_word_bio: BIO tag sequence -> list of (start, end) spans."""
     spans = []
     start = None
@@ -41,9 +38,19 @@ def decode_bio_spans(tags: List[str]) -> List[Tuple[int, int]]:
 
 
 if __name__ == "__main__":
-    # Sanity check against real rows from the dataset.
+    # Sanity check against real rows from the dataset. Run data_prep.py first
+    # to generate data/prepared/train.jsonl (it's gitignored, so this won't
+    # exist right after a fresh clone). See tests/test_bio_labels.py for the
+    # dependency-free unit tests that run in CI.
     import json
-    with open("/home/claude/absa/prepared/train.jsonl", encoding="utf-8") as f:
+    import os
+
+    data_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "prepared", "train.jsonl")
+    if not os.path.exists(data_path):
+        raise SystemExit(
+            f"{data_path} not found. Run data_prep.py first to generate it from your raw TSVs."
+        )
+    with open(data_path, encoding="utf-8") as f:
         lines = [json.loads(next(f)) for _ in range(5)]
 
     for rec in lines:
