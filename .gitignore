@@ -6,7 +6,6 @@ __pycache__/
 
 # Data (raw TSVs likely hosted externally -- see data/README.md)
 data/raw/*.tsv
-data/prepared/*.jsonl
 
 # Model checkpoints (large -- use Git LFS or external hosting)
 results/**/*.pt

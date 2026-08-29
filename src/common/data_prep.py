@@ -10,25 +10,26 @@ Sentiment: 0=neutral, 1=positive, 2=negative.
 
 This script:
   1. Parses raw TSV into structured records.
-  2. Canonicalizes the category schema (fixes cross-domain label overlap).
-  3. Writes clean JSONL files (train/dev/test) ready for tokenizer alignment.
-  4. Prints before/after category distribution so the mapping is auditable.
+  2. Writes clean JSONL files (train/dev/test) ready for tokenizer alignment.
+  3. Reports category counts as-is -- for visibility only. Category labels are
+     the fixed, externally-mandated taxonomy and are NEVER renamed, merged, or
+     dropped by this script. Low-count categories are flagged in the printed
+     report and in label_space.json ("low_support") purely as a heads-up for
+     modeling strategy (e.g. class weighting) -- the label itself is untouched.
 """
 import argparse
 import json
-from collections import Counter, defaultdict
+import os
+from collections import Counter
 from dataclasses import asdict, dataclass
 
 SENTIMENT_MAP = {"0": "NEUTRAL", "1": "POSITIVE", "2": "NEGATIVE"}
 
-# Manual merges for near-duplicate fine-grained tags that don't cleanly collapse
-# by dropping the domain prefix alone.
-MANUAL_CATEGORY_MERGE = {
-    "CRIME_SERVICES": "CRIME",
-    "INFRASTRUCTURE": "UTILITIES",  # from PUBLIC_SERVICES#INFRASTRUCTURE (1 example)
-}
-
-MIN_CATEGORY_COUNT = 30  # categories with fewer than this many train instances -> OTHER
+# Below this many train instances, a category is flagged as low-support in the
+# report and in label_space.json. This does NOT change the label in any way --
+# it's a signal for choosing a training strategy (class weighting, focal loss,
+# oversampling), never a reason to rename or merge the category.
+LOW_SUPPORT_THRESHOLD = 30
 
 
 @dataclass
@@ -78,43 +79,14 @@ def parse_tsv(path: str) -> list[Example]:
     return examples
 
 
-def canonical_category(raw_cat: str) -> str:
-    """Drop the domain prefix (e.g. GOVERNANCE#TRANSPARENCY -> TRANSPARENCY),
-    which merges tags that were duplicated across domains due to schema overlap."""
-    fine = raw_cat.split("#", 1)[1] if "#" in raw_cat else raw_cat
-    return MANUAL_CATEGORY_MERGE.get(fine, fine)
-
-
-def build_category_mapping(train_examples: list[Example]) -> dict:
-    """Build raw_category -> final_category mapping, applying the MIN_CATEGORY_COUNT
-    threshold (computed on TRAIN only, then reused for dev/test for consistency)."""
-    counts = Counter()
-    raw_to_canonical = {}
-    for ex in train_examples:
-        for q in ex.quads:
-            canon = canonical_category(q.category)
-            raw_to_canonical[q.category] = canon
-            counts[canon] += 1
-
-    final_mapping = {}
-    for raw_cat, canon in raw_to_canonical.items():
-        final_mapping[raw_cat] = canon if counts[canon] >= MIN_CATEGORY_COUNT else "OTHER"
-    return final_mapping
-
-
-def apply_mapping(examples: list[Example], mapping: dict) -> list[Example]:
-    for ex in examples:
-        for q in ex.quads:
-            q.category = mapping.get(q.category, "OTHER")
-    return examples
-
-
-def report_distribution(examples: list[Example], label: str):
+def report_distribution(examples: list[Example], label: str) -> Counter:
     counts = Counter(q.category for ex in examples for q in ex.quads)
     total = sum(counts.values())
-    print(f"\n--- {label}: category distribution after canonicalization ({total} quads) ---")
+    print(f"\n--- {label}: category distribution ({total} quads, {len(counts)} categories) ---")
     for cat, c in counts.most_common():
-        print(f"  {cat}: {c} ({100*c/total:.1f}%)")
+        flag = "  <-- LOW SUPPORT" if c < LOW_SUPPORT_THRESHOLD else ""
+        print(f"  {cat}: {c} ({100*c/total:.1f}%){flag}")
+    return counts
 
 
 def write_jsonl(examples: list[Example], path: str):
@@ -136,42 +108,48 @@ def main():
     ap.add_argument("--out_dir", default="./prepared")
     args = ap.parse_args()
 
-    import os
     os.makedirs(args.out_dir, exist_ok=True)
 
     train_examples = parse_tsv(args.train)
     test_examples = parse_tsv(args.test)
     dev_examples = parse_tsv(args.dev) if args.dev else None
 
-    mapping = build_category_mapping(train_examples)
-
-    print("=== Category mapping (raw -> final) ===")
-    for raw, final in sorted(mapping.items()):
-        flag = "  <-- merged/renamed" if raw.split("#", 1)[-1] != final else ""
-        print(f"  {raw}  ->  {final}{flag}")
-
-    train_examples = apply_mapping(train_examples, mapping)
-    test_examples = apply_mapping(test_examples, mapping)
+    train_counts = report_distribution(train_examples, "TRAIN")
+    test_counts = report_distribution(test_examples, "TEST")
     if dev_examples:
-        dev_examples = apply_mapping(dev_examples, mapping)
-
-    report_distribution(train_examples, "TRAIN")
-    report_distribution(test_examples, "TEST")
+        report_distribution(dev_examples, "DEV")
 
     write_jsonl(train_examples, os.path.join(args.out_dir, "train.jsonl"))
     write_jsonl(test_examples, os.path.join(args.out_dir, "test.jsonl"))
     if dev_examples:
         write_jsonl(dev_examples, os.path.join(args.out_dir, "dev.jsonl"))
 
-    final_categories = sorted(set(mapping.values()))
+    # The fixed category taxonomy, exactly as given -- union of every raw label
+    # seen in train (the split that should define the label space).
+    all_categories = sorted(train_counts)
+    low_support = [c for c in all_categories if train_counts[c] < LOW_SUPPORT_THRESHOLD]
+    zero_train_but_in_test = sorted(set(test_counts) - set(train_counts))
+
     with open(os.path.join(args.out_dir, "label_space.json"), "w", encoding="utf-8") as f:
         json.dump({
-            "categories": final_categories,
+            "categories": all_categories,
             "sentiments": ["NEUTRAL", "POSITIVE", "NEGATIVE"],
-            "category_mapping": mapping,
+            "low_support_categories": low_support,
+            "note": (
+                "Categories are the fixed, externally-mandated taxonomy and are "
+                "used exactly as given -- never renamed or merged. "
+                "'low_support_categories' lists categories with fewer than "
+                f"{LOW_SUPPORT_THRESHOLD} train examples; use class weighting / "
+                "focal loss / oversampling for these during training, not "
+                "relabeling."
+            ),
         }, f, ensure_ascii=False, indent=2)
 
-    print(f"\nWrote prepared data to {args.out_dir}/  ({len(final_categories)} final categories)")
+    print(f"\nWrote prepared data to {args.out_dir}/  ({len(all_categories)} categories, unchanged)")
+    if low_support:
+        print(f"Low-support categories (<{LOW_SUPPORT_THRESHOLD} train examples): {low_support}")
+    if zero_train_but_in_test:
+        print(f"WARNING -- appear in TEST with ZERO train examples (unlearnable as-is): {zero_train_but_in_test}")
 
 
 if __name__ == "__main__":

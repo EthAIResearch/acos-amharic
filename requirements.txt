@@ -1,3 +1,5 @@
 torch>=2.5
 transformers>=4.44
 tqdm
+pyyaml
+numpy

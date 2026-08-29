@@ -1,0 +1,23 @@
+# Stage 1 — joint Aspect Term Extraction + Opinion Term Extraction
+# Experiment: lightweight Amharic-native baseline (see issue #2)
+
+model_name: rasyosef/bert-small-amharic
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 3.0e-5
+  warmup_ratio: 0.06
+  seed: 42
+
+output_dir: results/stage1/bertsmall_run1
+
+notes: >
+  Lightweight baseline pretrained on the same source corpora (mC4/OSCAR) as
+  our dataset generation. Cheap to fine-tune given its small size. Compare
+  against stage1_afroxlmr.yaml.
