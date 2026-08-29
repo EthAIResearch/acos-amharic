@@ -4,11 +4,11 @@ via BIO tagging, sharing one encoder with two independent linear heads.
 Run where transformers/torch are installed.
 """
 import json
-import torch
-from torch.utils.data import Dataset
 
+import torch
+from align import IGNORE_INDEX, align_labels_to_subwords
 from bio_labels import build_word_bio
-from align import align_labels_to_subwords, IGNORE_INDEX
+from torch.utils.data import Dataset
 
 
 class TaggingDataset(Dataset):

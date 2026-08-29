@@ -17,11 +17,11 @@ This script:
      report and in label_space.json ("low_support") purely as a heads-up for
      modeling strategy (e.g. class weighting) -- the label itself is untouched.
 """
-import json
 import argparse
+import json
 import os
 from collections import Counter
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 SENTIMENT_MAP = {"0": "NEUTRAL", "1": "POSITIVE", "2": "NEGATIVE"}
 
