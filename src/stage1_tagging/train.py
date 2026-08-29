@@ -3,20 +3,26 @@ Stage 1 training: joint Aspect Term Extraction + Opinion Term Extraction.
 
 Usage (in your GPU environment):
     pip install -r requirements.txt
-    python train_tagging.py \
-        --train ../prepared/train.jsonl \
-        --test ../prepared/test.jsonl \
-        --model_name Davlan/afro-xlmr-base \
-        --output_dir ./stage1_tagging_ckpt \
-        --epochs 8 --batch_size 16 --lr 3e-5
+    python train.py --config ../../configs/stage1_afroxlmr.yaml
+    python train.py --config ../../configs/stage1_bertsmall.yaml
 
-Swap --model_name to rasyosef/bert-small-amharic for the lightweight
-Amharic-native baseline comparison.
+    # Or without a config file, plain CLI flags (config values above are just
+    # defaults for these same flags -- any flag passed on the command line
+    # overrides the config):
+    python train.py \
+        --train ../../data/prepared/train.jsonl \
+        --test ../../data/prepared/test.jsonl \
+        --model_name Davlan/afro-xlmr-base \
+        --output_dir ../../results/stage1/afroxlmr_base_run1 \
+        --epochs 8 --batch_size 16 --lr 3e-5
 """
 import argparse
 import json
 import os
+import random
+import numpy as np
 import torch
+import yaml
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 from tqdm import tqdm
@@ -77,10 +83,46 @@ def evaluate(model, dataset, tokenizer, device, batch_size=32):
     }
 
 
+def load_config_defaults(config_path):
+    """Flatten our nested config YAML (model_name / data.* / training.* /
+    output_dir) into the flat CLI flag names train.py already uses."""
+    with open(config_path, encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    flat = {}
+    flat["model_name"] = cfg.get("model_name")
+    flat["output_dir"] = cfg.get("output_dir")
+    data = cfg.get("data", {})
+    flat["train"] = data.get("train")
+    flat["test"] = data.get("test")
+    flat["max_length"] = data.get("max_length")
+    training = cfg.get("training", {})
+    flat["epochs"] = training.get("epochs")
+    flat["batch_size"] = training.get("batch_size")
+    flat["lr"] = training.get("lr")
+    flat["warmup_ratio"] = training.get("warmup_ratio")
+    flat["seed"] = training.get("seed")
+    return {k: v for k, v in flat.items() if v is not None}
+
+
+def set_seed(seed: int):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--train", required=True)
-    ap.add_argument("--test", required=True)
+    # Pre-parse just --config so its values become argparse defaults, letting
+    # any explicit CLI flag still override the config (config values take
+    # priority over hardcoded defaults; CLI flags take priority over config).
+    pre = argparse.ArgumentParser(add_help=False)
+    pre.add_argument("--config", default=None)
+    pre_args, remaining_argv = pre.parse_known_args()
+    config_defaults = load_config_defaults(pre_args.config) if pre_args.config else {}
+
+    ap = argparse.ArgumentParser(parents=[pre])
+    ap.add_argument("--train", required="train" not in config_defaults)
+    ap.add_argument("--test", required="test" not in config_defaults)
     ap.add_argument("--model_name", default="Davlan/afro-xlmr-base")
     ap.add_argument("--output_dir", default="./stage1_tagging_ckpt")
     ap.add_argument("--epochs", type=int, default=8)
@@ -88,10 +130,16 @@ def main():
     ap.add_argument("--lr", type=float, default=3e-5)
     ap.add_argument("--max_length", type=int, default=256)
     ap.add_argument("--warmup_ratio", type=float, default=0.06)
-    args = ap.parse_args()
+    ap.add_argument("--seed", type=int, default=42)
+    ap.set_defaults(**config_defaults)
+    args = ap.parse_args(remaining_argv)
 
+    set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     os.makedirs(args.output_dir, exist_ok=True)
+
+    with open(os.path.join(args.output_dir, "resolved_args.json"), "w") as f:
+        json.dump(vars(args), f, indent=2)
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
     train_ds = TaggingDataset(args.train, tokenizer, max_length=args.max_length)

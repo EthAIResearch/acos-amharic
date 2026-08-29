@@ -1,0 +1,24 @@
+# Stage 1 — joint Aspect Term Extraction + Opinion Term Extraction
+# Experiment: AfroXLMR-base baseline (see issue #1)
+
+model_name: Davlan/afro-xlmr-base
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 3.0e-5
+  warmup_ratio: 0.06
+  seed: 42
+
+output_dir: results/stage1/afroxlmr_base_run1
+
+notes: >
+  Baseline run. AfroXLMR-base chosen for its African-language pretraining
+  (includes Amharic among Ethiopian languages). Compare against
+  stage1_bertsmall.yaml (rasyosef/bert-small-amharic) for the
+  multilingual-vs-monolingual comparison table.
