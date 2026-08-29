@@ -20,17 +20,32 @@ import argparse
 import json
 import os
 import random
+import sys
+from pathlib import Path
 
 import numpy as np
 import torch
 import yaml
-from align import decode_subword_predictions
-from bio_labels import decode_bio_spans
-from dataset_tagging import TaggingDataset, collate_fn
-from model_tagging import JointTaggingModel
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
+
+# Add current folder and common folder to sys.path
+STAGE1_DIR = Path(__file__).resolve().parent
+COMMON_DIR = STAGE1_DIR.parent / "common"
+for p in [str(STAGE1_DIR), str(COMMON_DIR), str(STAGE1_DIR.parent)]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+try:
+    from dataset import TaggingDataset, collate_fn
+    from model import JointTaggingModel
+except ImportError:
+    from dataset_tagging import TaggingDataset, collate_fn
+    from model_tagging import JointTaggingModel
+
+from align import decode_subword_predictions
+from bio_labels import decode_bio_spans
 
 
 def span_prf(pred_spans_per_ex, gold_spans_per_ex):

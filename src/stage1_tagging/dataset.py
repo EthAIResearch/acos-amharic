@@ -4,11 +4,18 @@ via BIO tagging, sharing one encoder with two independent linear heads.
 Run where transformers/torch are installed.
 """
 import json
+import sys
+from pathlib import Path
 
 import torch
+from torch.utils.data import Dataset
+
+COMMON_DIR = Path(__file__).resolve().parent.parent / "common"
+if str(COMMON_DIR) not in sys.path:
+    sys.path.insert(0, str(COMMON_DIR))
+
 from align import IGNORE_INDEX, align_labels_to_subwords
 from bio_labels import build_word_bio
-from torch.utils.data import Dataset
 
 
 class TaggingDataset(Dataset):
