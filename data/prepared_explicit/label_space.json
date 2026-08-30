@@ -1,0 +1,40 @@
+{
+  "categories": [
+    "ECONOMY#COMMUNITY_SUPPORT",
+    "ECONOMY#EMPLOYMENT",
+    "ECONOMY#TAXATION",
+    "GOVERNANCE#CITIZEN_ENGAGEMENT",
+    "GOVERNANCE#COMMUNITY_SUPPORT",
+    "GOVERNANCE#LEGISLATION",
+    "GOVERNANCE#TRANSPARENCY",
+    "HEALTHCARE#GENERAL",
+    "INFRASTRUCTURE#TRANSPORTATION",
+    "INFRASTRUCTURE#UTILITIES",
+    "PUBLIC_SAFETY#CRIME",
+    "PUBLIC_SAFETY#CRIME_SERVICES",
+    "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+    "PUBLIC_SERVICES#EDUCATION",
+    "PUBLIC_SERVICES#EMERGENCY_SERVICES",
+    "PUBLIC_SERVICES#HEALTHCARE",
+    "PUBLIC_SERVICES#UTILITIES",
+    "SOCIAL#COMMUNITY_SUPPORT",
+    "SOCIAL#EDUCATION",
+    "SOCIAL#EQUALITY_JUSTICE"
+  ],
+  "sentiments": [
+    "NEUTRAL",
+    "POSITIVE",
+    "NEGATIVE"
+  ],
+  "low_support_categories": [
+    "ECONOMY#COMMUNITY_SUPPORT",
+    "GOVERNANCE#COMMUNITY_SUPPORT",
+    "GOVERNANCE#LEGISLATION",
+    "HEALTHCARE#GENERAL",
+    "PUBLIC_SAFETY#CRIME_SERVICES",
+    "PUBLIC_SERVICES#EMERGENCY_SERVICES",
+    "PUBLIC_SERVICES#UTILITIES",
+    "SOCIAL#EDUCATION"
+  ],
+  "note": "Categories are the fixed, externally-mandated taxonomy and are used exactly as given -- never renamed or merged. 'low_support_categories' lists categories with fewer than 30 train examples; use class weighting / focal loss / oversampling for these during training, not relabeling."
+}

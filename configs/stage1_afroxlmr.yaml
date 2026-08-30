@@ -4,8 +4,8 @@
 model_name: Davlan/afro-xlmr-base
 
 data:
-  train: data/prepared/train.jsonl
-  test: data/prepared/test.jsonl
+  train: data/prepared_explicit/train.jsonl
+  test: data/prepared_explicit/test.jsonl
   max_length: 256
 
 training:
