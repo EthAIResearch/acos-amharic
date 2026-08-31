@@ -21,22 +21,23 @@ def evaluate(path: str) -> dict:
     tp = fp = fn = 0
     n_sentences = 0
 
-    for line in open(path, encoding="utf-8"):
-        rec = json.loads(line)
-        ex_quads = explicit_quads(rec["quads"])
-        if not ex_quads:
-            continue
-        n_sentences += 1
+    with open(path, encoding="utf-8") as data:
+        for line in data:
+            rec = json.loads(line)
+            ex_quads = explicit_quads(rec["quads"])
+            if not ex_quads:
+                continue
+            n_sentences += 1
 
-        aspect_spans = sorted({(q["a_start"], q["a_end"]) for q in ex_quads})
-        opinion_spans = sorted({(q["o_start"], q["o_end"]) for q in ex_quads})
-        true_pairs = {(q["a_start"], q["a_end"], q["o_start"], q["o_end"]) for q in ex_quads}
+            aspect_spans = sorted({(q["a_start"], q["a_end"]) for q in ex_quads})
+            opinion_spans = sorted({(q["o_start"], q["o_end"]) for q in ex_quads})
+            true_pairs = {(q["a_start"], q["a_end"], q["o_start"], q["o_end"]) for q in ex_quads}
 
-        pred_pairs = heuristic_pairs(aspect_spans, opinion_spans)
+            pred_pairs = heuristic_pairs(aspect_spans, opinion_spans)
 
-        tp += len(pred_pairs & true_pairs)
-        fp += len(pred_pairs - true_pairs)
-        fn += len(true_pairs - pred_pairs)
+            tp += len(pred_pairs & true_pairs)
+            fp += len(pred_pairs - true_pairs)
+            fn += len(true_pairs - pred_pairs)
 
     precision = tp / (tp + fp) if (tp + fp) else 0.0
     recall = tp / (tp + fn) if (tp + fn) else 0.0
