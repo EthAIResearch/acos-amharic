@@ -1,7 +1,8 @@
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage2_pairing"))
-from candidates import explicit_quads, build_candidates, span_distance, heuristic_pairs
+from candidates import build_candidates, explicit_quads, heuristic_pairs, span_distance
 
 
 def test_explicit_quads_filters_implicit():
