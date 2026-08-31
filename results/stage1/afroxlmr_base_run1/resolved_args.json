@@ -1,0 +1,13 @@
+{
+  "config": null,
+  "train": "data/prepared_explicit/train.jsonl",
+  "test": "data/prepared_explicit/test.jsonl",
+  "model_name": "Davlan/afro-xlmr-base",
+  "output_dir": "results/stage1/afroxlmr_base_run1",
+  "epochs": 8,
+  "batch_size": 16,
+  "lr": 3e-05,
+  "max_length": 256,
+  "warmup_ratio": 0.06,
+  "seed": 42
+}
