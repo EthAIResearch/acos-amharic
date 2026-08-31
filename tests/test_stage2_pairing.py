@@ -1,4 +1,5 @@
-import sys, os
+import sys
+import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage2_pairing"))
 from candidates import explicit_quads, build_candidates, span_distance, heuristic_pairs
 

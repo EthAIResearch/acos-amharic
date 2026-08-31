@@ -37,9 +37,9 @@ def build_candidates(quads: list[dict]) -> list[PairExample]:
     if not ex_quads:
         return []
 
-    aspect_spans = sorted(set((q["a_start"], q["a_end"]) for q in ex_quads))
-    opinion_spans = sorted(set((q["o_start"], q["o_end"]) for q in ex_quads))
-    true_pairs = set((q["a_start"], q["a_end"], q["o_start"], q["o_end"]) for q in ex_quads)
+    aspect_spans = sorted({(q["a_start"], q["a_end"]) for q in ex_quads})
+    opinion_spans = sorted({(q["o_start"], q["o_end"]) for q in ex_quads})
+    true_pairs = {(q["a_start"], q["a_end"], q["o_start"], q["o_end"]) for q in ex_quads}
 
     examples = []
     for a_span in aspect_spans:
