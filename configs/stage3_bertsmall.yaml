@@ -1,0 +1,26 @@
+# Stage 3 — category classification (22-class, class-weighted)
+# Experiment: lightweight Amharic-native baseline (rasyosef/bert-small-amharic)
+
+model_name: rasyosef/bert-small-amharic
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  label_space: data/prepared/label_space.json
+  max_length: 256
+
+training:
+  epochs: 10
+  batch_size: 16
+  lr: 3.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  class_weight_cap: 15.0   # inverse-frequency weighting, capped to avoid
+                            # runaway weights on the 1-2 example categories
+
+output_dir: results/stage3/bertsmall_base_run1
+
+notes: >
+  Lightweight Amharic-native baseline for Stage 3 category classification.
+  Pretrained on mC4/OSCAR Amharic corpora. Fast to train and evaluate.
+  Compare against stage3_afroxlmr.yaml for the multilingual vs monolingual comparison.
