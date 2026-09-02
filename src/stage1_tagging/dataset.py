@@ -14,8 +14,8 @@ COMMON_DIR = Path(__file__).resolve().parent.parent / "common"
 if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
-from align import align_labels_to_subwords  # noqa: E402
-from bio_labels import build_word_bio  # noqa: E402
+from align import align_labels_to_subwords
+from bio_labels import build_word_bio
 
 
 class TaggingDataset(Dataset):

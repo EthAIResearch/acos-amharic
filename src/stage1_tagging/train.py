@@ -38,14 +38,14 @@ for p in [str(STAGE1_DIR), str(COMMON_DIR), str(STAGE1_DIR.parent)]:
         sys.path.insert(0, p)
 
 try:
-    from dataset import TaggingDataset, collate_fn  # noqa: E402
-    from model import JointTaggingModel  # noqa: E402
+    from dataset import TaggingDataset, collate_fn
+    from model import JointTaggingModel
 except ImportError:
-    from dataset_tagging import TaggingDataset, collate_fn  # noqa: E402
-    from model_tagging import JointTaggingModel  # noqa: E402
+    from dataset_tagging import TaggingDataset, collate_fn
+    from model_tagging import JointTaggingModel
 
-from align import decode_subword_predictions  # noqa: E402
-from bio_labels import decode_bio_spans  # noqa: E402
+from align import decode_subword_predictions
+from bio_labels import decode_bio_spans
 
 
 def span_prf(pred_spans_per_ex, gold_spans_per_ex):

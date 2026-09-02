@@ -7,8 +7,8 @@ Reused as-is for Stage 4 (sentiment) -- only num_labels and the label field
 in the dataset differ.
 """
 import torch
-import torch.nn as nn
-from transformers import AutoModel, AutoConfig
+from torch import nn
+from transformers import AutoConfig, AutoModel
 
 
 class PairClassifier(nn.Module):

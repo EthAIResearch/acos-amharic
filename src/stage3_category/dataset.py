@@ -6,14 +6,18 @@ docs/stage3_category_analysis.md for why 2 of the 22 categories
 zero examples here and are structurally deferred to Stage 5.
 """
 import json
-import torch
-from torch.utils.data import Dataset
-
 import os
 import sys
 
+import torch
+from torch.utils.data import Dataset
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from pair_utils import build_span_mask, explicit_quads, word_span_to_subword_range  # noqa: E402
+from pair_utils import (
+    build_span_mask,
+    explicit_quads,
+    word_span_to_subword_range,
+)
 
 
 class CategoryPairDataset(Dataset):
