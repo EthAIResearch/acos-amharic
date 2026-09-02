@@ -26,10 +26,10 @@ class PairClassifier(nn.Module):
             nn.Linear(hidden, num_labels),
         )
 
-        self.class_weights = None
         if class_weights is not None:
-            self.register_buffer("_class_weights", torch.tensor(class_weights, dtype=torch.float))
-            self.class_weights = self._class_weights
+            self.register_buffer("class_weights", torch.tensor(class_weights, dtype=torch.float))
+        else:
+            self.class_weights = None
 
     @staticmethod
     def _masked_mean_pool(hidden_states, mask):
