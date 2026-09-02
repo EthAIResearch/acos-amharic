@@ -1,7 +1,6 @@
 """
 Shared-encoder, dual-head token classification model for joint ATE + OTE.
 """
-import torch
 from torch import nn
 from transformers import AutoConfig, AutoModel
 

@@ -1,0 +1,31 @@
+# Stage 3 — category classification (22-class, class-weighted)
+# Swap model_name once the Stage 1 model comparison (AfroXLMR / bert-small /
+# roberta-base-amharic) is finalized -- this defaults to AfroXLMR-base as
+# the strongest general-purpose baseline so far.
+
+model_name: Davlan/afro-xlmr-base
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  label_space: data/prepared/label_space.json
+  max_length: 256
+
+training:
+  epochs: 10
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  class_weight_cap: 15.0   # inverse-frequency weighting, capped to avoid
+                            # runaway weights on the 1-2 example categories
+
+output_dir: results/stage3/afroxlmr_base_run1
+
+notes: >
+  Trains on explicit-both quads only (23,617 examples). 2 of the 22
+  categories (PUBLIC_SERVICES#COMMUNITY_SUPPORT,
+  PUBLIC_SERVICES#INFRASTRUCTURE) have zero examples in this subset --
+  see docs/stage3_category_analysis.md. Report per-category P/R/F1, not
+  just macro/micro averages -- with this much imbalance, averages hide
+  the categories that actually need attention.
