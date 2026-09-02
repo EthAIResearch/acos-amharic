@@ -13,7 +13,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from pair_utils import build_span_mask, explicit_quads, word_span_to_subword_range
+from pair_utils import build_span_mask, explicit_quads, word_span_to_subword_range  # noqa: E402
 
 
 class CategoryPairDataset(Dataset):

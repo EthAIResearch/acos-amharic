@@ -12,7 +12,7 @@ from transformers import AutoModel, AutoConfig
 
 
 class PairClassifier(nn.Module):
-    def __init__(self, model_name: str, num_labels: int, class_weights: list = None, dropout: float = 0.1):
+    def __init__(self, model_name: str, num_labels: int, class_weights: list | None = None, dropout: float = 0.1):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
         self.encoder = AutoModel.from_pretrained(model_name)
