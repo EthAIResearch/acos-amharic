@@ -24,3 +24,7 @@ notes: >
   Lightweight Amharic-native baseline for Stage 3 category classification.
   Pretrained on mC4/OSCAR Amharic corpora. Fast to train and evaluate.
   Compare against stage3_afroxlmr.yaml for the multilingual vs monolingual comparison.
+
+# loss_type: logit_adjustment (default, recommended) or class_weighted (older, weaker baseline)
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0

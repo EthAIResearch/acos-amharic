@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "common"
 from pair_utils import (
     build_span_mask,
     compute_class_weights,
+    compute_log_priors,
     explicit_quads,
     word_span_to_subword_range,
 )
@@ -56,3 +57,17 @@ def test_compute_class_weights():
     assert abs(weights["catA"] - 110 / 300) < 1e-4
     assert abs(weights["catB"] - 110 / 30) < 1e-4
     assert weights["catC"] == 15.0
+
+
+def test_compute_log_priors():
+    import math
+
+    counts = {0: 100, 1: 10}
+    priors = compute_log_priors(counts, num_classes=3)
+    assert len(priors) == 3
+    # class 0: 100/110
+    assert abs(priors[0] - math.log(100 / 110)) < 1e-4
+    # class 1: 10/110
+    assert abs(priors[1] - math.log(10 / 110)) < 1e-4
+    # class 2 (zero count): epsilon floor
+    assert priors[2] == math.log(1e-12)

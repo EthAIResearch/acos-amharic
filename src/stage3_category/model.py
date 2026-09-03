@@ -12,12 +12,21 @@ from transformers import AutoConfig, AutoModel
 
 
 class PairClassifier(nn.Module):
-    def __init__(self, model_name: str, num_labels: int, class_weights: list | None = None, dropout: float = 0.1):
+    def __init__(
+        self,
+        model_name: str,
+        num_labels: int,
+        class_weights: list | None = None,
+        log_priors: list | None = None,
+        tau: float = 1.0,
+        dropout: float = 0.1,
+    ):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
         self.encoder = AutoModel.from_pretrained(model_name)
         hidden = self.config.hidden_size
 
+        self.tau = tau
         self.dropout = nn.Dropout(dropout)
         self.classifier = nn.Sequential(
             nn.Linear(hidden * 3, hidden),  # [aspect_pooled; opinion_pooled; sentence_pooled]
@@ -30,6 +39,11 @@ class PairClassifier(nn.Module):
             self.register_buffer("class_weights", torch.tensor(class_weights, dtype=torch.float))
         else:
             self.class_weights = None
+
+        if log_priors is not None:
+            self.register_buffer("log_priors", torch.tensor(log_priors, dtype=torch.float))
+        else:
+            self.log_priors = None
 
     @staticmethod
     def _masked_mean_pool(hidden_states, mask):
@@ -52,7 +66,13 @@ class PairClassifier(nn.Module):
 
         loss = None
         if label is not None:
-            loss_fct = nn.CrossEntropyLoss(weight=self.class_weights)
-            loss = loss_fct(logits, label)
+            if self.log_priors is not None:
+                # Logit adjustment: logits + tau * log_priors (Menon et al., 2021)
+                adjusted_logits = logits + self.tau * self.log_priors
+                loss_fct = nn.CrossEntropyLoss(weight=self.class_weights)
+                loss = loss_fct(adjusted_logits, label)
+            else:
+                loss_fct = nn.CrossEntropyLoss(weight=self.class_weights)
+                loss = loss_fct(logits, label)
 
         return {"loss": loss, "logits": logits}

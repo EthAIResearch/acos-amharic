@@ -29,3 +29,7 @@ notes: >
   see docs/stage3_category_analysis.md. Report per-category P/R/F1, not
   just macro/micro averages -- with this much imbalance, averages hide
   the categories that actually need attention.
+
+# loss_type: logit_adjustment (default, recommended) or class_weighted (older, weaker baseline)
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0
