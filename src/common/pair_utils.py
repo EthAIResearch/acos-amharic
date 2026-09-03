@@ -42,3 +42,17 @@ def compute_class_weights(label_counts: dict, num_classes: int, cap: float = 15.
         w = total / (num_classes * count) if count > 0 else cap
         weights[label] = min(w, cap)
     return weights
+
+
+def compute_log_priors(label_counts: dict, num_classes: int) -> list[float]:
+    """Empirical log-priors log(P(y)) for logit adjustment (Menon et al., 2021).
+    Adds a small epsilon floor so zero-count classes produce valid finite log-priors."""
+    import math
+
+    total = sum(label_counts.values())
+    priors = []
+    for i in range(num_classes):
+        count = label_counts.get(i, 0)
+        prob = max(count / total, 1e-12) if total > 0 else 1.0 / num_classes
+        priors.append(math.log(prob))
+    return priors

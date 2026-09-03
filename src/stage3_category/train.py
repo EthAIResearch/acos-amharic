@@ -13,19 +13,19 @@ import argparse
 import json
 import os
 import random
-import sys
-from collections import Counter
-
 import numpy as np
 import torch
 import yaml
+from collections import Counter
 from torch.utils.data import DataLoader
-from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
+from tqdm import tqdm
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 from dataset import CategoryPairDataset, collate_fn
 from model import PairClassifier
+
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 from pair_utils import compute_class_weights
 
 
@@ -47,6 +47,8 @@ def load_config_defaults(config_path):
     flat.update({"epochs": training.get("epochs"), "batch_size": training.get("batch_size"),
                  "lr": training.get("lr"), "warmup_ratio": training.get("warmup_ratio"),
                  "seed": training.get("seed"), "class_weight_cap": training.get("class_weight_cap")})
+    flat["loss_type"] = cfg.get("loss_type")
+    flat["logit_adjustment_tau"] = cfg.get("logit_adjustment_tau")
     return {k: v for k, v in flat.items() if v is not None}
 
 
@@ -63,7 +65,7 @@ def per_class_prf(y_true, y_pred, id2label):
             counts_fn[t] += 1
 
     report = {}
-    macro_f1_sum = 0.0
+    present_f1s = []  # only categories that actually appear in this eval set
     for lid in labels:
         tp, fp, fn = counts_tp[lid], counts_fp[lid], counts_fn[lid]
         support = tp + fn
@@ -71,12 +73,27 @@ def per_class_prf(y_true, y_pred, id2label):
         recall = tp / (tp + fn) if (tp + fn) else 0.0
         f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
         report[id2label[lid]] = {"precision": precision, "recall": recall, "f1": f1, "support": support}
-        macro_f1_sum += f1
-    macro_f1 = macro_f1_sum / len(labels) if labels else 0.0
+        if support > 0:
+            present_f1s.append(f1)
+
+    # Two different macro-F1s, both reported -- don't silently pick one:
+    #   macro_f1_all_categories: averages over all 22 categories, including
+    #     ones with zero examples in THIS eval set (forced F1=0). This is
+    #     what earlier versions of this script reported alone, which reads
+    #     as much worse than reality if many categories are simply absent
+    #     from the split being evaluated (common here: the explicit-pairs
+    #     test subset only contains 13-20 of the 22 categories).
+    #   macro_f1_present_categories: averages only over categories that
+    #     actually have test examples -- the more honest "how well does the
+    #     model do on what it's actually being asked to predict" number.
+    all_f1s = [report[id2label[lid]]["f1"] for lid in labels]
+    macro_f1_all = sum(all_f1s) / len(all_f1s) if all_f1s else 0.0
+    macro_f1_present = sum(present_f1s) / len(present_f1s) if present_f1s else 0.0
 
     total_correct = sum(counts_tp.values())
     accuracy = total_correct / len(y_true) if y_true else 0.0
-    return report, macro_f1, accuracy
+    n_absent = len(labels) - len(present_f1s)
+    return report, macro_f1_all, macro_f1_present, n_absent, accuracy
 
 
 @torch.no_grad()
@@ -90,8 +107,14 @@ def evaluate(model, dataset, device, id2label, batch_size=32):
         preds = out["logits"].argmax(-1).cpu().tolist()
         y_pred.extend(preds)
         y_true.extend(batch["label"].cpu().tolist())
-    report, macro_f1, accuracy = per_class_prf(y_true, y_pred, id2label)
-    return {"per_category": report, "macro_f1": macro_f1, "accuracy": accuracy}
+    report, macro_f1_all, macro_f1_present, n_absent, accuracy = per_class_prf(y_true, y_pred, id2label)
+    return {
+        "per_category": report,
+        "macro_f1_all_categories": macro_f1_all,
+        "macro_f1_present_categories": macro_f1_present,
+        "n_categories_absent_from_eval_set": n_absent,
+        "accuracy": accuracy,
+    }
 
 
 def main():
@@ -114,6 +137,12 @@ def main():
     ap.add_argument("--warmup_ratio", type=float, default=0.1)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--class_weight_cap", type=float, default=15.0)
+    ap.add_argument("--loss_type", choices=["class_weighted", "logit_adjustment"],
+                     default="logit_adjustment",
+                     help="logit_adjustment (Menon et al. 2021) is the recommended default for "
+                          "severe long-tail imbalance -- class_weighted is the weaker, simpler "
+                          "alternative kept for comparison.")
+    ap.add_argument("--logit_adjustment_tau", type=float, default=1.0)
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
 
@@ -144,12 +173,21 @@ def main():
               f"(structurally unlearnable, deferred to Stage 5): {zero_support}")
 
     train_label_counts = Counter(lbl for _, _, _, lbl in train_ds.examples)
-    weight_by_label = compute_class_weights(
-        {id2label[k]: v for k, v in train_label_counts.items()}, len(categories), cap=args.class_weight_cap
-    )
-    class_weights = [weight_by_label.get(id2label[i], args.class_weight_cap) for i in range(len(categories))]
 
-    model = PairClassifier(args.model_name, num_labels=len(categories), class_weights=class_weights).to(device)
+    if args.loss_type == "logit_adjustment":
+        from pair_utils import compute_log_priors
+        log_priors = compute_log_priors(dict(train_label_counts), len(categories))
+        model = PairClassifier(args.model_name, num_labels=len(categories),
+                                log_priors=log_priors, tau=args.logit_adjustment_tau).to(device)
+        print(f"Using logit-adjusted loss (tau={args.logit_adjustment_tau})")
+    else:
+        weight_by_label = compute_class_weights(
+            {id2label[k]: v for k, v in train_label_counts.items()}, len(categories), cap=args.class_weight_cap
+        )
+        class_weights = [weight_by_label.get(id2label[i], args.class_weight_cap) for i in range(len(categories))]
+        model = PairClassifier(args.model_name, num_labels=len(categories),
+                                class_weights=class_weights).to(device)
+        print(f"Using class-weighted loss (cap={args.class_weight_cap})")
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, collate_fn=collate_fn)
     total_steps = len(train_loader) * args.epochs
@@ -174,19 +212,22 @@ def main():
             pbar.set_postfix(loss=loss.item())
 
         metrics = evaluate(model, test_ds, device, id2label)
-        print(f"\n[epoch {epoch+1}] accuracy={metrics['accuracy']:.4f} macro_f1={metrics['macro_f1']:.4f}")
+        print(f"\n[epoch {epoch+1}] accuracy={metrics['accuracy']:.4f} "
+              f"macro_f1_present={metrics['macro_f1_present_categories']:.4f} "
+              f"(macro_f1_all_22={metrics['macro_f1_all_categories']:.4f}, "
+              f"{metrics['n_categories_absent_from_eval_set']} categories absent from test)")
 
-        if metrics["macro_f1"] > best_macro_f1:
-            best_macro_f1 = metrics["macro_f1"]
+        if metrics["macro_f1_present_categories"] > best_macro_f1:
+            best_macro_f1 = metrics["macro_f1_present_categories"]
             torch.save(model.state_dict(), os.path.join(args.output_dir, "best_model.pt"))
             tokenizer.save_pretrained(args.output_dir)
             with open(os.path.join(args.output_dir, "best_metrics.json"), "w") as f:
                 json.dump(metrics, f, indent=2)
-            print(f"  -> new best (macro F1={best_macro_f1:.4f}), checkpoint saved")
+            print(f"  -> new best (macro F1 [present categories]={best_macro_f1:.4f}), checkpoint saved")
 
-    print(f"\nDone. Best macro F1 = {best_macro_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
+    print(f"\nDone. Best macro F1 (present categories) = {best_macro_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
     print("Per-category breakdown of best checkpoint saved to best_metrics.json -- "
-          "check low-support categories specifically, not just the macro average.")
+          "check support=0 categories separately from genuinely low-scoring ones with real support.")
 
 
 if __name__ == "__main__":
