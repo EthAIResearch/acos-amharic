@@ -56,6 +56,7 @@ def test_per_class_prf_absent_category_does_not_crash_average():
     report, macro_f1_all, macro_f1_present, n_absent, acc = per_class_prf(y_true, y_pred, id2label)
     assert report["C"]["support"] == 0
     assert n_absent == 1
+    assert acc == 1.0
     assert macro_f1_present == 1.0   # perfect on the 2 categories that exist
     assert macro_f1_all < macro_f1_present  # dragged down by C's forced zero
     assert abs(macro_f1_all - 2 / 3) < 1e-9  # (1.0 + 1.0 + 0.0) / 3
