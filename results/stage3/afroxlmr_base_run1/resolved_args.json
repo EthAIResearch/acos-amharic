@@ -1,0 +1,17 @@
+{
+  "config": null,
+  "train": "data/prepared/train.jsonl",
+  "test": "data/prepared/test.jsonl",
+  "label_space": "data/prepared/label_space.json",
+  "model_name": "Davlan/afro-xlmr-base",
+  "output_dir": "results/stage3/afroxlmr_base_run1",
+  "epochs": 10,
+  "batch_size": 16,
+  "lr": 2e-05,
+  "max_length": 256,
+  "warmup_ratio": 0.1,
+  "seed": 42,
+  "class_weight_cap": 15.0,
+  "loss_type": "logit_adjustment",
+  "logit_adjustment_tau": 1.0
+}

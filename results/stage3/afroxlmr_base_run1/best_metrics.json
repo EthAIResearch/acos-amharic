@@ -1,0 +1,140 @@
+{
+  "per_category": {
+    "ECONOMY#COMMUNITY_SUPPORT": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "ECONOMY#EMPLOYMENT": {
+      "precision": 0.38333333333333336,
+      "recall": 0.5542168674698795,
+      "f1": 0.4532019704433498,
+      "support": 83
+    },
+    "ECONOMY#TAXATION": {
+      "precision": 0.5833333333333334,
+      "recall": 0.7159090909090909,
+      "f1": 0.6428571428571429,
+      "support": 88
+    },
+    "GOVERNANCE#CITIZEN_ENGAGEMENT": {
+      "precision": 0.5950413223140496,
+      "recall": 0.561038961038961,
+      "f1": 0.5775401069518716,
+      "support": 385
+    },
+    "GOVERNANCE#COMMUNITY_SUPPORT": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "GOVERNANCE#LEGISLATION": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "GOVERNANCE#TRANSPARENCY": {
+      "precision": 0.6810730253353204,
+      "recall": 0.6604046242774566,
+      "f1": 0.6705796038151136,
+      "support": 692
+    },
+    "HEALTHCARE#GENERAL": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1
+    },
+    "INFRASTRUCTURE#TRANSPORTATION": {
+      "precision": 0.7068965517241379,
+      "recall": 0.7735849056603774,
+      "f1": 0.7387387387387387,
+      "support": 53
+    },
+    "INFRASTRUCTURE#UTILITIES": {
+      "precision": 0.8260869565217391,
+      "recall": 0.7487684729064039,
+      "f1": 0.7855297157622739,
+      "support": 203
+    },
+    "PUBLIC_SAFETY#CRIME": {
+      "precision": 0.6312217194570136,
+      "recall": 0.6091703056768559,
+      "f1": 0.62,
+      "support": 458
+    },
+    "PUBLIC_SAFETY#CRIME_SERVICES": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "PUBLIC_SAFETY#EMERGENCY_SERVICES": {
+      "precision": 0.4945054945054945,
+      "recall": 0.703125,
+      "f1": 0.5806451612903226,
+      "support": 128
+    },
+    "PUBLIC_SERVICES#COMMUNITY_SUPPORT": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "PUBLIC_SERVICES#EDUCATION": {
+      "precision": 0.727810650887574,
+      "recall": 0.9461538461538461,
+      "f1": 0.822742474916388,
+      "support": 130
+    },
+    "PUBLIC_SERVICES#EMERGENCY_SERVICES": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "PUBLIC_SERVICES#HEALTHCARE": {
+      "precision": 0.7142857142857143,
+      "recall": 0.78125,
+      "f1": 0.7462686567164178,
+      "support": 32
+    },
+    "PUBLIC_SERVICES#INFRASTRUCTURE": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "PUBLIC_SERVICES#UTILITIES": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "SOCIAL#COMMUNITY_SUPPORT": {
+      "precision": 0.656,
+      "recall": 0.5597269624573379,
+      "f1": 0.6040515653775322,
+      "support": 293
+    },
+    "SOCIAL#EDUCATION": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "SOCIAL#EQUALITY_JUSTICE": {
+      "precision": 0.6925,
+      "recall": 0.6338672768878718,
+      "f1": 0.6618876941457587,
+      "support": 437
+    }
+  },
+  "macro_f1_all_categories": 0.35927467413704134,
+  "macro_f1_present_categories": 0.6080032946934546,
+  "n_categories_absent_from_eval_set": 9,
+  "accuracy": 0.6480053637277908
+}
