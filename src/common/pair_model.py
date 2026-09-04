@@ -5,7 +5,7 @@ representations (masked mean over their subword tokens) plus the sentence's
 pooled representation, concatenates, and classifies via a small MLP.
 """
 import torch
-import torch.nn as nn
+from torch import nn
 from transformers import AutoConfig, AutoModel
 
 
