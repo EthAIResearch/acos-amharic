@@ -6,12 +6,19 @@ pooled representation, concatenates, and classifies via a small MLP.
 """
 import torch
 import torch.nn as nn
-from transformers import AutoModel, AutoConfig
+from transformers import AutoConfig, AutoModel
 
 
 class PairClassifier(nn.Module):
-    def __init__(self, model_name: str, num_labels: int, class_weights: list = None,
-                 log_priors: list = None, tau: float = 1.0, dropout: float = 0.1):
+    def __init__(
+        self,
+        model_name: str,
+        num_labels: int,
+        class_weights: list | None = None,
+        log_priors: list | None = None,
+        tau: float = 1.0,
+        dropout: float = 0.1,
+    ):
         """
         class_weights: inverse-frequency weights for weighted CrossEntropyLoss
             (the simpler, weaker imbalance fix -- see pair_utils.compute_class_weights).

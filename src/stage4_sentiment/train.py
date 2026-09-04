@@ -16,18 +16,18 @@ import argparse
 import json
 import os
 import random
+import sys
+from collections import Counter
+
 import numpy as np
 import torch
 import yaml
-from collections import Counter
-from torch.utils.data import DataLoader
-from transformers import AutoTokenizer, get_linear_schedule_with_warmup
-from tqdm import tqdm
-
-from dataset import SentimentPairDataset, collate_fn, SENTIMENT_LABELS, ID2LABEL
+from dataset import ID2LABEL, SENTIMENT_LABELS, SentimentPairDataset, collate_fn
 from model import PairClassifier
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
-import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 from pair_utils import compute_class_weights, compute_log_priors
 
