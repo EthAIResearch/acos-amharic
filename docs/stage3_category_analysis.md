@@ -1,39 +1,54 @@
-# Stage 3: Category Classification — Design & Architecture
+# Stage 3: Category Classification — Design Notes
 
-## Overview
+## Scope
+Trains only on explicit-both quads (23,617 of 41,224 total, 57.3%) --
+consistent with Stage 2. Implicit-involving quads are Stage 5's job.
 
-Stage 3 classifies each candidate aspect-opinion pair into one of the **22 fixed categories** defined in `label_space.json`.
+## Architecture
+Shared encoder (same backbone family as Stage 1) → masked mean-pool over
+the aspect span's subword tokens, the opinion span's subword tokens, and
+the full sentence → concatenate all three → 2-layer MLP → 22-way softmax.
+Sentence-level pooling is included alongside the two span poolings because
+category is often a property of the broader topic, not just the aspect
+term in isolation (e.g. "ግብር" (tax) alone is unambiguous, but a vaguer
+aspect term may need sentence context to disambiguate ECONOMY#TAXATION
+from GOVERNANCE#TRANSPARENCY).
 
-- **Input**: A sentence with word-level tokens, an aspect span $(a_{start}, a_{end})$, and an opinion span $(o_{start}, o_{end})$.
-- **Scope**: Explicit-both pairs ($a_{start} \neq -1$ and $o_{start} \neq -1$). Implicit aspect/opinion handling is deferred to Stage 5.
-- **Output**: Category label ID $\in [0, 21]$.
+## Known unlearnable categories (do not expect non-zero recall)
+Two categories have **zero examples** in the explicit-pairs training data,
+because they only ever co-occur with an implicit aspect or opinion in this
+dataset:
+- `PUBLIC_SERVICES#COMMUNITY_SUPPORT`
+- `PUBLIC_SERVICES#INFRASTRUCTURE`
 
----
+Separately, `ECONOMY#UTILITIES` has zero examples in the *full* training
+set (both explicit and implicit) and only appears once in test -- it isn't
+even in the 22-category label space Stage 3 trains against (see
+`data/prepared/label_space.json`).
 
-## Model Architecture
+None of these are bugs to fix by relabeling -- the taxonomy is fixed and
+external. They're documented limitations: report 0 recall for these
+explicitly in the results table rather than omitting them, and note in the
+paper that Stage 5 (implicit handling) is the only path to ever predicting
+the first two, while the third needs more raw data collection regardless
+of modeling approach.
 
-The classifier (`PairClassifier` in `src/stage3_category/model.py`) uses a shared transformer encoder:
+## Imbalance handling
+**Default: logit-adjusted loss** (Menon et al. 2021, "Long-Tail Learning via
+Logit Adjustment") -- adds `tau * log(class_prior)` to each class's logit
+before the softmax during training, directly correcting the classifier's
+decision-boundary bias rather than just reweighting example loss magnitude.
+This is the more effective fix per current research; naive class weighting
+is a documented weak fix for severe imbalance (models often keep collapsing
+to majority-class predictions even with capped inverse-frequency weights).
 
-1. **Subword Masking**: Binary masks are constructed over the subwords for the aspect span, the opinion span, and the full sentence attention mask.
-2. **Masked Mean Pooling**:
-   $$\mathbf{h}_{\text{aspect}} = \text{MeanPool}(\mathbf{H}, \mathbf{M}_{\text{aspect}})$$
-   $$\mathbf{h}_{\text{opinion}} = \text{MeanPool}(\mathbf{H}, \mathbf{M}_{\text{opinion}})$$
-   $$\mathbf{h}_{\text{sentence}} = \text{MeanPool}(\mathbf{H}, \mathbf{M}_{\text{attention}})$$
-3. **Representation Fusion**: Concatenates all three representations:
-   $$\mathbf{h}_{\text{pair}} = [\mathbf{h}_{\text{aspect}} \,;\, \mathbf{h}_{\text{opinion}} \,;\, \mathbf{h}_{\text{sentence}}] \in \mathbb{R}^{3 \times d_{\text{hidden}}}$$
-4. **Classification Head**:
-   $$\text{logits} = \mathbf{W}_2 \cdot \text{Dropout}(\text{ReLU}(\mathbf{W}_1 \mathbf{h}_{\text{pair}}))$$
+The older **class-weighted loss** (inverse-frequency, capped at 15x) is kept
+as `--loss_type class_weighted` for comparison, but isn't the default.
+Don't combine both approaches -- `PairClassifier` explicitly rejects passing
+both `class_weights` and `log_priors` together, since stacking them tends to
+over-correct.
 
-This architecture is modular and reused for Stage 4 (Sentiment Classification).
-
----
-
-## Class Imbalance & Weighting
-
-The 22-category taxonomy exhibits strong class imbalance across the dataset (e.g., `GOVERNANCE#TRANSPARENCY` accounts for ~25% of training quads, while 10 categories have low support $<30$ examples, and 2 categories have 0 examples in the explicit subset).
-
-To stabilize training and ensure minority classes receive learning signal without exploding gradients, we apply capped inverse-frequency class weighting (`compute_class_weights` in `src/common/pair_utils.py`):
-
-$$w_c = \min\left(\frac{N_{\text{total}}}{C \times N_c}, \, \text{cap}\right)$$
-
-Default cap is set to $15.0$.
+## Evaluation
+Report per-category P/R/F1 (`train.py`'s `per_class_prf`), not just
+macro/micro-averaged numbers -- with 10 low-support categories, an average
+alone would hide exactly the failure modes worth discussing in the paper.
