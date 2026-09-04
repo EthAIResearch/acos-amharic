@@ -1,0 +1,30 @@
+﻿# Stage 4 — sentiment classification (NEGATIVE/NEUTRAL/POSITIVE)
+# Experiment: lightweight Amharic-native baseline (rasyosef/bert-small-amharic)
+model_name: rasyosef/bert-small-amharic
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 10
+  batch_size: 16
+  lr: 3.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  class_weight_cap: 15.0
+  weight_decay: 0.01
+  fp16: true
+
+output_dir: results/stage4/bertsmall_base_run1
+
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0
+
+notes: >
+  Lightweight Amharic-native baseline for Stage 4 sentiment classification.
+  Pretrained on mC4/OSCAR Amharic corpora. Fast to train and evaluate.
+  Trains on explicit-both quads (23,617 examples). NEUTRAL is heavily
+  underrepresented at 3.1% (741 examples) -- monitor NEUTRAL_f1 specifically.
+  Compare against stage4_afroxlmr.yaml for the multilingual vs monolingual comparison.

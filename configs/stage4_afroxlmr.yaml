@@ -1,0 +1,32 @@
+# Stage 4 — sentiment classification (NEGATIVE/NEUTRAL/POSITIVE)
+model_name: Davlan/afro-xlmr-base
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 10
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  class_weight_cap: 15.0
+  weight_decay: 0.01
+  fp16: true
+
+output_dir: results/stage4/afroxlmr_base_run1
+
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0
+
+notes: >
+  NEUTRAL is only 3.1% of explicit-pair training examples (741 of 23,617) --
+  rarer than its 8.7% share of the full dataset, since implicit-opinion
+  cases disproportionately carry neutral sentiment. Watch NEUTRAL_f1
+  specifically in the per-epoch log, not just accuracy/macro_f1 -- ABSA
+  literature consistently finds neutral is the hardest class under this
+  kind of imbalance. If NEUTRAL_f1 stays near zero after several epochs,
+  the next lever is synthetic data augmentation (backtranslation/paraphrase)
+  targeted at NEUTRAL specifically, not more training epochs.
