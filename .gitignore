@@ -16,6 +16,12 @@ results/**/*.bin
 # Notebooks checkpoints
 .ipynb_checkpoints/
 
+# Node / JS
+node_modules/
+
 # OS/editor
 .DS_Store
 .vscode/
+~$*
+*.tmp
+
