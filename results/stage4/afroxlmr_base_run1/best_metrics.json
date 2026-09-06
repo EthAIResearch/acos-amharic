@@ -1,0 +1,30 @@
+{
+  "per_sentiment": {
+    "NEGATIVE": {
+      "precision": 0.9416924664602683,
+      "recall": 0.9161646586345381,
+      "f1": 0.9287531806615775,
+      "support": 1992
+    },
+    "NEUTRAL": {
+      "precision": 0.3157894736842105,
+      "recall": 0.37894736842105264,
+      "f1": 0.3444976076555024,
+      "support": 95
+    },
+    "POSITIVE": {
+      "precision": 0.8388829215896885,
+      "recall": 0.8716517857142857,
+      "f1": 0.8549534756431308,
+      "support": 896
+    }
+  },
+  "macro_f1": 0.7094014213200702,
+  "macro_f1_all_sentiments": 0.7094014213200702,
+  "macro_f1_present_sentiments": 0.7094014213200702,
+  "macro_f1_all_categories": 0.7094014213200702,
+  "macro_f1_present_categories": 0.7094014213200702,
+  "n_sentiments_absent_from_eval_set": 0,
+  "n_categories_absent_from_eval_set": 0,
+  "accuracy": 0.8856855514582634
+}
