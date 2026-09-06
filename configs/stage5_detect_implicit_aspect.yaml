@@ -1,0 +1,24 @@
+# Stage 5a — detect implicit aspect (opinion-anchored binary classification)
+# Given an explicit opinion span, does its aspect counterpart exist as a
+# span, or is it implicit? 9,693 positive / 23,617 negative in train.
+model_name: Davlan/afro-xlmr-base
+subtask: detect_implicit_aspect
+anchor: none   # not used for detect_* subtasks -- anchor side is fixed by subtask
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  weight_decay: 0.01
+  fp16: true
+
+output_dir: results/stage5/detect_implicit_aspect_run1
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0

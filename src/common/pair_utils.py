@@ -11,6 +11,30 @@ def explicit_quads(quads: list[dict]) -> list[dict]:
     return [q for q in quads if q["a_start"] != -1 and q["o_start"] != -1]
 
 
+def is_implicit_side(quad: dict, side: str) -> bool:
+    """Check if the given side ('a'/'aspect' or 'o'/'opinion') is implicit (-1,-1)."""
+    prefix = side[0].lower()
+    return quad.get(f"{prefix}_start", -1) == -1
+
+
+def quad_kind(quad: dict) -> str:
+    """Classify a quad into one of 4 span configurations:
+    - 'explicit_both': both aspect and opinion have explicit spans
+    - 'implicit_aspect_only': aspect is -1,-1; opinion is explicit
+    - 'implicit_opinion_only': opinion is -1,-1; aspect is explicit
+    - 'fully_implicit': both aspect and opinion are -1,-1
+    """
+    a_imp = is_implicit_side(quad, "aspect")
+    o_imp = is_implicit_side(quad, "opinion")
+    if not a_imp and not o_imp:
+        return "explicit_both"
+    if a_imp and not o_imp:
+        return "implicit_aspect_only"
+    if not a_imp and o_imp:
+        return "implicit_opinion_only"
+    return "fully_implicit"
+
+
 def word_span_to_subword_range(word_ids: list, start: int, end: int) -> tuple[int, int] | None:
     """Map a word-level span [start, end) to the (min, max) subword token
     indices covering it, using a fast tokenizer's word_ids(). Returns None
