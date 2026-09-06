@@ -1,0 +1,28 @@
+# Stage 3 — category classification (22-class, class-weighted)
+# Experiment: Amharic-native RoBERTa baseline (rasyosef/roberta-base-amharic)
+
+model_name: rasyosef/roberta-base-amharic
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  label_space: data/prepared/label_space.json
+  max_length: 256
+
+training:
+  epochs: 10
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  class_weight_cap: 15.0
+
+output_dir: results/stage3/roberta_base_run1
+
+notes: >
+  Amharic-native RoBERTa-base baseline for Stage 3 category classification.
+  Pretrained on mC4/OSCAR Amharic corpora (110M params).
+  Compare against stage3_afroxlmr.yaml and stage3_bertsmall.yaml.
+
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0
