@@ -1,0 +1,25 @@
+# Stage 5b — detect implicit opinion (aspect-anchored binary classification)
+# Given an explicit aspect span, is its opinion implicit? 4,560 positive /
+# 23,617 negative in train -- more imbalanced than 5a, logit adjustment
+# matters more here.
+model_name: Davlan/afro-xlmr-base
+subtask: detect_implicit_opinion
+anchor: none
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  weight_decay: 0.01
+  fp16: true
+
+output_dir: results/stage5/detect_implicit_opinion_run1
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0

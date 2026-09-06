@@ -1,0 +1,43 @@
+# Stage 5d — category classification for implicit-aspect quads
+# (opinion-anchored: the aspect is implicit, but its category still needs
+# to be predicted using the opinion span + sentence context). Trains only
+# on the 9,693 implicit_aspect_only examples (the positives from 5a).
+#
+# To build the remaining category/sentiment sub-models by analogy:
+#   - stage5_category_aspect_anchor.yaml:   anchor: aspect,   subtask: category
+#   - stage5_category_fully_implicit.yaml:  anchor: none,     subtask: category
+#   - stage5_sentiment_opinion_anchor.yaml: anchor: opinion,  subtask: sentiment
+#   - stage5_sentiment_aspect_anchor.yaml:  anchor: aspect,   subtask: sentiment
+#   - stage5_sentiment_fully_implicit.yaml: anchor: none,     subtask: sentiment
+# (just copy this file and change model_name/subtask/anchor/output_dir)
+
+model_name: Davlan/afro-xlmr-base
+subtask: category
+anchor: opinion
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  label_space: data/prepared/label_space.json
+  max_length: 256
+
+training:
+  epochs: 10
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  class_weight_cap: 15.0
+  weight_decay: 0.01
+  fp16: true
+
+output_dir: results/stage5/category_opinion_anchor_run1
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0
+
+notes: >
+  Only 9,693 training examples (vs. 23,617 for Stage 3's explicit-pairs
+  category classifier), so expect this to underperform Stage 3 on
+  well-supported categories -- less data per category, and no aspect span
+  to pool from (aspect_mask is always zero here). Report separately from
+  Stage 3 in the paper, not averaged together.

@@ -1,0 +1,25 @@
+# Stage 5c — detect fully-implicit quads (sentence-level binary, no anchor
+# span at all). 3,324 positive sentences / 35,937 negative in train (8.5%
+# positive) -- similar imbalance level to Stage 4's NEUTRAL class, same
+# reasoning for defaulting to logit adjustment applies.
+model_name: Davlan/afro-xlmr-base
+subtask: detect_fully_implicit
+anchor: none
+
+data:
+  train: data/prepared/train.jsonl
+  test: data/prepared/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  weight_decay: 0.01
+  fp16: true
+
+output_dir: results/stage5/detect_fully_implicit_run1
+loss_type: logit_adjustment
+logit_adjustment_tau: 1.0
