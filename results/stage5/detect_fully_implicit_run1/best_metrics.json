@@ -1,0 +1,20 @@
+{
+  "per_label": {
+    "no_implicit_counterpart": {
+      "precision": 0.9326775956284153,
+      "recall": 0.9558691756272402,
+      "f1": 0.9441309879411439,
+      "support": 4464
+    },
+    "has_implicit_counterpart": {
+      "precision": 0.4101796407185629,
+      "recall": 0.30786516853932583,
+      "f1": 0.35173299101412064,
+      "support": 445
+    }
+  },
+  "macro_f1_all_categories": 0.6479319894776323,
+  "macro_f1_present_categories": 0.6479319894776323,
+  "n_categories_absent_from_eval_set": 0,
+  "accuracy": 0.8971277245874923
+}
