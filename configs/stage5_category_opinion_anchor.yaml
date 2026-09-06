@@ -11,7 +11,7 @@
 #   - stage5_sentiment_fully_implicit.yaml: anchor: none,     subtask: sentiment
 # (just copy this file and change model_name/subtask/anchor/output_dir)
 
-model_name: Davlan/afro-xlmr-base
+model_name: rasyosef/roberta-base-amharic
 subtask: category
 anchor: opinion
 

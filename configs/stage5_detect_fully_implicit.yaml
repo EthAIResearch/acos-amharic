@@ -2,7 +2,7 @@
 # span at all). 3,324 positive sentences / 35,937 negative in train (8.5%
 # positive) -- similar imbalance level to Stage 4's NEUTRAL class, same
 # reasoning for defaulting to logit adjustment applies.
-model_name: Davlan/afro-xlmr-base
+model_name: rasyosef/roberta-base-amharic
 subtask: detect_fully_implicit
 anchor: none
 

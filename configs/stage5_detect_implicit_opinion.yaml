@@ -2,7 +2,7 @@
 # Given an explicit aspect span, is its opinion implicit? 4,560 positive /
 # 23,617 negative in train -- more imbalanced than 5a, logit adjustment
 # matters more here.
-model_name: Davlan/afro-xlmr-base
+model_name: rasyosef/roberta-base-amharic
 subtask: detect_implicit_opinion
 anchor: none
 
