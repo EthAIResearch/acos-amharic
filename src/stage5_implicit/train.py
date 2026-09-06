@@ -31,15 +31,15 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from dataset import (  # noqa: E402
+from dataset import (
     AnchoredCategorySentimentDataset,
     AnchoredDetectionDataset,
     FullyImplicitCategorySentimentDataset,
     FullyImplicitDetectionDataset,
     collate_fn,
 )
-from model import PairClassifier  # noqa: E402
-from pair_utils import compute_class_weights, compute_log_priors  # noqa: E402
+from model import PairClassifier
+from pair_utils import compute_class_weights, compute_log_priors
 
 BINARY_LABELS = {0: "no_implicit_counterpart", 1: "has_implicit_counterpart"}
 SENTIMENT_LABELS = ["NEGATIVE", "NEUTRAL", "POSITIVE"]

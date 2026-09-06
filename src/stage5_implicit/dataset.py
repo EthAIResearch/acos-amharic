@@ -24,14 +24,19 @@ correctly falls back to relying on the sentence-pooled representation,
 so no architecture change was needed, only new dataset construction.
 """
 import json
-import torch
-from torch.utils.data import Dataset
-
 import os
 import sys
 
+import torch
+from torch.utils.data import Dataset
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from pair_utils import build_span_mask, is_implicit_side, quad_kind, word_span_to_subword_range  # noqa: E402
+from pair_utils import (
+    build_span_mask,
+    is_implicit_side,
+    quad_kind,
+    word_span_to_subword_range,
+)
 
 
 def _is_implicit(q, side):
