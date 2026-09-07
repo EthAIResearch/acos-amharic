@@ -1,0 +1,26 @@
+# Stage 6 — end-to-end pipeline inference + evaluation
+# Fill in each checkpoint path once that stage/sub-model has been trained.
+# The three stage5_*_ckpt category/sentiment entries are OPTIONAL -- if
+# omitted, run_inference.py simply skips that sub-model's contribution
+# (shows up as lower recall in results, not a crash), so you can run a
+# partial end-to-end evaluation before every Stage 5 sub-model is trained.
+
+test_data: data/prepared/test.jsonl
+label_space: data/prepared/label_space.json
+
+stage1_ckpt: results/stage1/afroxlmr_base_run1
+stage3_ckpt: results/stage3/afroxlmr_base_run1
+stage4_ckpt: results/stage4/afroxlmr_base_run1
+
+stage5_detect_implicit_aspect_ckpt: results/stage5/detect_implicit_aspect_run1
+stage5_detect_implicit_opinion_ckpt: results/stage5/detect_implicit_opinion_run1
+stage5_detect_fully_implicit_ckpt: results/stage5/detect_fully_implicit_run1
+
+# Optional -- fill in once trained (see configs/stage5_category_opinion_anchor.yaml
+# for how to build the remaining 5 Stage 5 category/sentiment configs)
+stage5_category_opinion_anchor_ckpt: results/stage5/category_opinion_anchor_run1
+stage5_category_aspect_anchor_ckpt: null
+stage5_category_fully_implicit_ckpt: null
+stage5_sentiment_opinion_anchor_ckpt: null
+stage5_sentiment_aspect_anchor_ckpt: null
+stage5_sentiment_fully_implicit_ckpt: null
