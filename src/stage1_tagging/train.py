@@ -5,6 +5,7 @@ Usage (in your GPU environment):
     pip install -r requirements.txt
     python train.py --config ../../configs/stage1_afroxlmr.yaml
     python train.py --config ../../configs/stage1_bertsmall.yaml
+    python train.py --config ../../configs/stage1_roberta_amharic.yaml
 
     # Or without a config file, plain CLI flags (config values above are just
     # defaults for these same flags -- any flag passed on the command line

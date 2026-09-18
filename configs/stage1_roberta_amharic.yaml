@@ -1,0 +1,23 @@
+# Stage 1 — joint Aspect Term Extraction + Opinion Term Extraction
+# Experiment: Amharic-native RoBERTa baseline (rasyosef/roberta-base-amharic) (see issue #48)
+
+model_name: rasyosef/roberta-base-amharic
+
+data:
+  train: data/prepared_explicit/train.jsonl
+  test: data/prepared_explicit/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 3.0e-5
+  warmup_ratio: 0.06
+  seed: 42
+
+output_dir: results/stage1/roberta_base_run1
+
+notes: >
+  Amharic-native RoBERTa-base baseline for Stage 1 joint Aspect Term Extraction
+  (ATE) and Opinion Term Extraction (OTE). Pretrained on mC4/OSCAR Amharic corpora
+  (110M params). Compare against stage1_afroxlmr.yaml and stage1_bertsmall.yaml.
