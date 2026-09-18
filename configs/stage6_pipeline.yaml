@@ -8,9 +8,9 @@
 test_data: data/prepared/test.jsonl
 label_space: data/prepared/label_space.json
 
-stage1_ckpt: results/stage1/afroxlmr_base_run1
-stage3_ckpt: results/stage3/afroxlmr_base_run1
-stage4_ckpt: results/stage4/afroxlmr_base_run1
+stage1_ckpt: results/stage1/roberta_base_run1
+stage3_ckpt: results/stage3/roberta_base_run1
+stage4_ckpt: results/stage4/roberta_base_run1
 
 stage5_detect_implicit_aspect_ckpt: results/stage5/detect_implicit_aspect_run1
 stage5_detect_implicit_opinion_ckpt: results/stage5/detect_implicit_opinion_run1
