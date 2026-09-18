@@ -46,8 +46,8 @@ def evaluate_quads(pred_by_sentence: dict, gold_by_sentence: dict) -> dict:
         for subset, filt in [("all", lambda q: True),
                               ("explicit", lambda q: not is_implicit_quad(q)),
                               ("implicit", is_implicit_quad)]:
-            gold_keys = set(quad_key(q) for q in gold_quads if filt(q))
-            pred_keys = set(quad_key(q) for q in pred_quads if filt(q))
+            gold_keys = {quad_key(q) for q in gold_quads if filt(q)}
+            pred_keys = {quad_key(q) for q in pred_quads if filt(q)}
             tp = len(gold_keys & pred_keys)
             fp = len(pred_keys - gold_keys)
             fn = len(gold_keys - pred_keys)

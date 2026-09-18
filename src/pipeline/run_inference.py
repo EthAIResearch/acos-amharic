@@ -20,15 +20,21 @@ import argparse
 import json
 import os
 import sys
-import yaml
+
 import torch
+import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "stage2_pairing"))
+from assemble_quads import SentencePredictions, assemble_quads
 from candidates import heuristic_pairs
-from inference_utils import load_pair_classifier, load_stage1_model, extract_spans, classify_span_pair
-from assemble_quads import assemble_quads, SentencePredictions
 from evaluate import evaluate_quads
+from inference_utils import (
+    classify_span_pair,
+    extract_spans,
+    load_pair_classifier,
+    load_stage1_model,
+)
 
 SENTIMENT_ID2LABEL = {0: "NEGATIVE", 1: "NEUTRAL", 2: "POSITIVE"}
 BINARY_ID2LABEL = {0: False, 1: True}

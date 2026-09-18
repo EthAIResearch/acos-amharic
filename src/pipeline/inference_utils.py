@@ -11,12 +11,13 @@ redundantly specify which backbone a checkpoint used.
 """
 import json
 import os
+import sys
+
 import torch
 
-import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 from pair_model import PairClassifier
-from pair_utils import word_span_to_subword_range, build_span_mask
+from pair_utils import build_span_mask, word_span_to_subword_range
 
 
 def load_pair_classifier(ckpt_dir: str, num_labels: int, device):
@@ -58,8 +59,8 @@ def extract_spans(model, tokenizer, tokens: list, device, max_length: int = 256)
     """Stage 1 inference: tokens -> (aspect_spans, opinion_spans), both
     lists of (start, end) word-index tuples."""
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-    from bio_labels import decode_bio_spans
     from align import decode_subword_predictions
+    from bio_labels import decode_bio_spans
 
     enc = tokenizer(tokens, is_split_into_words=True, truncation=True,
                      max_length=max_length, padding="max_length", return_tensors="pt")
