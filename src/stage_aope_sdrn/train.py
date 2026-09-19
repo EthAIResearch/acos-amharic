@@ -22,7 +22,12 @@ import torch
 import yaml
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
-from relation_utils import correlation_degree, explicit_pairs
+from relation_utils import (
+    compute_prf,
+    correlation_degree,
+    explicit_pairs,
+    sweep_thresholds,
+)
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
@@ -56,24 +61,23 @@ def load_config_defaults(config_path):
     return {k: v for k, v in flat.items() if v is not None}
 
 
-def pair_prf(pred_pairs_per_ex, gold_pairs_per_ex):
-    tp = fp = fn = 0
-    for preds, golds in zip(pred_pairs_per_ex, gold_pairs_per_ex):
-        p, g = set(preds), set(golds)
-        tp += len(p & g)
-        fp += len(p - g)
-        fn += len(g - p)
-    precision = tp / (tp + fp) if (tp + fp) else 0.0
-    recall = tp / (tp + fn) if (tp + fn) else 0.0
-    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
-    return {"precision": precision, "recall": recall, "f1": f1, "tp": tp, "fp": fp, "fn": fn}
-
 
 @torch.no_grad()
-def evaluate(model, dataset, tokenizer, device, pair_accept_threshold, batch_size=16):
+def evaluate(
+    model,
+    dataset,
+    tokenizer,
+    device,
+    pair_accept_threshold,
+    batch_size=16,
+    return_candidates=False,
+):
     model.eval()
     loader = DataLoader(dataset, batch_size=batch_size, collate_fn=collate_fn)
-    all_pred_pairs, all_gold_pairs = [], []
+    all_pred_aspects, all_gold_aspects = [], []
+    all_pred_opinions, all_gold_opinions = [], []
+    candidates_with_scores_per_ex = []
+    all_gold_pairs = []
     rec_idx = 0
 
     for batch in loader:
@@ -88,8 +92,12 @@ def evaluate(model, dataset, tokenizer, device, pair_accept_threshold, batch_siz
         for i in range(bsz):
             rec = dataset.records[rec_idx]
             rec_idx += 1
-            enc = tokenizer(rec["tokens"], is_split_into_words=True,
-                             truncation=True, max_length=dataset.max_length)
+            enc = tokenizer(
+                rec["tokens"],
+                is_split_into_words=True,
+                truncation=True,
+                max_length=dataset.max_length,
+            )
             word_ids = enc.word_ids(batch_index=0)
 
             a_word_tags = decode_subword_predictions(word_ids, a_pred_ids[i][:len(word_ids)])
@@ -97,8 +105,17 @@ def evaluate(model, dataset, tokenizer, device, pair_accept_threshold, batch_siz
             a_spans = decode_bio_spans(a_word_tags)
             o_spans = decode_bio_spans(o_word_tags)
 
-            # Project subword-level relation scores back to a word-level
-            # matrix (first-subword convention, matching decode_subword_predictions)
+            g_pairs = explicit_pairs(rec["quads"])
+            g_aspects = [p[0] for p in g_pairs]
+            g_opinions = [p[1] for p in g_pairs]
+
+            all_pred_aspects.append(a_spans)
+            all_gold_aspects.append(g_aspects)
+            all_pred_opinions.append(o_spans)
+            all_gold_opinions.append(g_opinions)
+            all_gold_pairs.append(g_pairs)
+
+            # Map subword-level relation matrix back to words
             first_subword_of_word = {}
             for si, wid in enumerate(word_ids):
                 if wid is not None and wid not in first_subword_of_word:
@@ -108,19 +125,46 @@ def evaluate(model, dataset, tokenizer, device, pair_accept_threshold, batch_siz
             for wi in range(n_words):
                 for wj in range(n_words):
                     si, sj = first_subword_of_word.get(wi), first_subword_of_word.get(wj)
-                    if si is not None and sj is not None and si < len(rel_scores[i]) and sj < len(rel_scores[i]):
+                    if (
+                        si is not None
+                        and sj is not None
+                        and si < len(rel_scores[i])
+                        and sj < len(rel_scores[i])
+                    ):
                         word_rel[wi][wj] = rel_scores[i][si][sj]
 
-            pred_pairs = []
+            ex_candidates = []
             for a_span in a_spans:
                 for o_span in o_spans:
-                    if correlation_degree(word_rel, a_span, o_span) >= pair_accept_threshold:
-                        pred_pairs.append((a_span, o_span))
+                    score = correlation_degree(word_rel, a_span, o_span)
+                    ex_candidates.append(((a_span, o_span), score))
+            candidates_with_scores_per_ex.append(ex_candidates)
 
-            all_pred_pairs.append(pred_pairs)
-            all_gold_pairs.append(explicit_pairs(rec["quads"]))
+    aspect_prf = compute_prf(all_pred_aspects, all_gold_aspects)
+    opinion_prf = compute_prf(all_pred_opinions, all_gold_opinions)
 
-    return pair_prf(all_pred_pairs, all_gold_pairs)
+    accepted_pairs_per_ex = [
+        [pair for pair, score in ex_candidates if score >= pair_accept_threshold]
+        for ex_candidates in candidates_with_scores_per_ex
+    ]
+    pair_metrics = compute_prf(accepted_pairs_per_ex, all_gold_pairs)
+
+    all_candidates_per_ex = [
+        [pair for pair, _ in ex_candidates]
+        for ex_candidates in candidates_with_scores_per_ex
+    ]
+    candidate_ceiling_prf = compute_prf(all_candidates_per_ex, all_gold_pairs)
+
+    metrics = {
+        **pair_metrics,
+        "aspect": aspect_prf,
+        "opinion": opinion_prf,
+        "candidate_ceiling_recall": candidate_ceiling_prf["recall"],
+    }
+
+    if return_candidates:
+        return metrics, candidates_with_scores_per_ex, all_gold_pairs
+    return metrics
 
 
 def main():
@@ -196,6 +240,9 @@ def main():
         metrics = evaluate(model, test_ds, tokenizer, device, args.pair_accept_threshold)
         print(f"\n[epoch {epoch+1}] pair F1={metrics['f1']:.4f} "
               f"(P={metrics['precision']:.4f} R={metrics['recall']:.4f})")
+        print(f"           spans: aspect R={metrics['aspect']['recall']:.4f} (F1={metrics['aspect']['f1']:.4f}), "
+              f"opinion R={metrics['opinion']['recall']:.4f} (F1={metrics['opinion']['f1']:.4f}), "
+              f"pair ceiling R={metrics['candidate_ceiling_recall']:.4f}")
 
         if metrics["f1"] > best_f1:
             best_f1 = metrics["f1"]
@@ -205,9 +252,30 @@ def main():
                 json.dump(metrics, f, indent=2)
             print(f"  -> new best (pair F1={best_f1:.4f}), checkpoint saved")
 
-    print(f"\nDone. Best pair F1 = {best_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
-    print("Compare against the old pipeline: Stage 1 span F1 (~0.60/0.46) chained through "
-          "Stage 2's heuristic (F1=0.993 on GOLD spans only, untested on predicted spans until now).")
+    print(f"\nDone training. Best pair F1 = {best_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
+
+    # Run threshold sweep on best checkpoint to find optimal delta-hat
+    print("\nEvaluating correlation degree threshold sweep on best checkpoint...")
+    best_ckpt_path = os.path.join(args.output_dir, "best_model.pt")
+    if os.path.exists(best_ckpt_path):
+        model.load_state_dict(torch.load(best_ckpt_path, map_location=device))
+        _, candidates, golds = evaluate(
+            model, test_ds, tokenizer, device, args.pair_accept_threshold, return_candidates=True
+        )
+        sweep_data = sweep_thresholds(candidates, golds)
+        print(f"{'Threshold':>10} | {'Precision':>10} | {'Recall':>10} | {'F1 Score':>10}")
+        print("-" * 50)
+        for row in sweep_data["sweep"]:
+            is_best = " *" if row["threshold"] == round(sweep_data["best_threshold"], 4) else ""
+            print(f"{row['threshold']:>10.2f} | {row['precision']:>10.4f} | {row['recall']:>10.4f} | {row['f1']:>10.4f}{is_best}")
+        print("-" * 50)
+        print(f"Optimal threshold by F1: delta-hat = {sweep_data['best_threshold']:.2f} "
+              f"(F1={sweep_data['best_metrics']['f1']:.4f}, R={sweep_data['best_metrics']['recall']:.4f})")
+
+        sweep_file = os.path.join(args.output_dir, "threshold_sweep.json")
+        with open(sweep_file, "w", encoding="utf-8") as f:
+            json.dump(sweep_data, f, indent=2)
+        print(f"Saved threshold sweep results to: {sweep_file}")
 
 
 if __name__ == "__main__":
