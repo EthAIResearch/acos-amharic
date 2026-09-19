@@ -1,8 +1,6 @@
 import os
 import sys
 
-import pytest
-
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "pipeline"))
 from assemble_quads import SentencePredictions, assemble_quads
 from evaluate import evaluate_quads, is_implicit_quad, quad_key
