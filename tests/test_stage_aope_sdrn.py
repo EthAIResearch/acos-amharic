@@ -4,8 +4,10 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_aope_sdrn"))
 from relation_utils import (
     build_word_relation_matrix,
+    compute_prf,
     correlation_degree,
     explicit_pairs,
+    sweep_thresholds,
 )
 
 
@@ -109,3 +111,52 @@ def test_subword_relation_projection():
     # Special tokens should not be linked
     assert sub_rel[0][3] == 0
     assert sub_rel[4][3] == 0
+
+
+def test_compute_prf_simple():
+    preds = [[((0, 1), (2, 3)), ((4, 5), (6, 7))]]
+    golds = [[((0, 1), (2, 3)), ((8, 9), (10, 11))]]
+    metrics = compute_prf(preds, golds)
+    assert metrics["tp"] == 1
+    assert metrics["fp"] == 1
+    assert metrics["fn"] == 1
+    assert metrics["precision"] == 0.5
+    assert metrics["recall"] == 0.5
+    assert metrics["f1"] == 0.5
+
+
+def test_sweep_thresholds():
+    # 1 example with 2 candidates:
+    # candidate 1: score 0.45, gold
+    # candidate 2: score 0.15, not gold
+    candidates = [[
+        (((0, 1), (2, 3)), 0.45),
+        (((4, 5), (6, 7)), 0.15),
+    ]]
+    golds = [[((0, 1), (2, 3))]]
+
+    sweep = sweep_thresholds(candidates, golds, thresholds=[0.1, 0.3, 0.5])
+    assert sweep["candidate_ceiling_recall"] == 1.0
+
+    # At threshold 0.1: both accepted -> TP=1, FP=1 -> P=0.5, R=1.0, F1=0.667
+    row_01 = next(r for r in sweep["sweep"] if r["threshold"] == 0.1)
+    assert row_01["tp"] == 1
+    assert row_01["fp"] == 1
+    assert row_01["recall"] == 1.0
+
+    # At threshold 0.3: only candidate 1 accepted -> TP=1, FP=0 -> P=1.0, R=1.0, F1=1.0
+    row_03 = next(r for r in sweep["sweep"] if r["threshold"] == 0.3)
+    assert row_03["tp"] == 1
+    assert row_03["fp"] == 0
+    assert row_03["f1"] == 1.0
+
+    # At threshold 0.5: none accepted -> TP=0, FP=0, FN=1 -> F1=0.0
+    row_05 = next(r for r in sweep["sweep"] if r["threshold"] == 0.5)
+    assert row_05["tp"] == 0
+    assert row_05["fn"] == 1
+    assert row_05["recall"] == 0.0
+
+    # Best threshold should be 0.3
+    assert sweep["best_threshold"] == 0.3
+    assert sweep["best_metrics"]["f1"] == 1.0
+
