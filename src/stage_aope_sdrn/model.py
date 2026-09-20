@@ -62,9 +62,10 @@ class JointAOPESDRN(nn.Module):
         self.span_loss_weight = span_loss_weight
 
         if bio_class_weights is not None:
-            self.register_buffer("bio_weights", torch.tensor(bio_class_weights, dtype=torch.float32))
+            bio_w = torch.tensor(bio_class_weights, dtype=torch.float32)
         else:
-            self.bio_weights = None
+            bio_w = torch.ones(NUM_BIO_LABELS, dtype=torch.float32)
+        self.register_buffer("bio_weights", bio_w)
 
         self.dropout = nn.Dropout(dropout)
         self.aspect_head = nn.Linear(h, NUM_BIO_LABELS)

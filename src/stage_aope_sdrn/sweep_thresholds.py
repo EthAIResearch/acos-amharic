@@ -16,8 +16,13 @@ import json
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
+
 import torch
 import yaml
+from align import decode_subword_predictions
+from bio_labels import decode_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
 from relation_utils import (
@@ -29,10 +34,6 @@ from relation_utils import (
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from align import decode_subword_predictions
-from bio_labels import decode_bio_spans
 
 
 def parse_args():
@@ -155,13 +156,19 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     test_ds = JointAOPEDataset(test_path, tokenizer, max_length=args.max_length)
 
+    training_cfg = cfg.get("training", {})
+    bio_class_weights = training_cfg.get("bio_class_weights")
+    span_loss_weight = training_cfg.get("span_loss_weight", 1.0)
+
     model = JointAOPESDRN(
         model_name,
         num_recurrent_steps=num_recurrent_steps,
         relation_threshold=relation_threshold,
+        bio_class_weights=bio_class_weights,
+        span_loss_weight=span_loss_weight,
     )
     state_dict = torch.load(args.checkpoint, map_location=device)
-    model.load_state_dict(state_dict)
+    model.load_state_dict(state_dict, strict=False)
     model.to(device)
 
     results = run_sweep(model, test_ds, tokenizer, device, batch_size=args.batch_size)
