@@ -38,7 +38,9 @@ from torch import nn
 from transformers import AutoConfig, AutoModel
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
+sys.path.insert(0, os.path.dirname(__file__))
 from bio_labels import decode_bio_spans
+from crf import LinearChainCRF
 
 NUM_BIO_LABELS = 3  # O, B, I
 
@@ -52,6 +54,7 @@ class JointAOPESDRN(nn.Module):
         dropout: float = 0.1,
         bio_class_weights: list | None = None,
         span_loss_weight: float = 1.0,
+        use_crf: bool = False,
     ):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
@@ -60,6 +63,7 @@ class JointAOPESDRN(nn.Module):
         self.T = num_recurrent_steps
         self.beta = relation_threshold  # filters weak relation scores in RSM, Eq. 12
         self.span_loss_weight = span_loss_weight
+        self.use_crf = use_crf
 
         if bio_class_weights is not None:
             bio_w = torch.tensor(bio_class_weights, dtype=torch.float32)
@@ -71,6 +75,18 @@ class JointAOPESDRN(nn.Module):
         self.aspect_head = nn.Linear(h, NUM_BIO_LABELS)
         self.opinion_head = nn.Linear(h, NUM_BIO_LABELS)
 
+        if self.use_crf:
+            self.aspect_crf = LinearChainCRF(
+                num_tags=NUM_BIO_LABELS,
+                bio_weights=self.bio_weights,
+                enforce_bio_constraints=True,
+            )
+            self.opinion_crf = LinearChainCRF(
+                num_tags=NUM_BIO_LABELS,
+                bio_weights=self.bio_weights,
+                enforce_bio_constraints=True,
+            )
+
         # Relation scoring (Eq. 4-5): bilinear-style pairwise attention
         self.rel_w1 = nn.Linear(h, h, bias=False)
         self.rel_w2 = nn.Linear(h, h, bias=False)
@@ -80,6 +96,24 @@ class JointAOPESDRN(nn.Module):
         self.esm_proj = nn.Linear(h * 2, h)
         # RSM (Eq. 13): relation semantics + context -> next entity hidden state
         self.rsm_proj = nn.Linear(h * 2, h)
+
+    def decode_tags(
+        self,
+        logits: torch.Tensor,
+        mask: torch.Tensor | None = None,
+        channel: str = "aspect",
+    ) -> list[list[int]]:
+        """
+        Decodes subword BIO tags for a batch of sequences.
+        If use_crf=True, performs global Viterbi decoding with BIO constraints.
+        Otherwise falls back to greedy argmax.
+        Returns a list of lists of tag IDs of shape (B, T).
+        """
+        if self.use_crf:
+            crf_layer = self.aspect_crf if channel == "aspect" else self.opinion_crf
+            preds = crf_layer.decode(logits, mask=mask)
+            return preds.cpu().tolist()
+        return logits.argmax(-1).cpu().tolist()
 
     def _relation_logits(self, h_r):
         # h_r: (B, T, H) -> (B, T, T) pairwise scores, Eq. 4-5
@@ -96,8 +130,9 @@ class JointAOPESDRN(nn.Module):
         since span decoding is inherently sequential/discrete."""
         B = h_s.shape[0]
         u = torch.zeros_like(h_s)
-        a_pred = aspect_logits.argmax(-1).cpu().tolist()
-        o_pred = opinion_logits.argmax(-1).cpu().tolist()
+        mask = attention_mask.bool()
+        a_pred = self.decode_tags(aspect_logits, mask=mask, channel="aspect")
+        o_pred = self.decode_tags(opinion_logits, mask=mask, channel="opinion")
         id2tag = {0: "O", 1: "B", 2: "I"}
 
         for b in range(B):
@@ -156,9 +191,15 @@ class JointAOPESDRN(nn.Module):
 
         loss = None
         if aspect_labels is not None and opinion_labels is not None and relation_labels is not None:
-            ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
-            loss_a = ce(aspect_logits.reshape(-1, NUM_BIO_LABELS), aspect_labels.reshape(-1))
-            loss_o = ce(opinion_logits.reshape(-1, NUM_BIO_LABELS), opinion_labels.reshape(-1))
+            if self.use_crf:
+                mask_a = (attention_mask == 1) & (aspect_labels != -100)
+                mask_o = (attention_mask == 1) & (opinion_labels != -100)
+                loss_a = self.aspect_crf(aspect_logits, aspect_labels, mask=mask_a)
+                loss_o = self.opinion_crf(opinion_logits, opinion_labels, mask=mask_o)
+            else:
+                ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
+                loss_a = ce(aspect_logits.reshape(-1, NUM_BIO_LABELS), aspect_labels.reshape(-1))
+                loss_o = ce(opinion_logits.reshape(-1, NUM_BIO_LABELS), opinion_labels.reshape(-1))
 
             mask2d = (attention_mask.unsqueeze(1) * attention_mask.unsqueeze(2)).float()
             bce = nn.BCEWithLogitsLoss(reduction="none")

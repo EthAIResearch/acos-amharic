@@ -170,5 +170,21 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert "test: data/prepared_explicit/test.jsonl" in content
     assert "bio_class_weights: [1.0, 3.0, 3.0]" in content
     assert "span_loss_weight: 2.0" in content
+    assert "use_crf: true" in content
+
+
+if __name__ == "__main__":
+    import inspect
+
+    current_module = sys.modules[__name__]
+    test_funcs = [
+        obj for name, obj in inspect.getmembers(current_module, inspect.isfunction)
+        if name.startswith("test_")
+    ]
+    print(f"Running {len(test_funcs)} unit tests in test_stage_aope_sdrn...")
+    for fn in test_funcs:
+        fn()
+        print(f"  PASSED: {fn.__name__}")
+    print("All tests passed successfully!")
 
 

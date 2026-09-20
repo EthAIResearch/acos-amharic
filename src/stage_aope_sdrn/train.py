@@ -87,8 +87,8 @@ def evaluate(
         input_ids = batch["input_ids"].to(device)
         attn = batch["attention_mask"].to(device)
         out = model(input_ids=input_ids, attention_mask=attn)
-        a_pred_ids = out["aspect_logits"].argmax(-1).cpu().tolist()
-        o_pred_ids = out["opinion_logits"].argmax(-1).cpu().tolist()
+        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=attn.bool(), channel="aspect")
+        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=attn.bool(), channel="opinion")
         rel_scores = torch.sigmoid(out["relation_logits"]).cpu().tolist()
 
         bsz = input_ids.size(0)
@@ -200,8 +200,16 @@ def main():
                      help="Weights for BIO classes [O, B, I] to counter 'O' token dominance.")
     ap.add_argument("--span_loss_weight", type=float, default=1.0,
                      help="Scaling factor for span cross-entropy loss relative to relation BCE loss.")
+    ap.add_argument("--use_crf", action="store_true", default=False,
+                     help="Use Linear-Chain CRF for span sequence decoding.")
+    ap.add_argument("--no_crf", dest="use_crf", action="store_false")
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
+
+    if args.bio_class_weights is not None and len(args.bio_class_weights) != 3:
+        raise ValueError(
+            f"bio_class_weights must have exactly 3 values for [O, B, I], got {len(args.bio_class_weights)}"
+        )
 
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -219,6 +227,7 @@ def main():
         relation_threshold=args.relation_threshold,
         bio_class_weights=args.bio_class_weights,
         span_loss_weight=args.span_loss_weight,
+        use_crf=args.use_crf,
     ).to(device)
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, collate_fn=collate_fn)
