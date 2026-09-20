@@ -142,8 +142,8 @@ def main():
         with open(args.config, encoding="utf-8") as f:
             cfg = yaml.safe_load(f)
 
-    model_name = args.model_name or cfg.get("model_name", "rasyosef/roberta-base-amharic")
-    test_path = args.test or cfg.get("data", {}).get("test", "data/prepared/test.jsonl")
+    model_name = args.model_name or cfg.get("model_name", "Davlan/afro-xlmr-base")
+    test_path = args.test or cfg.get("data", {}).get("test", "data/prepared_explicit/test.jsonl")
     num_recurrent_steps = cfg.get("num_recurrent_steps", 2)
     relation_threshold = cfg.get("relation_threshold", 0.1)
 
