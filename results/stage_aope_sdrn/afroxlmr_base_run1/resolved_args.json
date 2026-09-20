@@ -1,0 +1,24 @@
+{
+  "config": null,
+  "train": "data/prepared_explicit/train.jsonl",
+  "test": "data/prepared_explicit/test.jsonl",
+  "model_name": "Davlan/afro-xlmr-base",
+  "output_dir": "results/stage_aope_sdrn/afroxlmr_base_run1",
+  "epochs": 10,
+  "batch_size": 8,
+  "lr": 2e-05,
+  "max_length": 256,
+  "warmup_ratio": 0.1,
+  "seed": 42,
+  "weight_decay": 0.01,
+  "fp16": true,
+  "num_recurrent_steps": 2,
+  "relation_threshold": 0.1,
+  "pair_accept_threshold": 0.5,
+  "bio_class_weights": [
+    1.0,
+    3.0,
+    3.0
+  ],
+  "span_loss_weight": 2.0
+}
