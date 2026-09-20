@@ -6,7 +6,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_aope_sdrn"))
-from crf import viterbi_decode_reference, validate_bio_path_reference
+from crf import validate_bio_path_reference, viterbi_decode_reference
 
 
 def test_viterbi_decode_reference_basic():
