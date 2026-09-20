@@ -63,6 +63,7 @@ class JointAOPEDataset(Dataset):
                     rel_matrix[si][sj] = word_rel_matrix[wi][wj]
 
         item = {k: torch.tensor(v) for k, v in enc.items() if k != "overflow_to_sample_mapping"}
+        item["content_mask"] = torch.tensor([wid is not None for wid in word_ids], dtype=torch.bool)
         item["aspect_labels"] = torch.tensor(a_label_ids)
         item["opinion_labels"] = torch.tensor(o_label_ids)
         item["relation_labels"] = torch.tensor(rel_matrix)

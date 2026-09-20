@@ -67,10 +67,15 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
     for batch in tqdm(loader, desc="Inference"):
         input_ids = batch["input_ids"].to(device)
         attn = batch["attention_mask"].to(device)
-        out = model(input_ids=input_ids, attention_mask=attn)
+        content_mask = batch.get("content_mask")
+        if content_mask is not None:
+            content_mask = content_mask.to(device)
+        else:
+            content_mask = attn.bool()
 
-        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=attn.bool(), channel="aspect")
-        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=attn.bool(), channel="opinion")
+        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
+        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=content_mask, channel="aspect")
+        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=content_mask, channel="opinion")
         rel_scores = torch.sigmoid(out["relation_logits"]).cpu().tolist()
 
         bsz = input_ids.size(0)
@@ -100,23 +105,28 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
             all_gold_opinions.append(g_opinions)
             all_gold_pairs.append(g_pairs)
 
-            # Map subword-level relation matrix back to words
-            first_subword_of_word = {}
-            for si, wid in enumerate(word_ids):
-                if wid is not None and wid not in first_subword_of_word:
-                    first_subword_of_word[wid] = si
+            # Map subword-level relation matrix back to words via max-pooling
+            # across all subwords for words wi and wj
             n_words = len(rec["tokens"])
+            word_to_subwords = {w: [] for w in range(n_words)}
+            for si, wid in enumerate(word_ids):
+                if wid is not None and wid < n_words:
+                    word_to_subwords[wid].append(si)
+
             word_rel = [[0.0] * n_words for _ in range(n_words)]
             for wi in range(n_words):
                 for wj in range(n_words):
-                    si, sj = first_subword_of_word.get(wi), first_subword_of_word.get(wj)
-                    if (
-                        si is not None
-                        and sj is not None
-                        and si < len(rel_scores[i])
-                        and sj < len(rel_scores[i])
-                    ):
-                        word_rel[wi][wj] = rel_scores[i][si][sj]
+                    sis = word_to_subwords[wi]
+                    sjs = word_to_subwords[wj]
+                    if sis and sjs:
+                        sub_scores = [
+                            rel_scores[i][si][sj]
+                            for si in sis
+                            for sj in sjs
+                            if si < len(rel_scores[i]) and sj < len(rel_scores[i])
+                        ]
+                        if sub_scores:
+                            word_rel[wi][wj] = max(sub_scores)
 
             # Cache scored candidate pairs
             ex_candidates = []

@@ -86,9 +86,15 @@ def evaluate(
     for batch in loader:
         input_ids = batch["input_ids"].to(device)
         attn = batch["attention_mask"].to(device)
-        out = model(input_ids=input_ids, attention_mask=attn)
-        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=attn.bool(), channel="aspect")
-        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=attn.bool(), channel="opinion")
+        content_mask = batch.get("content_mask")
+        if content_mask is not None:
+            content_mask = content_mask.to(device)
+        else:
+            content_mask = attn.bool()
+
+        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
+        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=content_mask, channel="aspect")
+        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=content_mask, channel="opinion")
         rel_scores = torch.sigmoid(out["relation_logits"]).cpu().tolist()
 
         bsz = input_ids.size(0)
@@ -118,23 +124,28 @@ def evaluate(
             all_gold_opinions.append(g_opinions)
             all_gold_pairs.append(g_pairs)
 
-            # Map subword-level relation matrix back to words
-            first_subword_of_word = {}
-            for si, wid in enumerate(word_ids):
-                if wid is not None and wid not in first_subword_of_word:
-                    first_subword_of_word[wid] = si
+            # Map subword-level relation matrix back to words via max-pooling
+            # across all subwords for words wi and wj
             n_words = len(rec["tokens"])
+            word_to_subwords = {w: [] for w in range(n_words)}
+            for si, wid in enumerate(word_ids):
+                if wid is not None and wid < n_words:
+                    word_to_subwords[wid].append(si)
+
             word_rel = [[0.0] * n_words for _ in range(n_words)]
             for wi in range(n_words):
                 for wj in range(n_words):
-                    si, sj = first_subword_of_word.get(wi), first_subword_of_word.get(wj)
-                    if (
-                        si is not None
-                        and sj is not None
-                        and si < len(rel_scores[i])
-                        and sj < len(rel_scores[i])
-                    ):
-                        word_rel[wi][wj] = rel_scores[i][si][sj]
+                    sis = word_to_subwords[wi]
+                    sjs = word_to_subwords[wj]
+                    if sis and sjs:
+                        sub_scores = [
+                            rel_scores[i][si][sj]
+                            for si in sis
+                            for sj in sjs
+                            if si < len(rel_scores[i]) and sj < len(rel_scores[i])
+                        ]
+                        if sub_scores:
+                            word_rel[wi][wj] = max(sub_scores)
 
             ex_candidates = []
             for a_span in a_spans:
@@ -200,6 +211,8 @@ def main():
                      help="Weights for BIO classes [O, B, I] to counter 'O' token dominance.")
     ap.add_argument("--span_loss_weight", type=float, default=1.0,
                      help="Scaling factor for span cross-entropy loss relative to relation BCE loss.")
+    ap.add_argument("--head_lr", type=float, default=1e-3,
+                     help="Learning rate for non-encoder SDRN heads (CRF, ESM, RSM, relation attention). SDRN paper uses 1e-3.")
     ap.add_argument("--use_crf", action="store_true", default=False,
                      help="Use Linear-Chain CRF for span sequence decoding.")
     ap.add_argument("--no_crf", dest="use_crf", action="store_false")
@@ -232,7 +245,18 @@ def main():
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, collate_fn=collate_fn)
     total_steps = len(train_loader) * args.epochs
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+
+    # Differential learning rate (Section 4.4 in SDRN paper):
+    # fine-tune pre-trained LM at args.lr (e.g. 2e-5), train new SDRN heads & CRF at args.head_lr (e.g. 1e-3)
+    encoder_params = list(model.encoder.parameters())
+    head_params = [p for n, p in model.named_parameters() if not n.startswith("encoder")]
+    optimizer = torch.optim.AdamW(
+        [
+            {"params": encoder_params, "lr": args.lr},
+            {"params": head_params, "lr": args.head_lr},
+        ],
+        weight_decay=args.weight_decay,
+    )
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=int(total_steps * args.warmup_ratio), num_training_steps=total_steps
     )

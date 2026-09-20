@@ -123,6 +123,12 @@ if TORCH_AVAILABLE:
                     self.transitions[0, 2] = -10000.0
 
         def _apply_bio_weights(self, emissions: torch.Tensor) -> torch.Tensor:
+            """Scales emissions by class weight -- used ONLY inside the NLL
+            loss (forward()), never inside decode(). Applying this at
+            decode time would bias every prediction toward whichever class
+            has the larger weight (typically B/I, to counter O-dominance),
+            regardless of actual model confidence -- that's not what class
+            weighting during training is meant to do to inference."""
             if self.bio_weights is not None:
                 return emissions * self.bio_weights.view(1, 1, -1)
             return emissions
@@ -253,7 +259,6 @@ if TORCH_AVAILABLE:
             Returns:
               (B, T) torch.LongTensor with decoded tag IDs.
             """
-            emissions = self._apply_bio_weights(emissions)
             B, T = emissions.shape[:2]
 
             if mask is None:
