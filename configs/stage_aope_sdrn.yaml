@@ -23,8 +23,8 @@ training:
   seed: 42
   weight_decay: 0.01
   fp16: true
-  bio_class_weights: [1.0, 3.0, 3.0]  # [O, B, I] - counteracts 95% 'O' token dominance to lift span recall
-  span_loss_weight: 2.0               # balances token-level span loss against N x N pairwise relation loss
+  bio_class_weights: [1.0, 5.0, 5.0]  # [O, B, I] - boosted from 3.0 to counteract 95% 'O' dominance and lift opinion recall
+  span_loss_weight: 3.0               # boosted from 2.0 to give span heads stronger gradient priority vs relation loss
 
 output_dir: results/stage_aope_sdrn/afroxlmr_crf_run1
 
