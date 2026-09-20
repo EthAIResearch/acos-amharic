@@ -17,9 +17,14 @@ import os
 import random
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
+
 import numpy as np
 import torch
 import yaml
+from align import decode_subword_predictions
+from bio_labels import decode_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
 from relation_utils import (
@@ -31,10 +36,6 @@ from relation_utils import (
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from align import decode_subword_predictions
-from bio_labels import decode_bio_spans
 
 
 def set_seed(seed: int):
@@ -269,7 +270,7 @@ def main():
     print("\nEvaluating correlation degree threshold sweep on best checkpoint...")
     best_ckpt_path = os.path.join(args.output_dir, "best_model.pt")
     if os.path.exists(best_ckpt_path):
-        model.load_state_dict(torch.load(best_ckpt_path, map_location=device))
+        model.load_state_dict(torch.load(best_ckpt_path, map_location=device), strict=False)
         _, candidates, golds = evaluate(
             model, test_ds, tokenizer, device, args.pair_accept_threshold, return_candidates=True
         )
