@@ -24,4 +24,5 @@ node_modules/
 .vscode/
 ~$*
 *.tmp
+*.crdownload
 
