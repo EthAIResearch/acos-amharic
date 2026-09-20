@@ -19,7 +19,7 @@ jobs:
           python-version: "3.13"
       - name: Install dependencies
         run: |
-          pip install ruff pytest
+          pip install ruff pytest pyyaml
       - name: Lint and fix
         run: ruff check src/ tests/ --ignore E501,F401 --fix
       - name: Auto-commit fixes

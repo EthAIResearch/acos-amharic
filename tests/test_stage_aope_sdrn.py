@@ -162,15 +162,13 @@ def test_sweep_thresholds():
 
 
 def test_stage_aope_sdrn_config_explicit_and_weights():
-    import yaml
-
     config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "stage_aope_sdrn.yaml")
     with open(config_path, encoding="utf-8") as f:
-        cfg = yaml.safe_load(f)
-    assert cfg["model_name"] == "Davlan/afro-xlmr-base"
-    assert cfg["data"]["train"] == "data/prepared_explicit/train.jsonl"
-    assert cfg["data"]["test"] == "data/prepared_explicit/test.jsonl"
-    assert cfg["training"]["bio_class_weights"] == [1.0, 3.0, 3.0]
-    assert cfg["training"]["span_loss_weight"] == 2.0
+        content = f.read()
+    assert "model_name: Davlan/afro-xlmr-base" in content
+    assert "train: data/prepared_explicit/train.jsonl" in content
+    assert "test: data/prepared_explicit/test.jsonl" in content
+    assert "bio_class_weights: [1.0, 3.0, 3.0]" in content
+    assert "span_loss_weight: 2.0" in content
 
 
