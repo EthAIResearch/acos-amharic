@@ -7,3 +7,5 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 from pair_model import PairClassifier
+
+__all__ = ["PairClassifier"]

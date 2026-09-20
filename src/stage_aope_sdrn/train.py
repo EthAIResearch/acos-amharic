@@ -48,19 +48,34 @@ def set_seed(seed: int):
 def load_config_defaults(config_path):
     with open(config_path, encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
-    flat = {"model_name": cfg.get("model_name"), "output_dir": cfg.get("output_dir"),
-            "num_recurrent_steps": cfg.get("num_recurrent_steps"),
-            "relation_threshold": cfg.get("relation_threshold"),
-            "pair_accept_threshold": cfg.get("pair_accept_threshold")}
+    flat = {
+        "model_name": cfg.get("model_name"),
+        "use_crf": cfg.get("use_crf"),
+        "output_dir": cfg.get("output_dir"),
+        "num_recurrent_steps": cfg.get("num_recurrent_steps"),
+        "relation_threshold": cfg.get("relation_threshold"),
+        "pair_accept_threshold": cfg.get("pair_accept_threshold"),
+    }
     data = cfg.get("data", {})
-    flat.update({"train": data.get("train"), "test": data.get("test"), "max_length": data.get("max_length")})
+    flat.update({
+        "train": data.get("train"),
+        "dev": data.get("dev"),
+        "test": data.get("test"),
+        "max_length": data.get("max_length"),
+    })
     training = cfg.get("training", {})
-    flat.update({"epochs": training.get("epochs"), "batch_size": training.get("batch_size"),
-                 "lr": training.get("lr"), "warmup_ratio": training.get("warmup_ratio"),
-                 "seed": training.get("seed"), "weight_decay": training.get("weight_decay"),
-                 "fp16": training.get("fp16"),
-                 "bio_class_weights": training.get("bio_class_weights"),
-                 "span_loss_weight": training.get("span_loss_weight")})
+    flat.update({
+        "epochs": training.get("epochs"),
+        "batch_size": training.get("batch_size"),
+        "lr": training.get("lr"),
+        "head_lr": training.get("head_lr"),
+        "warmup_ratio": training.get("warmup_ratio"),
+        "seed": training.get("seed"),
+        "weight_decay": training.get("weight_decay"),
+        "fp16": training.get("fp16"),
+        "bio_class_weights": training.get("bio_class_weights"),
+        "span_loss_weight": training.get("span_loss_weight"),
+    })
     return {k: v for k, v in flat.items() if v is not None}
 
 
@@ -189,6 +204,8 @@ def main():
 
     ap = argparse.ArgumentParser(parents=[pre])
     ap.add_argument("--train", required="train" not in config_defaults)
+    ap.add_argument("--dev", default=None,
+                    help="Path to dev dataset for validation and checkpoint selection.")
     ap.add_argument("--test", required="test" not in config_defaults)
     ap.add_argument("--model_name", default="Davlan/afro-xlmr-base")
     ap.add_argument("--output_dir", default="./stage_aope_sdrn_ckpt")
@@ -232,6 +249,7 @@ def main():
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
     train_ds = JointAOPEDataset(args.train, tokenizer, max_length=args.max_length)
+    dev_ds = JointAOPEDataset(args.dev, tokenizer, max_length=args.max_length) if args.dev else None
     test_ds = JointAOPEDataset(args.test, tokenizer, max_length=args.max_length)
 
     model = JointAOPESDRN(
@@ -264,6 +282,9 @@ def main():
     use_amp = args.fp16 and device.type == "cuda"
     scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
 
+    eval_ds = dev_ds if dev_ds is not None else test_ds
+    eval_name = "dev" if dev_ds is not None else "test"
+
     best_f1 = -1.0
     for epoch in range(args.epochs):
         model.train()
@@ -282,8 +303,8 @@ def main():
             scheduler.step()
             pbar.set_postfix(loss=loss.item())
 
-        metrics = evaluate(model, test_ds, tokenizer, device, args.pair_accept_threshold)
-        print(f"\n[epoch {epoch+1}] pair F1={metrics['f1']:.4f} "
+        metrics = evaluate(model, eval_ds, tokenizer, device, args.pair_accept_threshold)
+        print(f"\n[epoch {epoch+1}] ({eval_name}) pair F1={metrics['f1']:.4f} "
               f"(P={metrics['precision']:.4f} R={metrics['recall']:.4f})")
         print(f"           spans: aspect R={metrics['aspect']['recall']:.4f} (F1={metrics['aspect']['f1']:.4f}), "
               f"opinion R={metrics['opinion']['recall']:.4f} (F1={metrics['opinion']['f1']:.4f}), "
@@ -293,34 +314,64 @@ def main():
             best_f1 = metrics["f1"]
             torch.save(model.state_dict(), os.path.join(args.output_dir, "best_model.pt"))
             tokenizer.save_pretrained(args.output_dir)
-            with open(os.path.join(args.output_dir, "best_metrics.json"), "w") as f:
-                json.dump(metrics, f, indent=2)
-            print(f"  -> new best (pair F1={best_f1:.4f}), checkpoint saved")
+            if dev_ds is not None:
+                with open(os.path.join(args.output_dir, "best_dev_metrics.json"), "w") as f:
+                    json.dump(metrics, f, indent=2)
+            else:
+                with open(os.path.join(args.output_dir, "best_metrics.json"), "w") as f:
+                    json.dump(metrics, f, indent=2)
+            print(f"  -> new best ({eval_name} pair F1={best_f1:.4f}), checkpoint saved")
 
-    print(f"\nDone training. Best pair F1 = {best_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
+    print(f"\nDone training. Best {eval_name} pair F1 = {best_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
 
-    # Run threshold sweep on best checkpoint to find optimal delta-hat
-    print("\nEvaluating correlation degree threshold sweep on best checkpoint...")
     best_ckpt_path = os.path.join(args.output_dir, "best_model.pt")
     if os.path.exists(best_ckpt_path):
         model.load_state_dict(torch.load(best_ckpt_path, map_location=device), strict=False)
-        _, candidates, golds = evaluate(
-            model, test_ds, tokenizer, device, args.pair_accept_threshold, return_candidates=True
-        )
-        sweep_data = sweep_thresholds(candidates, golds)
-        print(f"{'Threshold':>10} | {'Precision':>10} | {'Recall':>10} | {'F1 Score':>10}")
-        print("-" * 50)
-        for row in sweep_data["sweep"]:
-            is_best = " *" if row["threshold"] == round(sweep_data["best_threshold"], 4) else ""
-            print(f"{row['threshold']:>10.2f} | {row['precision']:>10.4f} | {row['recall']:>10.4f} | {row['f1']:>10.4f}{is_best}")
-        print("-" * 50)
-        print(f"Optimal threshold by F1: delta-hat = {sweep_data['best_threshold']:.2f} "
-              f"(F1={sweep_data['best_metrics']['f1']:.4f}, R={sweep_data['best_metrics']['recall']:.4f})")
 
-        sweep_file = os.path.join(args.output_dir, "threshold_sweep.json")
-        with open(sweep_file, "w", encoding="utf-8") as f:
-            json.dump(sweep_data, f, indent=2)
-        print(f"Saved threshold sweep results to: {sweep_file}")
+    best_threshold = args.pair_accept_threshold
+    if dev_ds is not None:
+        print("\nEvaluating correlation degree threshold sweep on DEV set...")
+        _, dev_candidates, dev_golds = evaluate(
+            model, dev_ds, tokenizer, device, args.pair_accept_threshold, return_candidates=True
+        )
+        dev_sweep = sweep_thresholds(dev_candidates, dev_golds)
+        best_threshold = dev_sweep["best_threshold"]
+        print(f"Optimal threshold on DEV: delta-hat = {best_threshold:.2f} "
+              f"(F1={dev_sweep['best_metrics']['f1']:.4f}, R={dev_sweep['best_metrics']['recall']:.4f})")
+        with open(os.path.join(args.output_dir, "dev_threshold_sweep.json"), "w", encoding="utf-8") as f:
+            json.dump(dev_sweep, f, indent=2)
+
+    # Evaluate best checkpoint on TEST set
+    print(f"\nEvaluating final model on TEST set (using threshold delta-hat = {best_threshold:.2f})...")
+    test_metrics, test_candidates, test_golds = evaluate(
+        model, test_ds, tokenizer, device, best_threshold, return_candidates=True
+    )
+    print(f"[TEST] pair F1={test_metrics['f1']:.4f} "
+          f"(P={test_metrics['precision']:.4f} R={test_metrics['recall']:.4f})")
+    print(f"       spans: aspect R={test_metrics['aspect']['recall']:.4f} (F1={test_metrics['aspect']['f1']:.4f}), "
+          f"opinion R={test_metrics['opinion']['recall']:.4f} (F1={test_metrics['opinion']['f1']:.4f}), "
+          f"pair ceiling R={test_metrics['candidate_ceiling_recall']:.4f}")
+
+    # Threshold sweep on TEST set
+    print("\nRunning threshold sweep on TEST set...")
+    test_sweep = sweep_thresholds(test_candidates, test_golds)
+    print(f"{'Threshold':>10} | {'Precision':>10} | {'Recall':>10} | {'F1 Score':>10}")
+    print("-" * 50)
+    for row in test_sweep["sweep"]:
+        is_best = " *" if row["threshold"] == round(test_sweep["best_threshold"], 4) else ""
+        print(f"{row['threshold']:>10.2f} | {row['precision']:>10.4f} | {row['recall']:>10.4f} | {row['f1']:>10.4f}{is_best}")
+    print("-" * 50)
+    print(f"Optimal threshold by test F1: delta-hat = {test_sweep['best_threshold']:.2f} "
+          f"(F1={test_sweep['best_metrics']['f1']:.4f}, R={test_sweep['best_metrics']['recall']:.4f})")
+
+    with open(os.path.join(args.output_dir, "best_metrics.json"), "w", encoding="utf-8") as f:
+        json.dump(test_metrics, f, indent=2)
+
+    with open(os.path.join(args.output_dir, "threshold_sweep.json"), "w", encoding="utf-8") as f:
+        json.dump(test_sweep, f, indent=2)
+
+    print(f"Saved test metrics to: {os.path.join(args.output_dir, 'best_metrics.json')}")
+    print(f"Saved threshold sweep results to: {os.path.join(args.output_dir, 'threshold_sweep.json')}")
 
 
 if __name__ == "__main__":

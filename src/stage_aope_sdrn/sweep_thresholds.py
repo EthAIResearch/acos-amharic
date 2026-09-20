@@ -227,7 +227,7 @@ def main():
     print(f"Optimal Pair Metrics   : Precision={b_m['precision']:.4f}, Recall={b_m['recall']:.4f}, F1={b_m['f1']:.4f}")
 
     # Save results
-    out_dir = os.path.dirname(args.checkpoint) if os.path.dirname(args.checkpoint) else "."
+    out_dir = os.path.dirname(checkpoint) if checkpoint and os.path.dirname(checkpoint) else "."
     out_file = args.output_file or os.path.join(out_dir, "threshold_sweep.json")
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)

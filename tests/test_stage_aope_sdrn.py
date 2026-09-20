@@ -167,6 +167,7 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
         content = f.read()
     assert "model_name: Davlan/afro-xlmr-base" in content
     assert "train: data/prepared_explicit/train.jsonl" in content
+    assert "dev: data/prepared_explicit/dev.jsonl" in content
     assert "test: data/prepared_explicit/test.jsonl" in content
     assert "bio_class_weights: [1.0, 3.0, 3.0]" in content
     assert "span_loss_weight: 2.0" in content

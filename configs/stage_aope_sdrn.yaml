@@ -10,6 +10,7 @@ pair_accept_threshold: 0.5   # delta-hat in Eq. 17
 
 data:
   train: data/prepared_explicit/train.jsonl
+  dev: data/prepared_explicit/dev.jsonl
   test: data/prepared_explicit/test.jsonl
   max_length: 256
 
