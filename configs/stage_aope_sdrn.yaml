@@ -2,14 +2,14 @@
 # Replaces Stage 1 (tagging) + Stage 2 (heuristic pairing) with one
 # synchronized joint model. See docs/stage_aope_sdrn_analysis.md.
 
-model_name: rasyosef/roberta-base-amharic
+model_name: Davlan/afro-xlmr-base
 num_recurrent_steps: 2       # SDRN paper: best on 3/3 benchmarks, more steps show diminishing returns
 relation_threshold: 0.1      # beta in RSM (Eq. 12)
 pair_accept_threshold: 0.5   # delta-hat in Eq. 17
 
 data:
-  train: data/prepared/train.jsonl
-  test: data/prepared/test.jsonl
+  train: data/prepared_explicit/train.jsonl
+  test: data/prepared_explicit/test.jsonl
   max_length: 256
 
 training:
@@ -21,14 +21,14 @@ training:
   seed: 42
   weight_decay: 0.01
   fp16: true
+  bio_class_weights: [1.0, 3.0, 3.0]  # [O, B, I] - counteracts 95% 'O' token dominance to lift span recall
+  span_loss_weight: 2.0               # balances token-level span loss against N x N pairwise relation loss
 
 output_dir: results/stage_aope_sdrn/afroxlmr_base_run1
 
 notes: >
-  Evaluates aspect-opinion PAIR F1 directly. Compare against the old
-  pipeline's effective pair quality: Stage 1's isolated span F1
-  (~0.60 aspect / ~0.46 opinion) chained through Stage 2's heuristic,
-  which was only validated at F1=0.993 on GOLD spans -- its performance on
-  Stage 1's actual noisy predictions was never measured before Stage 6's
-  end-to-end run. This joint model removes that untested link entirely by
-  training pairing jointly with extraction from the start.
+  Trained on data/prepared_explicit to eliminate the 16,496 negative-only
+  sentences from data/prepared that previously trained the BIO tagger to be
+  hyper-conservative (44% aspect / 34% opinion recall in roberta_base_run1).
+  Uses AfroXLMR-base (proven in Stage 1) with weighted BIO loss to lift
+  span recall and break the 24.87% pair recall ceiling.

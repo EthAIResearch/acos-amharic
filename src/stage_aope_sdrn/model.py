@@ -44,14 +44,27 @@ NUM_BIO_LABELS = 3  # O, B, I
 
 
 class JointAOPESDRN(nn.Module):
-    def __init__(self, model_name: str, num_recurrent_steps: int = 2,
-                 relation_threshold: float = 0.1, dropout: float = 0.1):
+    def __init__(
+        self,
+        model_name: str,
+        num_recurrent_steps: int = 2,
+        relation_threshold: float = 0.1,
+        dropout: float = 0.1,
+        bio_class_weights: list | None = None,
+        span_loss_weight: float = 1.0,
+    ):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
         self.encoder = AutoModel.from_pretrained(model_name)
         h = self.config.hidden_size
         self.T = num_recurrent_steps
         self.beta = relation_threshold  # filters weak relation scores in RSM, Eq. 12
+        self.span_loss_weight = span_loss_weight
+
+        if bio_class_weights is not None:
+            self.register_buffer("bio_weights", torch.tensor(bio_class_weights, dtype=torch.float32))
+        else:
+            self.bio_weights = None
 
         self.dropout = nn.Dropout(dropout)
         self.aspect_head = nn.Linear(h, NUM_BIO_LABELS)
@@ -142,7 +155,7 @@ class JointAOPESDRN(nn.Module):
 
         loss = None
         if aspect_labels is not None and opinion_labels is not None and relation_labels is not None:
-            ce = nn.CrossEntropyLoss(ignore_index=-100)
+            ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
             loss_a = ce(aspect_logits.reshape(-1, NUM_BIO_LABELS), aspect_labels.reshape(-1))
             loss_o = ce(opinion_logits.reshape(-1, NUM_BIO_LABELS), opinion_labels.reshape(-1))
 
@@ -151,7 +164,7 @@ class JointAOPESDRN(nn.Module):
             rel_loss_raw = bce(rel_logits, relation_labels.float())
             loss_r = (rel_loss_raw * mask2d).sum() / mask2d.sum().clamp(min=1.0)
 
-            loss = loss_a + loss_o + loss_r
+            loss = self.span_loss_weight * (loss_a + loss_o) + loss_r
 
         return {
             "loss": loss,

@@ -57,7 +57,9 @@ def load_config_defaults(config_path):
     flat.update({"epochs": training.get("epochs"), "batch_size": training.get("batch_size"),
                  "lr": training.get("lr"), "warmup_ratio": training.get("warmup_ratio"),
                  "seed": training.get("seed"), "weight_decay": training.get("weight_decay"),
-                 "fp16": training.get("fp16")})
+                 "fp16": training.get("fp16"),
+                 "bio_class_weights": training.get("bio_class_weights"),
+                 "span_loss_weight": training.get("span_loss_weight")})
     return {k: v for k, v in flat.items() if v is not None}
 
 
@@ -193,6 +195,10 @@ def main():
                      help="Beta in RSM (Eq. 12) -- filters weak relation scores during synchronization.")
     ap.add_argument("--pair_accept_threshold", type=float, default=0.5,
                      help="Delta-hat in Eq. 17 -- correlation degree threshold to accept a pair at inference.")
+    ap.add_argument("--bio_class_weights", type=float, nargs="+", default=None,
+                     help="Weights for BIO classes [O, B, I] to counter 'O' token dominance.")
+    ap.add_argument("--span_loss_weight", type=float, default=1.0,
+                     help="Scaling factor for span cross-entropy loss relative to relation BCE loss.")
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
 
@@ -206,8 +212,13 @@ def main():
     train_ds = JointAOPEDataset(args.train, tokenizer, max_length=args.max_length)
     test_ds = JointAOPEDataset(args.test, tokenizer, max_length=args.max_length)
 
-    model = JointAOPESDRN(args.model_name, num_recurrent_steps=args.num_recurrent_steps,
-                           relation_threshold=args.relation_threshold).to(device)
+    model = JointAOPESDRN(
+        args.model_name,
+        num_recurrent_steps=args.num_recurrent_steps,
+        relation_threshold=args.relation_threshold,
+        bio_class_weights=args.bio_class_weights,
+        span_loss_weight=args.span_loss_weight,
+    ).to(device)
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, collate_fn=collate_fn)
     total_steps = len(train_loader) * args.epochs

@@ -160,3 +160,15 @@ def test_sweep_thresholds():
     assert sweep["best_threshold"] == 0.3
     assert sweep["best_metrics"]["f1"] == 1.0
 
+
+def test_stage_aope_sdrn_config_explicit_and_weights():
+    config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "stage_aope_sdrn.yaml")
+    with open(config_path, encoding="utf-8") as f:
+        content = f.read()
+    assert "model_name: Davlan/afro-xlmr-base" in content
+    assert "train: data/prepared_explicit/train.jsonl" in content
+    assert "test: data/prepared_explicit/test.jsonl" in content
+    assert "bio_class_weights: [1.0, 3.0, 3.0]" in content
+    assert "span_loss_weight: 2.0" in content
+
+
