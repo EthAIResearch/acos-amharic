@@ -76,6 +76,22 @@ def viterbi_decode_reference(
     return path
 
 
+def validate_bio_path_reference(path: list[int]) -> bool:
+    """
+    Pure-Python reference validator for BIO tag sequence constraints.
+    Returns True if valid, False if it starts with 'I' (2) or contains 'O' -> 'I' (0 -> 2).
+    Empty paths are valid.
+    """
+    if not path:
+        return True
+    if path[0] == 2:
+        return False
+    for t in range(1, len(path)):
+        if path[t - 1] == 0 and path[t] == 2:
+            return False
+    return True
+
+
 if TORCH_AVAILABLE:
 
     class LinearChainCRF(nn.Module):
@@ -128,19 +144,52 @@ if TORCH_AVAILABLE:
             nn.init.uniform_(self.start_transitions, -0.1, 0.1)
             nn.init.uniform_(self.end_transitions, -0.1, 0.1)
 
-            if self.enforce_bio_constraints and self.num_tags == 3:
-                with torch.no_grad():
-                    self.start_transitions[2] = -10000.0
-                    self.transitions[0, 2] = -10000.0
-
-        def _get_constrained_transitions(self):
+        def _get_constrained_transitions(self, mask_value: float = -float("inf")):
             trans = self.transitions
             start = self.start_transitions
             if self.forbidden_trans_mask is not None:
-                trans = trans.masked_fill(self.forbidden_trans_mask, -10000.0)
+                trans = trans.masked_fill(self.forbidden_trans_mask, mask_value)
             if self.forbidden_start_mask is not None:
-                start = start.masked_fill(self.forbidden_start_mask, -10000.0)
+                start = start.masked_fill(self.forbidden_start_mask, mask_value)
             return trans, start
+
+        def _validate_gold_paths(
+            self,
+            packed_tags: torch.Tensor,
+            packed_mask: torch.Tensor,
+            lengths: torch.Tensor,
+        ):
+            """
+            Validates that active gold sequences obey syntactic BIO constraints:
+              - An active sequence cannot start with 'I' (tag 2).
+              - An active sequence cannot transition from 'O' (tag 0) to 'I' (tag 2).
+            Empty/inactive sequences (lengths == 0) are ignored.
+            Raises ValueError if any active gold path violates BIO syntax.
+            """
+            active = lengths > 0
+            if not active.any():
+                return
+
+            # Check 1: START -> I (first active tag is I)
+            starts_with_i = active & (packed_tags[:, 0] == 2)
+            if starts_with_i.any():
+                bad_idx = int(torch.nonzero(starts_with_i, as_tuple=True)[0][0].item())
+                raise ValueError(
+                    f"Invalid BIO gold path for example {bad_idx}: active sequence starts with 'I' (tag 2)."
+                )
+
+            # Check 2: O -> I transition
+            if packed_tags.shape[1] > 1:
+                valid_pairs = active.unsqueeze(1) & packed_mask[:, :-1] & packed_mask[:, 1:]
+                o_to_i = valid_pairs & (packed_tags[:, :-1] == 0) & (packed_tags[:, 1:] == 2)
+                if o_to_i.any():
+                    match_indices = torch.nonzero(o_to_i, as_tuple=True)
+                    bad_idx = int(match_indices[0][0].item())
+                    bad_pos = int(match_indices[1][0].item())
+                    raise ValueError(
+                        f"Invalid BIO gold path for example {bad_idx}: contains forbidden 'O' -> 'I' "
+                        f"transition at step {bad_pos} -> {bad_pos + 1}."
+                    )
 
         def _apply_bio_weights(self, emissions: torch.Tensor) -> torch.Tensor:
             """Scales emissions by class weight -- used ONLY inside the NLL
@@ -225,6 +274,9 @@ if TORCH_AVAILABLE:
             packed_emissions, packed_tags, packed_mask, lengths = (
                 self._pack_valid_sequence(emissions, clean_tags, mask)
             )
+
+            if self.enforce_bio_constraints and self.num_tags == 3:
+                self._validate_gold_paths(packed_tags, packed_mask, lengths)
 
             # Transpose to (T_packed, B, K)
             feats = packed_emissions.transpose(0, 1)  # (T, B, K)

@@ -6,7 +6,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_aope_sdrn"))
-from crf import viterbi_decode_reference
+from crf import viterbi_decode_reference, validate_bio_path_reference
 
 
 def test_viterbi_decode_reference_basic():
@@ -81,6 +81,92 @@ def test_viterbi_empty_and_single_token():
     end_transitions = [0.0, 0.0, 0.0]
     path = viterbi_decode_reference(emissions, transitions, start_transitions, end_transitions)
     assert path == [1]
+
+
+def test_validate_bio_path_reference():
+    # Valid paths
+    assert validate_bio_path_reference([]) is True
+    assert validate_bio_path_reference([0]) is True
+    assert validate_bio_path_reference([1]) is True
+    assert validate_bio_path_reference([0, 1, 2, 0]) is True
+    assert validate_bio_path_reference([1, 2, 2, 0]) is True
+    assert validate_bio_path_reference([0, 0, 1, 2, 0, 1, 0]) is True
+
+    # Invalid: starts with I (2)
+    assert validate_bio_path_reference([2]) is False
+    assert validate_bio_path_reference([2, 0, 1]) is False
+    assert validate_bio_path_reference([2, 2]) is False
+
+    # Invalid: O -> I (0 -> 2)
+    assert validate_bio_path_reference([0, 2]) is False
+    assert validate_bio_path_reference([1, 0, 2]) is False
+    assert validate_bio_path_reference([0, 1, 2, 0, 2]) is False
+
+
+def test_viterbi_bio_constraints_with_inf():
+    # Verify that -inf works identically to large negative penalty
+    emissions = [
+        [10.0, 0.0, 0.0],  # pos 0: O
+        [0.0, 1.0, 8.0],   # pos 1: favors I (8.0) over B (1.0)
+    ]
+    transitions = [
+        [0.0, 0.0, -float("inf")],  # O -> I is forbidden with -inf
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0],
+    ]
+    start_transitions = [0.0, 0.0, -float("inf")]
+    end_transitions = [0.0, 0.0, 0.0]
+
+    path = viterbi_decode_reference(emissions, transitions, start_transitions, end_transitions)
+    assert path[0] == 0
+    assert path[1] != 2  # Must not be I
+    assert path[1] == 1  # Must fall back to B
+
+
+def test_linear_chain_crf_torch_if_available():
+    try:
+        import torch
+        from crf import LinearChainCRF
+    except ImportError:
+        return
+
+    crf = LinearChainCRF(num_tags=3, enforce_bio_constraints=True)
+
+    # 1. Check trainable parameters are neutral (not hardcoded to penalty)
+    assert crf.transitions[0, 2].item() != -float("inf")
+    assert crf.start_transitions[2].item() != -float("inf")
+
+    # 2. Constrained transitions return -inf
+    constrained_t, constrained_s = crf._get_constrained_transitions()
+    assert constrained_t[0, 2].item() == -float("inf")
+    assert constrained_s[2].item() == -float("inf")
+
+    # 3. Validation rejects gold paths starting with I
+    emissions = torch.randn(1, 3, 3)
+    bad_tags_start = torch.tensor([[2, 0, 1]])
+    try:
+        crf(emissions, bad_tags_start)
+        assert False, "Expected ValueError for path starting with I"
+    except ValueError as e:
+        assert "starts with 'I'" in str(e)
+
+    # 4. Validation rejects gold paths containing O -> I
+    bad_tags_o_to_i = torch.tensor([[0, 2, 1]])
+    try:
+        crf(emissions, bad_tags_o_to_i)
+        assert False, "Expected ValueError for O -> I transition"
+    except ValueError as e:
+        assert "forbidden 'O' -> 'I'" in str(e)
+
+    # 5. Valid path passes without error
+    good_tags = torch.tensor([[1, 2, 0]])
+    loss = crf(emissions, good_tags)
+    assert not torch.isnan(loss) and not torch.isinf(loss)
+
+    # 6. Empty sequence (lengths == 0) produces zero NLL and no error
+    mask_empty = torch.zeros(1, 3, dtype=torch.bool)
+    loss_empty = crf(emissions, good_tags, mask=mask_empty)
+    assert loss_empty.item() == 0.0
 
 
 def test_config_stage_aope_sdrn_crf_enabled():
