@@ -4,17 +4,11 @@ Joint Aspect-Opinion Pair Extraction (AOPE) model, adapted from SDRN
 Aspect-Opinion Pair Extraction"). Replaces this project's separate
 Stage 1 (tagging) + Stage 2 (heuristic pairing) with a single model that
 extracts aspect/opinion spans AND detects their relations jointly,
-synchronized across recurrent steps -- directly targeting the error
-propagation that a strict pipeline suffers (SDRN's own ablation:
-`SDRN w/o ESM&RSM`, i.e. no synchronization, underperforms the full
-synchronized model by 1-3 F1 points even on an easier, less imbalanced
-benchmark than ours).
+synchronized across recurrent steps.
 
 Two channels, sharing one encoder:
-  - Entity channel: two BIO heads (aspect, opinion) -- reuses this
-    project's existing dual-head scheme (bio_labels.py / align.py) rather
-    than SDRN's single 5-way BA/IA/BP/IP/O tag sequence; functionally
-    equivalent, and lets this module reuse already-tested utilities.
+  - Entity channel: two BIO heads (aspect, opinion), optionally decoded
+    with a linear-chain CRF (crf.py) for globally-consistent tag sequences.
   - Relation channel: pairwise self-attention over all token pairs,
     producing an N x N relation matrix, supervised against gold
     aspect-opinion token-pair relations (relation_utils.py).
@@ -27,8 +21,19 @@ Synchronization (only at intermediate steps, matching the paper):
     weight an average of context vectors that feeds into the next step's
     entity-channel hidden state.
 
-Only the FINAL recurrent step is supervised (Eq. 3/6/14/15 in the paper) --
-earlier steps only refine the hidden states through synchronization.
+Only the FINAL recurrent step is supervised (Eq. 3/6/14/15 in the paper).
+
+IMPORTANT -- content_mask: forward() takes an optional `content_mask`
+argument (1 for real-word subword positions, 0 for CLS/SEP/PAD), built by
+JointAOPEDataset from word_ids. This is used everywhere instead of the raw
+`attention_mask` (which is 1 for CLS/SEP too) -- for CRF loss masking,
+entity-span decoding during ESM, RSM's relation weighting, and the
+relation BCE loss. Without this, the CRF's start/end transitions get
+misapplied to CLS/SEP during decoding (never seen during training, since
+CRF loss masking already excludes them via aspect_labels == -100), and
+span decoding during ESM can silently splice CLS/SEP into a decoded span.
+If content_mask isn't provided, falls back to attention_mask (keeps the
+model usable with older non-CRF datasets, but loses this fix's benefit).
 """
 import os
 import sys
@@ -38,7 +43,9 @@ from torch import nn
 from transformers import AutoConfig, AutoModel
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
+sys.path.insert(0, os.path.dirname(__file__))
 from bio_labels import decode_bio_spans
+from crf import LinearChainCRF
 
 NUM_BIO_LABELS = 3  # O, B, I
 
@@ -52,6 +59,7 @@ class JointAOPESDRN(nn.Module):
         dropout: float = 0.1,
         bio_class_weights: list | None = None,
         span_loss_weight: float = 1.0,
+        use_crf: bool = False,
     ):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
@@ -60,6 +68,7 @@ class JointAOPESDRN(nn.Module):
         self.T = num_recurrent_steps
         self.beta = relation_threshold  # filters weak relation scores in RSM, Eq. 12
         self.span_loss_weight = span_loss_weight
+        self.use_crf = use_crf
 
         if bio_class_weights is not None:
             bio_w = torch.tensor(bio_class_weights, dtype=torch.float32)
@@ -71,6 +80,23 @@ class JointAOPESDRN(nn.Module):
         self.aspect_head = nn.Linear(h, NUM_BIO_LABELS)
         self.opinion_head = nn.Linear(h, NUM_BIO_LABELS)
 
+        if self.use_crf:
+            # bio_weights passed here are used ONLY inside the CRF's forward()
+            # (NLL loss) -- decode() explicitly skips them (see crf.py fix).
+            # Applying a class-weight boost to B/I emissions at decode time
+            # would bias every prediction toward B/I regardless of actual
+            # confidence, which isn't what class weighting is for.
+            self.aspect_crf = LinearChainCRF(
+                num_tags=NUM_BIO_LABELS,
+                bio_weights=self.bio_weights,
+                enforce_bio_constraints=True,
+            )
+            self.opinion_crf = LinearChainCRF(
+                num_tags=NUM_BIO_LABELS,
+                bio_weights=self.bio_weights,
+                enforce_bio_constraints=True,
+            )
+
         # Relation scoring (Eq. 4-5): bilinear-style pairwise attention
         self.rel_w1 = nn.Linear(h, h, bias=False)
         self.rel_w2 = nn.Linear(h, h, bias=False)
@@ -81,6 +107,26 @@ class JointAOPESDRN(nn.Module):
         # RSM (Eq. 13): relation semantics + context -> next entity hidden state
         self.rsm_proj = nn.Linear(h * 2, h)
 
+    def decode_tags(
+        self,
+        logits: torch.Tensor,
+        mask: torch.Tensor | None = None,
+        channel: str = "aspect",
+    ) -> list:
+        """
+        Decodes subword BIO tags for a batch of sequences. `mask` should be
+        content_mask (real-word positions only), not raw attention_mask --
+        see module docstring. If use_crf=True, performs global Viterbi
+        decoding with BIO constraints; otherwise greedy argmax (mask is
+        unused in that path since argmax is position-independent and
+        callers already restrict to content positions before use).
+        """
+        if self.use_crf:
+            crf_layer = self.aspect_crf if channel == "aspect" else self.opinion_crf
+            preds = crf_layer.decode(logits, mask=mask)
+            return preds.cpu().tolist()
+        return logits.argmax(-1).cpu().tolist()
+
     def _relation_logits(self, h_r):
         # h_r: (B, T, H) -> (B, T, T) pairwise scores, Eq. 4-5
         B, N, H = h_r.shape
@@ -89,40 +135,45 @@ class JointAOPESDRN(nn.Module):
         scores = self.rel_score(torch.tanh(a + b)).squeeze(-1)  # (B, N, N)
         return scores
 
-    def _entity_semantics(self, aspect_logits, opinion_logits, h_s, attention_mask):
+    def _entity_semantics(self, aspect_logits, opinion_logits, h_s, content_mask):
         """ESM: for each token, average context vectors of tokens sharing
         its (decoded) aspect or opinion span -- a discrete approximation of
-        SDRN's soft same-entity probability (Eq. 8-9), computed per-example
-        since span decoding is inherently sequential/discrete."""
+        SDRN's soft same-entity probability (Eq. 8-9). Decodes only over
+        real-word positions (content_mask), then maps local span indices
+        back to original sequence positions -- fixes the earlier version's
+        bug where CLS/SEP could be spliced into a decoded span."""
         B = h_s.shape[0]
-        u = torch.zeros_like(h_s)
-        a_pred = aspect_logits.argmax(-1).cpu().tolist()
-        o_pred = opinion_logits.argmax(-1).cpu().tolist()
+        u = h_s.clone()  # default: every position falls back to its own context vector
+        a_pred = self.decode_tags(aspect_logits, mask=content_mask, channel="aspect")
+        o_pred = self.decode_tags(opinion_logits, mask=content_mask, channel="opinion")
         id2tag = {0: "O", 1: "B", 2: "I"}
 
         for b in range(B):
-            valid_len = int(attention_mask[b].sum().item())
-            a_tags = [id2tag[t] for t in a_pred[b][:valid_len]]
-            o_tags = [id2tag[t] for t in o_pred[b][:valid_len]]
-            spans = decode_bio_spans(a_tags) + decode_bio_spans(o_tags)
-            token_to_span = {}
-            for span in spans:
-                for i in range(span[0], span[1]):
-                    token_to_span[i] = span
-            for i in range(valid_len):
-                span = token_to_span.get(i)
-                if span is None:
-                    u[b, i] = h_s[b, i]  # no entity -> fall back to own context vector
-                else:
-                    u[b, i] = h_s[b, span[0]:span[1]].mean(dim=0)
+            valid_positions = torch.nonzero(content_mask[b], as_tuple=True)[0].tolist()
+            if not valid_positions:
+                continue
+            a_tags = [id2tag[a_pred[b][pos]] for pos in valid_positions]
+            o_tags = [id2tag[o_pred[b][pos]] for pos in valid_positions]
+            spans_local = decode_bio_spans(a_tags) + decode_bio_spans(o_tags)
+
+            # Map each local (0-indexed-into-valid_positions) span to a set
+            # of original sequence positions, then average their context
+            # vectors -- explicit per-index mapping, doesn't assume
+            # valid_positions is contiguous even though in practice it is.
+            for s_local, e_local in spans_local:
+                orig_positions = [valid_positions[i] for i in range(s_local, e_local)]
+                span_vec = h_s[b, orig_positions].mean(dim=0)
+                for pos in orig_positions:
+                    u[b, pos] = span_vec
         return u
 
-    def _relation_semantics(self, rel_scores, h_s, attention_mask):
+    def _relation_semantics(self, rel_scores, h_s, content_mask):
         """RSM: for each token, weighted average of context vectors using
-        thresholded relation scores (Eq. 11-12)."""
+        thresholded relation scores (Eq. 11-12). content_mask excludes
+        CLS/SEP so they never contribute to or receive relation weight."""
         weights = torch.sigmoid(rel_scores)
         weights = torch.where(weights >= self.beta, weights, torch.zeros_like(weights))
-        mask2d = attention_mask.unsqueeze(1) * attention_mask.unsqueeze(2)
+        mask2d = content_mask.float().unsqueeze(1) * content_mask.float().unsqueeze(2)
         weights = weights * mask2d
         denom = weights.sum(dim=-1, keepdim=True).clamp(min=1e-6)
         weights = weights / denom
@@ -130,7 +181,14 @@ class JointAOPESDRN(nn.Module):
         return r
 
     def forward(self, input_ids, attention_mask, aspect_labels=None, opinion_labels=None,
-                relation_labels=None, **kwargs):
+                relation_labels=None, content_mask=None, **kwargs):
+        if content_mask is None:
+            # Fallback for callers that don't provide it -- CLS/SEP will be
+            # (incorrectly) treated as content positions. Update the caller
+            # to pass content_mask from JointAOPEDataset instead.
+            content_mask = attention_mask
+        content_mask = content_mask.bool()
+
         out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
         h_s = self.dropout(out.last_hidden_state)  # (B, N, H), fixed context representation
 
@@ -143,11 +201,11 @@ class JointAOPESDRN(nn.Module):
 
         for _ in range(self.T - 1):
             # ESM: entity -> relation channel
-            u = self._entity_semantics(aspect_logits, opinion_logits, h_s, attention_mask)
+            u = self._entity_semantics(aspect_logits, opinion_logits, h_s, content_mask)
             h_r = torch.tanh(self.esm_proj(torch.cat([u, h_s], dim=-1)))
 
             # RSM: relation -> entity channel
-            r = self._relation_semantics(rel_logits, h_s, attention_mask)
+            r = self._relation_semantics(rel_logits, h_s, content_mask)
             h_o = torch.tanh(self.rsm_proj(torch.cat([r, h_s], dim=-1)))
 
             aspect_logits = self.aspect_head(h_o)
@@ -156,14 +214,27 @@ class JointAOPESDRN(nn.Module):
 
         loss = None
         if aspect_labels is not None and opinion_labels is not None and relation_labels is not None:
-            ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
-            loss_a = ce(aspect_logits.reshape(-1, NUM_BIO_LABELS), aspect_labels.reshape(-1))
-            loss_o = ce(opinion_logits.reshape(-1, NUM_BIO_LABELS), opinion_labels.reshape(-1))
+            if self.use_crf:
+                # content_mask already excludes CLS/SEP/PAD; the extra
+                # (aspect_labels != -100) check is now redundant with it
+                # (both encode exactly the same positions -- see
+                # dataset.py's content_mask construction) but kept as a
+                # defensive safety net in case the two ever diverge.
+                mask_a = content_mask & (aspect_labels != -100)
+                mask_o = content_mask & (opinion_labels != -100)
+                loss_a = self.aspect_crf(aspect_logits, aspect_labels, mask=mask_a)
+                loss_o = self.opinion_crf(opinion_logits, opinion_labels, mask=mask_o)
+            else:
+                ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
+                loss_a = ce(aspect_logits.reshape(-1, NUM_BIO_LABELS), aspect_labels.reshape(-1))
+                loss_o = ce(opinion_logits.reshape(-1, NUM_BIO_LABELS), opinion_labels.reshape(-1))
 
-            mask2d = (attention_mask.unsqueeze(1) * attention_mask.unsqueeze(2)).float()
+            mask2d = (content_mask.float().unsqueeze(1) * content_mask.float().unsqueeze(2))
             bce = nn.BCEWithLogitsLoss(reduction="none")
             rel_loss_raw = bce(rel_logits, relation_labels.float())
-            loss_r = (rel_loss_raw * mask2d).sum() / mask2d.sum().clamp(min=1.0)
+            # Normalize relation loss per-sequence (batch_size) rather than per-pair (N^2),
+            # bringing L_R to the same ~20-30 scale as CRF sequence NLL (Eq. 15-16 in SDRN)
+            loss_r = (rel_loss_raw * mask2d).sum() / content_mask.size(0)
 
             loss = self.span_loss_weight * (loss_a + loss_o) + loss_r
 

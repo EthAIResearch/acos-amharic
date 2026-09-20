@@ -13,7 +13,7 @@ import torch
 from torch.utils.data import Dataset
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from align import IGNORE_INDEX, align_labels_to_subwords
+from align import align_labels_to_subwords
 from bio_labels import build_word_bio
 from relation_utils import build_word_relation_matrix, explicit_pairs
 
@@ -63,6 +63,7 @@ class JointAOPEDataset(Dataset):
                     rel_matrix[si][sj] = word_rel_matrix[wi][wj]
 
         item = {k: torch.tensor(v) for k, v in enc.items() if k != "overflow_to_sample_mapping"}
+        item["content_mask"] = torch.tensor([wid is not None for wid in word_ids], dtype=torch.bool)
         item["aspect_labels"] = torch.tensor(a_label_ids)
         item["opinion_labels"] = torch.tensor(o_label_ids)
         item["relation_labels"] = torch.tensor(rel_matrix)

@@ -3,12 +3,14 @@
 # synchronized joint model. See docs/stage_aope_sdrn_analysis.md.
 
 model_name: Davlan/afro-xlmr-base
+use_crf: true                 # Linear-Chain CRF for structured BIO sequence decoding
 num_recurrent_steps: 2       # SDRN paper: best on 3/3 benchmarks, more steps show diminishing returns
 relation_threshold: 0.1      # beta in RSM (Eq. 12)
 pair_accept_threshold: 0.5   # delta-hat in Eq. 17
 
 data:
   train: data/prepared_explicit/train.jsonl
+  dev: data/prepared_explicit/dev.jsonl
   test: data/prepared_explicit/test.jsonl
   max_length: 256
 
@@ -24,11 +26,10 @@ training:
   bio_class_weights: [1.0, 3.0, 3.0]  # [O, B, I] - counteracts 95% 'O' token dominance to lift span recall
   span_loss_weight: 2.0               # balances token-level span loss against N x N pairwise relation loss
 
-output_dir: results/stage_aope_sdrn/afroxlmr_base_run1
+output_dir: results/stage_aope_sdrn/afroxlmr_crf_run1
 
 notes: >
-  Trained on data/prepared_explicit to eliminate the 16,496 negative-only
-  sentences from data/prepared that previously trained the BIO tagger to be
-  hyper-conservative (44% aspect / 34% opinion recall in roberta_base_run1).
-  Uses AfroXLMR-base (proven in Stage 1) with weighted BIO loss to lift
-  span recall and break the 24.87% pair recall ceiling.
+  Trained on data/prepared_explicit with AfroXLMR-base, class-weighted BIO loss,
+  and a Linear-Chain CRF layer over aspect and opinion entity heads.
+  Enforces syntactic BIO constraints (disallowing O -> I) and performs global
+  Viterbi sequence decoding to eliminate fragmented spans and boost opinion recall.

@@ -39,12 +39,16 @@ from transformers import AutoTokenizer
 def parse_args():
     parser = argparse.ArgumentParser(description="Sweep relation thresholds on SDRN checkpoint.")
     parser.add_argument("--config", default="configs/stage_aope_sdrn.yaml")
-    parser.add_argument("--checkpoint", default="results/stage_aope_sdrn/roberta_base_run1/best_model.pt")
+    parser.add_argument("--checkpoint", default=None,
+                        help="Path to checkpoint best_model.pt. If omitted, derived from config output_dir.")
     parser.add_argument("--test", default=None)
     parser.add_argument("--model_name", default=None)
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--max_length", type=int, default=256)
     parser.add_argument("--output_file", default=None)
+    parser.add_argument("--use_crf", action="store_true", default=None,
+                        help="Use Linear-Chain CRF decoding. Defaults to config setting.")
+    parser.add_argument("--no_crf", dest="use_crf", action="store_false")
     return parser.parse_args()
 
 
@@ -63,10 +67,15 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
     for batch in tqdm(loader, desc="Inference"):
         input_ids = batch["input_ids"].to(device)
         attn = batch["attention_mask"].to(device)
-        out = model(input_ids=input_ids, attention_mask=attn)
+        content_mask = batch.get("content_mask")
+        if content_mask is not None:
+            content_mask = content_mask.to(device)
+        else:
+            content_mask = attn.bool()
 
-        a_pred_ids = out["aspect_logits"].argmax(-1).cpu().tolist()
-        o_pred_ids = out["opinion_logits"].argmax(-1).cpu().tolist()
+        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
+        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=content_mask, channel="aspect")
+        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=content_mask, channel="opinion")
         rel_scores = torch.sigmoid(out["relation_logits"]).cpu().tolist()
 
         bsz = input_ids.size(0)
@@ -96,23 +105,28 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
             all_gold_opinions.append(g_opinions)
             all_gold_pairs.append(g_pairs)
 
-            # Map subword-level relation matrix back to words
-            first_subword_of_word = {}
-            for si, wid in enumerate(word_ids):
-                if wid is not None and wid not in first_subword_of_word:
-                    first_subword_of_word[wid] = si
+            # Map subword-level relation matrix back to words via max-pooling
+            # across all subwords for words wi and wj
             n_words = len(rec["tokens"])
+            word_to_subwords = {w: [] for w in range(n_words)}
+            for si, wid in enumerate(word_ids):
+                if wid is not None and wid < n_words:
+                    word_to_subwords[wid].append(si)
+
             word_rel = [[0.0] * n_words for _ in range(n_words)]
             for wi in range(n_words):
                 for wj in range(n_words):
-                    si, sj = first_subword_of_word.get(wi), first_subword_of_word.get(wj)
-                    if (
-                        si is not None
-                        and sj is not None
-                        and si < len(rel_scores[i])
-                        and sj < len(rel_scores[i])
-                    ):
-                        word_rel[wi][wj] = rel_scores[i][si][sj]
+                    sis = word_to_subwords[wi]
+                    sjs = word_to_subwords[wj]
+                    if sis and sjs:
+                        sub_scores = [
+                            rel_scores[i][si][sj]
+                            for si in sis
+                            for sj in sjs
+                            if si < len(rel_scores[i]) and sj < len(rel_scores[i])
+                        ]
+                        if sub_scores:
+                            word_rel[wi][wj] = max(sub_scores)
 
             # Cache scored candidate pairs
             ex_candidates = []
@@ -148,10 +162,21 @@ def main():
     num_recurrent_steps = cfg.get("num_recurrent_steps", 2)
     relation_threshold = cfg.get("relation_threshold", 0.1)
 
+    checkpoint = args.checkpoint
+    if not checkpoint:
+        cfg_out = cfg.get("output_dir")
+        if cfg_out:
+            checkpoint = os.path.join(cfg_out, "best_model.pt")
+        else:
+            checkpoint = "results/stage_aope_sdrn/afroxlmr_base_run1/best_model.pt"
+
+    use_crf = args.use_crf if args.use_crf is not None else cfg.get("use_crf", False)
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
-    print(f"Loading checkpoint: {args.checkpoint}")
+    print(f"Loading checkpoint: {checkpoint}")
     print(f"Test dataset: {test_path}")
+    print(f"Use CRF decoding: {use_crf}")
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     test_ds = JointAOPEDataset(test_path, tokenizer, max_length=args.max_length)
@@ -166,8 +191,9 @@ def main():
         relation_threshold=relation_threshold,
         bio_class_weights=bio_class_weights,
         span_loss_weight=span_loss_weight,
+        use_crf=use_crf,
     )
-    state_dict = torch.load(args.checkpoint, map_location=device)
+    state_dict = torch.load(checkpoint, map_location=device)
     model.load_state_dict(state_dict, strict=False)
     model.to(device)
 
@@ -201,7 +227,7 @@ def main():
     print(f"Optimal Pair Metrics   : Precision={b_m['precision']:.4f}, Recall={b_m['recall']:.4f}, F1={b_m['f1']:.4f}")
 
     # Save results
-    out_dir = os.path.dirname(args.checkpoint) if os.path.dirname(args.checkpoint) else "."
+    out_dir = os.path.dirname(checkpoint) if checkpoint and os.path.dirname(checkpoint) else "."
     out_file = args.output_file or os.path.join(out_dir, "threshold_sweep.json")
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
