@@ -162,16 +162,18 @@ def test_sweep_thresholds():
 
 
 def test_stage_aope_sdrn_config_explicit_and_weights():
+    import yaml
+
     config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "stage_aope_sdrn.yaml")
     with open(config_path, encoding="utf-8") as f:
-        content = f.read()
-    assert "model_name: Davlan/afro-xlmr-base" in content
-    assert "train: data/prepared_explicit/train.jsonl" in content
-    assert "dev: data/prepared_explicit/dev.jsonl" in content
-    assert "test: data/prepared_explicit/test.jsonl" in content
-    assert "bio_class_weights: [1.0, 3.0, 3.0]" in content
-    assert "span_loss_weight: 2.0" in content
-    assert "use_crf: true" in content
+        cfg = yaml.safe_load(f)
+    assert cfg.get("model_name") == "Davlan/afro-xlmr-base"
+    assert cfg.get("data", {}).get("train") == "data/prepared_explicit/train.jsonl"
+    assert cfg.get("data", {}).get("dev") == "data/prepared_explicit/dev.jsonl"
+    assert cfg.get("data", {}).get("test") == "data/prepared_explicit/test.jsonl"
+    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 3.0, 3.0]
+    assert cfg.get("training", {}).get("span_loss_weight") == 2.0
+    assert cfg.get("use_crf") is True
 
 
 if __name__ == "__main__":

@@ -108,6 +108,19 @@ if TORCH_AVAILABLE:
                 bio_w = torch.ones(num_tags, dtype=torch.float32)
             self.register_buffer("bio_weights", bio_w)
 
+            if self.enforce_bio_constraints and self.num_tags == 3:
+                # 0: O, 1: B, 2: I
+                # Disallow START -> I and O -> I via fixed boolean mask buffers
+                trans_mask = torch.zeros(num_tags, num_tags, dtype=torch.bool)
+                trans_mask[0, 2] = True
+                start_mask = torch.zeros(num_tags, dtype=torch.bool)
+                start_mask[2] = True
+                self.register_buffer("forbidden_trans_mask", trans_mask)
+                self.register_buffer("forbidden_start_mask", start_mask)
+            else:
+                self.forbidden_trans_mask = None
+                self.forbidden_start_mask = None
+
             self.reset_parameters()
 
         def reset_parameters(self):
@@ -116,11 +129,18 @@ if TORCH_AVAILABLE:
             nn.init.uniform_(self.end_transitions, -0.1, 0.1)
 
             if self.enforce_bio_constraints and self.num_tags == 3:
-                # 0: O, 1: B, 2: I
-                # Disallow START -> I and O -> I
                 with torch.no_grad():
                     self.start_transitions[2] = -10000.0
                     self.transitions[0, 2] = -10000.0
+
+        def _get_constrained_transitions(self):
+            trans = self.transitions
+            start = self.start_transitions
+            if self.forbidden_trans_mask is not None:
+                trans = trans.masked_fill(self.forbidden_trans_mask, -10000.0)
+            if self.forbidden_start_mask is not None:
+                start = start.masked_fill(self.forbidden_start_mask, -10000.0)
+            return trans, start
 
         def _apply_bio_weights(self, emissions: torch.Tensor) -> torch.Tensor:
             """Scales emissions by class weight -- used ONLY inside the NLL
@@ -174,8 +194,6 @@ if TORCH_AVAILABLE:
                     if tags is not None:
                         packed_tags[b, :l_b] = tags[b, indices]
                     packed_mask[b, :l_b] = True
-                else:
-                    packed_mask[b, 0] = True
 
             return packed_emissions, packed_tags, packed_mask, lengths
 
@@ -214,12 +232,14 @@ if TORCH_AVAILABLE:
             mask_t = packed_mask.transpose(0, 1)  # (T, B)
             T_packed = feats.shape[0]
 
+            transitions, start_transitions = self._get_constrained_transitions()
+
             # 1. Forward algorithm: partition function log Z
-            forward_var = self.start_transitions.unsqueeze(0) + feats[0]  # (B, K)
+            forward_var = start_transitions.unsqueeze(0) + feats[0]  # (B, K)
 
             for t in range(1, T_packed):
                 emit_score = feats[t].unsqueeze(1)  # (B, 1, K)
-                trans_score = self.transitions.unsqueeze(0)  # (1, K, K)
+                trans_score = transitions.unsqueeze(0)  # (1, K, K)
                 next_var = forward_var.unsqueeze(2) + trans_score + emit_score  # (B, K, K)
                 next_var = torch.logsumexp(next_var, dim=1)  # (B, K)
                 forward_var = torch.where(mask_t[t].unsqueeze(1), next_var, forward_var)
@@ -228,12 +248,12 @@ if TORCH_AVAILABLE:
             log_Z = torch.logsumexp(terminal_var, dim=-1)  # (B,)
 
             # 2. Gold path score
-            gold_score = self.start_transitions[tags_t[0]] + feats[0].gather(
+            gold_score = start_transitions[tags_t[0]] + feats[0].gather(
                 1, tags_t[0].unsqueeze(1)
             ).squeeze(1)
 
             for t in range(1, T_packed):
-                trans = self.transitions[tags_t[t - 1], tags_t[t]]  # (B,)
+                trans = transitions[tags_t[t - 1], tags_t[t]]  # (B,)
                 emit = feats[t].gather(1, tags_t[t].unsqueeze(1)).squeeze(1)  # (B,)
                 gold_score = gold_score + (trans + emit) * mask_t[t].float()
 
@@ -241,10 +261,13 @@ if TORCH_AVAILABLE:
             last_tags = torch.gather(tags_t, 0, last_indices).squeeze(0)  # (B,)
             gold_score = gold_score + self.end_transitions[last_tags]
 
-            nll = log_Z - gold_score
+            nll_raw = log_Z - gold_score
+            # Empty sequences contribute zero NLL
+            nll = torch.where(lengths > 0, nll_raw, torch.zeros_like(nll_raw))
 
             if reduction == "mean":
-                return nll.mean()
+                valid_count = (lengths > 0).sum().clamp(min=1)
+                return nll.sum() / valid_count
             elif reduction == "sum":
                 return nll.sum()
             return nll
@@ -274,12 +297,14 @@ if TORCH_AVAILABLE:
             mask_t = packed_mask.transpose(0, 1)  # (T_packed, B)
             T_packed = feats.shape[0]
 
-            viterbi_var = self.start_transitions.unsqueeze(0) + feats[0]  # (B, K)
+            transitions, start_transitions = self._get_constrained_transitions()
+
+            viterbi_var = start_transitions.unsqueeze(0) + feats[0]  # (B, K)
             backpointers = []
 
             for t in range(1, T_packed):
                 emit_score = feats[t].unsqueeze(1)  # (B, 1, K)
-                trans_score = self.transitions.unsqueeze(0)  # (1, K, K)
+                trans_score = transitions.unsqueeze(0)  # (1, K, K)
                 next_var = viterbi_var.unsqueeze(2) + trans_score + emit_score  # (B, K, K)
                 max_var, bptr = torch.max(next_var, dim=1)  # (B, K)
                 backpointers.append(bptr)

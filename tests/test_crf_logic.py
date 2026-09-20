@@ -84,11 +84,13 @@ def test_viterbi_empty_and_single_token():
 
 
 def test_config_stage_aope_sdrn_crf_enabled():
+    import yaml
+
     config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "stage_aope_sdrn.yaml")
     with open(config_path, encoding="utf-8") as f:
-        content = f.read()
-    assert "use_crf: true" in content
-    assert "results/stage_aope_sdrn/afroxlmr_crf_run1" in content
+        cfg = yaml.safe_load(f)
+    assert cfg.get("use_crf") is True
+    assert cfg.get("output_dir") == "results/stage_aope_sdrn/afroxlmr_crf_run1"
 
 
 if __name__ == "__main__":
