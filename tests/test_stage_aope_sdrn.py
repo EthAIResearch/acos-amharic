@@ -171,8 +171,8 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert cfg.get("data", {}).get("train") == "data/prepared_explicit/train.jsonl"
     assert cfg.get("data", {}).get("dev") == "data/prepared_explicit/dev.jsonl"
     assert cfg.get("data", {}).get("test") == "data/prepared_explicit/test.jsonl"
-    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 3.0, 3.0]
-    assert cfg.get("training", {}).get("span_loss_weight") == 2.0
+    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 5.0, 5.0]
+    assert cfg.get("training", {}).get("span_loss_weight") == 3.0
     assert cfg.get("use_crf") is True
 
 
