@@ -81,7 +81,9 @@ class RelationAttention(nn.Module):
         scores = F.linear(alpha, self.v).squeeze(-1)            # (B, N, N)
 
         if mask2d is not None:
-            scores = scores.masked_fill(~mask2d, -1e9)
+            # -1e4 fits safely in float16 (max magnitude 65504) without overflow, and exp(-10000) = 0.0
+            scores = scores.masked_fill(~mask2d, -1e4)
+
 
         g = self.softmax(scores)  # (B, N, N)
 
