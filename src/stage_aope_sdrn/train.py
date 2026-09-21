@@ -285,7 +285,10 @@ def main():
     )
 
     use_amp = args.fp16 and device.type == "cuda"
-    scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
+    if hasattr(torch, "amp") and hasattr(torch.amp, "GradScaler"):
+        scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
+    else:
+        scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
 
     eval_ds = dev_ds if dev_ds is not None else test_ds
     eval_name = "dev" if dev_ds is not None else "test"
@@ -297,7 +300,12 @@ def main():
         for batch in pbar:
             batch = {k: v.to(device) for k, v in batch.items()}
             optimizer.zero_grad()
-            with torch.cuda.amp.autocast(enabled=use_amp):
+            autocast_ctx = (
+                torch.amp.autocast("cuda", enabled=use_amp)
+                if hasattr(torch, "amp") and hasattr(torch.amp, "autocast")
+                else torch.cuda.amp.autocast(enabled=use_amp)
+            )
+            with autocast_ctx:
                 out = model(**batch)
                 loss = out["loss"]
             scaler.scale(loss).backward()
