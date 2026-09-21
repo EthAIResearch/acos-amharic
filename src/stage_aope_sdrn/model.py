@@ -111,6 +111,9 @@ class JointAOPESDRN(nn.Module):
         self.use_crf = use_crf
 
         if bio_class_weights is not None:
+            if len(bio_class_weights) == 3:
+                w_o, w_b, w_i = bio_class_weights
+                bio_class_weights = [w_o, w_b, w_i, w_b, w_i]
             bio_w = torch.tensor(bio_class_weights, dtype=torch.float32)
         else:
             bio_w = torch.ones(NUM_BIO_LABELS, dtype=torch.float32)

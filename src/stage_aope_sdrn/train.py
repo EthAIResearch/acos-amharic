@@ -224,7 +224,7 @@ def main():
     ap.add_argument("--pair_accept_threshold", type=float, default=0.5,
                      help="Delta-hat in Eq. 17 -- correlation degree threshold to accept a pair at inference.")
     ap.add_argument("--bio_class_weights", type=float, nargs="+", default=None,
-                     help="Weights for BIO classes [O, B, I] to counter 'O' token dominance.")
+                     help="Weights for BIO classes [O, B-ASP, I-ASP, B-OPN, I-OPN] to counter 'O' token dominance.")
     ap.add_argument("--span_loss_weight", type=float, default=1.0,
                      help="Scaling factor for span cross-entropy loss relative to relation BCE loss.")
     ap.add_argument("--head_lr", type=float, default=1e-3,
@@ -235,10 +235,16 @@ def main():
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
 
-    if args.bio_class_weights is not None and len(args.bio_class_weights) != 3:
-        raise ValueError(
-            f"bio_class_weights must have exactly 3 values for [O, B, I], got {len(args.bio_class_weights)}"
-        )
+    if args.bio_class_weights is not None:
+        if len(args.bio_class_weights) == 3:
+            # Legacy 3-tag weights [w_O, w_B, w_I] -> expand to 5-tag [w_O, w_B, w_I, w_B, w_I]
+            w_o, w_b, w_i = args.bio_class_weights
+            args.bio_class_weights = [w_o, w_b, w_i, w_b, w_i]
+        elif len(args.bio_class_weights) != 5:
+            raise ValueError(
+                f"bio_class_weights must have 5 values for [O, B-ASP, I-ASP, B-OPN, I-OPN] (or 3 to expand), got {len(args.bio_class_weights)}"
+            )
+
 
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

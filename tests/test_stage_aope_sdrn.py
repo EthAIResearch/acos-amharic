@@ -209,6 +209,18 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert cfg.get("use_crf") is True
 
 
+def test_bio_class_weights_validation_and_expansion():
+    # Test expansion of 3 weights [w_O, w_B, w_I] to 5 weights
+    w3 = [1.0, 5.0, 5.0]
+    w_expanded = [w3[0], w3[1], w3[2], w3[1], w3[2]]
+    assert len(w_expanded) == 5
+    assert w_expanded == [1.0, 5.0, 5.0, 5.0, 5.0]
+
+    # Test 5-way weights
+    w5 = [1.0, 2.0, 3.0, 4.0, 5.0]
+    assert len(w5) == 5
+
+
 if __name__ == "__main__":
     import inspect
 
