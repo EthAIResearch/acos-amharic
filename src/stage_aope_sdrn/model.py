@@ -163,7 +163,8 @@ class JointAOPESDRN(nn.Module):
         if self.use_crf:
             preds = self.crf.decode(logits, mask=mask)
             return preds.cpu().tolist()
-        return logits.argmax(-1).cpu().tolist()
+        return (logits * self.bio_weights.view(1, 1, -1)).argmax(-1).cpu().tolist()
+
 
     def _make_entity_tensor(
         self,

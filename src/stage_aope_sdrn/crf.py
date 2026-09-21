@@ -235,15 +235,12 @@ if TORCH_AVAILABLE:
 
 
         def _apply_bio_weights(self, emissions: torch.Tensor) -> torch.Tensor:
-            """Scales emissions by class weight -- used ONLY inside the NLL
-            loss (forward()), never inside decode(). Applying this at
-            decode time would bias every prediction toward whichever class
-            has the larger weight (typically B/I, to counter O-dominance),
-            regardless of actual model confidence -- that's not what class
-            weighting during training is meant to do to inference."""
+            """Scales emissions by class weight uniformly in both forward() and decode(),
+            maintaining identical emission-to-transition calibration between training and inference."""
             if self.bio_weights is not None:
                 return emissions * self.bio_weights.view(1, 1, -1)
             return emissions
+
 
         def _pack_valid_sequence(
             self,
@@ -377,7 +374,9 @@ if TORCH_AVAILABLE:
             Returns:
               (B, T) torch.LongTensor with decoded tag IDs.
             """
+            emissions = self._apply_bio_weights(emissions)
             B, T = emissions.shape[:2]
+
 
             if mask is None:
                 mask = torch.ones((B, T), dtype=torch.bool, device=emissions.device)
