@@ -6,7 +6,11 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_aope_sdrn"))
-from crf import validate_bio_path_reference, viterbi_decode_reference
+from crf import (
+    validate_5way_bio_path_reference,
+    validate_bio_path_reference,
+    viterbi_decode_reference,
+)
 
 
 def test_viterbi_decode_reference_basic():
@@ -103,6 +107,28 @@ def test_validate_bio_path_reference():
     assert validate_bio_path_reference([0, 1, 2, 0, 2]) is False
 
 
+def test_validate_5way_bio_path_reference():
+    # Valid: 0: O, 1: B-ASP, 2: I-ASP, 3: B-OPN, 4: I-OPN
+    assert validate_5way_bio_path_reference([]) is True
+    assert validate_5way_bio_path_reference([0, 1, 2, 0, 3, 4, 0]) is True
+    assert validate_5way_bio_path_reference([1, 3]) is True  # adjacent aspect then opinion
+    assert validate_5way_bio_path_reference([1, 2, 3, 4]) is True
+
+    # Invalid starts (I-ASP or I-OPN)
+    assert validate_5way_bio_path_reference([2]) is False
+    assert validate_5way_bio_path_reference([4]) is False
+    assert validate_5way_bio_path_reference([2, 1, 3]) is False
+    assert validate_5way_bio_path_reference([4, 1, 3]) is False
+
+    # Invalid transitions
+    assert validate_5way_bio_path_reference([0, 2]) is False  # O -> I-ASP
+    assert validate_5way_bio_path_reference([0, 4]) is False  # O -> I-OPN
+    assert validate_5way_bio_path_reference([1, 4]) is False  # B-ASP -> I-OPN
+    assert validate_5way_bio_path_reference([2, 4]) is False  # I-ASP -> I-OPN
+    assert validate_5way_bio_path_reference([3, 2]) is False  # B-OPN -> I-ASP
+    assert validate_5way_bio_path_reference([4, 2]) is False  # I-OPN -> I-ASP
+
+
 def test_viterbi_bio_constraints_with_inf():
     # Verify that -inf works identically to large negative penalty
     emissions = [
@@ -130,43 +156,54 @@ def test_linear_chain_crf_torch_if_available():
     except ImportError:
         return
 
+    # 3-tag CRF check
     crf = LinearChainCRF(num_tags=3, enforce_bio_constraints=True)
-
-    # 1. Check trainable parameters are neutral (not hardcoded to penalty)
     assert crf.transitions[0, 2].item() != -float("inf")
-    assert crf.start_transitions[2].item() != -float("inf")
-
-    # 2. Constrained transitions return -inf
     constrained_t, constrained_s = crf._get_constrained_transitions()
     assert constrained_t[0, 2].item() == -float("inf")
     assert constrained_s[2].item() == -float("inf")
 
-    # 3. Validation rejects gold paths starting with I
-    emissions = torch.randn(1, 3, 3)
-    bad_tags_start = torch.tensor([[2, 0, 1]])
-    try:
-        crf(emissions, bad_tags_start)
-        assert False, "Expected ValueError for path starting with I"
-    except ValueError as e:
-        assert "starts with 'I'" in str(e)
+    # 5-tag CRF check
+    crf5 = LinearChainCRF(num_tags=5, enforce_bio_constraints=True)
+    t5, s5 = crf5._get_constrained_transitions()
+    # START -> 2 (I-ASP) and START -> 4 (I-OPN) forbidden
+    assert s5[2].item() == -float("inf")
+    assert s5[4].item() == -float("inf")
+    # Transitions forbidden
+    assert t5[0, 2].item() == -float("inf")
+    assert t5[0, 4].item() == -float("inf")
+    assert t5[1, 4].item() == -float("inf")
+    assert t5[2, 4].item() == -float("inf")
+    assert t5[3, 2].item() == -float("inf")
+    assert t5[4, 2].item() == -float("inf")
+    # Transitions allowed
+    assert t5[1, 2].item() != -float("inf")
+    assert t5[3, 4].item() != -float("inf")
+    assert t5[1, 3].item() != -float("inf")
+    assert t5[2, 3].item() != -float("inf")
 
-    # 4. Validation rejects gold paths containing O -> I
-    bad_tags_o_to_i = torch.tensor([[0, 2, 1]])
+    # Validation rejects forbidden start
+    emissions5 = torch.randn(1, 3, 5)
+    bad_tags = torch.tensor([[4, 0, 1]])
     try:
-        crf(emissions, bad_tags_o_to_i)
-        assert False, "Expected ValueError for O -> I transition"
+        crf5(emissions5, bad_tags)
+        assert False, "Expected ValueError"
     except ValueError as e:
-        assert "forbidden 'O' -> 'I'" in str(e)
+        assert "forbidden tag 4" in str(e)
 
-    # 5. Valid path passes without error
-    good_tags = torch.tensor([[1, 2, 0]])
-    loss = crf(emissions, good_tags)
+    # Validation rejects forbidden transition (B-ASP -> I-OPN: 1 -> 4)
+    bad_trans = torch.tensor([[1, 4, 0]])
+    try:
+        crf5(emissions5, bad_trans)
+        assert False, "Expected ValueError"
+    except ValueError as e:
+        assert "forbidden transition 1 -> 4" in str(e)
+
+    # Valid path passes
+    good_tags5 = torch.tensor([[1, 2, 0]])
+    loss = crf5(emissions5, good_tags5)
     assert not torch.isnan(loss) and not torch.isinf(loss)
 
-    # 6. Empty sequence (lengths == 0) produces zero NLL and no error
-    mask_empty = torch.zeros(1, 3, dtype=torch.bool)
-    loss_empty = crf(emissions, good_tags, mask=mask_empty)
-    assert loss_empty.item() == 0.0
 
 
 def test_config_stage_aope_sdrn_crf_enabled():

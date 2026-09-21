@@ -37,6 +37,56 @@ def decode_bio_spans(tags: list[str]) -> list[tuple[int, int]]:
     return spans
 
 
+def build_word_bio_5way(
+    n_tokens: int,
+    aspect_spans: list[tuple[int, int]],
+    opinion_spans: list[tuple[int, int]],
+) -> list[str]:
+    """
+    Builds a unified 5-way BIO tag sequence:
+      'O': Outside
+      'B-ASP': Begin Aspect
+      'I-ASP': Inside Aspect
+      'B-OPN': Begin Opinion
+      'I-OPN': Inside Opinion
+    Aspect spans are assigned first; opinion spans fill unassigned positions.
+    """
+    tags = ["O"] * n_tokens
+    for start, end in aspect_spans:
+        if start == -1 or end == -1:
+            continue
+        if not (0 <= start < end <= n_tokens):
+            raise ValueError(f"Span ({start},{end}) out of range for {n_tokens} tokens")
+        tags[start] = "B-ASP"
+        for i in range(start + 1, end):
+            tags[i] = "I-ASP"
+
+    for start, end in opinion_spans:
+        if start == -1 or end == -1:
+            continue
+        if not (0 <= start < end <= n_tokens):
+            raise ValueError(f"Span ({start},{end}) out of range for {n_tokens} tokens")
+        if tags[start] == "O":
+            tags[start] = "B-OPN"
+            for i in range(start + 1, end):
+                if tags[i] == "O":
+                    tags[i] = "I-OPN"
+    return tags
+
+
+def decode_5way_bio_spans(tags: list[str]) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
+    """
+    Decodes a unified 5-way BIO tag sequence into (aspect_spans, opinion_spans).
+    tags: list of 'O', 'B-ASP', 'I-ASP', 'B-OPN', 'I-OPN'.
+    Returns:
+        (aspect_spans, opinion_spans)
+    """
+    a_tags = ["B" if t == "B-ASP" else "I" if t == "I-ASP" else "O" for t in tags]
+    o_tags = ["B" if t == "B-OPN" else "I" if t == "I-OPN" else "O" for t in tags]
+    return decode_bio_spans(a_tags), decode_bio_spans(o_tags)
+
+
+
 if __name__ == "__main__":
     # Sanity check against real rows from the dataset. Run data_prep.py first
     # to generate data/prepared/train.jsonl (it's gitignored, so this won't

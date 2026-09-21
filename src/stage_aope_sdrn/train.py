@@ -23,8 +23,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 import numpy as np
 import torch
 import yaml
-from align import decode_subword_predictions
-from bio_labels import decode_bio_spans
+from align import decode_subword_predictions, decode_subword_predictions_5way
+from bio_labels import decode_5way_bio_spans, decode_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
 from relation_utils import (
@@ -108,9 +108,10 @@ def evaluate(
             content_mask = attn.bool()
 
         out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
-        a_pred_ids = model.decode_tags(out["aspect_logits"], mask=content_mask, channel="aspect")
-        o_pred_ids = model.decode_tags(out["opinion_logits"], mask=content_mask, channel="opinion")
-        rel_scores = torch.sigmoid(out["relation_logits"]).cpu().tolist()
+        # Unified 5-way BIO decoding
+        pred_ids = model.decode_tags(out["logits"], mask=content_mask)
+        # G^t relation attention matrix is already in [0, 1]
+        rel_scores = out["relation_logits"].cpu().tolist()
 
         bsz = input_ids.size(0)
         for i in range(bsz):
@@ -124,10 +125,8 @@ def evaluate(
             )
             word_ids = enc.word_ids(batch_index=0)
 
-            a_word_tags = decode_subword_predictions(word_ids, a_pred_ids[i][:len(word_ids)])
-            o_word_tags = decode_subword_predictions(word_ids, o_pred_ids[i][:len(word_ids)])
-            a_spans = decode_bio_spans(a_word_tags)
-            o_spans = decode_bio_spans(o_word_tags)
+            word_tags = decode_subword_predictions_5way(word_ids, pred_ids[i][:len(word_ids)])
+            a_spans, o_spans = decode_5way_bio_spans(word_tags)
 
             g_pairs = explicit_pairs(rec["quads"])
             g_aspects = [p[0] for p in g_pairs]

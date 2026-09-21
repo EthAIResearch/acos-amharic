@@ -1,53 +1,93 @@
 """
-Joint Aspect-Opinion Pair Extraction (AOPE) model, adapted from SDRN
+Exact SDRN implementation for Joint Aspect-Opinion Pair Extraction (AOPE),
+faithfully following the ACL 2020 paper equations and architecture
 (Chen et al., ACL 2020, "Synchronous Double-channel Recurrent Network for
-Aspect-Opinion Pair Extraction"). Replaces this project's separate
-Stage 1 (tagging) + Stage 2 (heuristic pairing) with a single model that
-extracts aspect/opinion spans AND detects their relations jointly,
-synchronized across recurrent steps.
+Aspect-Opinion Pair Extraction").
 
-Two channels, sharing one encoder:
-  - Entity channel: two BIO heads (aspect, opinion), optionally decoded
-    with a linear-chain CRF (crf.py) for globally-consistent tag sequences.
-  - Relation channel: pairwise self-attention over all token pairs,
-    producing an N x N relation matrix, supervised against gold
-    aspect-opinion token-pair relations (relation_utils.py).
+Two synchronous channels sharing one pretrained encoder:
+  1. Entity extraction unit (target channel):
+     - Single unified 5-way BIO classification head:
+       0: 'O', 1: 'B-ASP', 2: 'I-ASP', 3: 'B-OPN', 4: 'I-OPN'
+     - Decoded with a 5-tag Linear-Chain CRF (crf.py) enforcing syntactic BIO constraints.
+  2. Relation detection unit (relation channel):
+     - Biaffine self-attention producing row-stochastic attention matrix G^t in R^{N x N} (Eq. 4-5).
+     - Supervised with class-weighted cross-entropy (0.01 negative, 1.0 positive) (Eq. 15).
 
-Synchronization (only at intermediate steps, matching the paper):
-  - ESM (Entity -> Relation): current step's decoded entity spans define
-    which token pairs are "same-entity"; their averaged context vectors
-    feed into the next step's relation-channel hidden state.
-  - RSM (Relation -> Entity): current step's relation scores (thresholded)
-    weight an average of context vectors that feeds into the next step's
-    entity-channel hidden state.
+Synchronization across recurrent steps (Eq. 8-13):
+  - ESM (Entity -> Relation channel, Eq. 8-10):
+    Tokens sharing the same predicted entity span are grouped into entity blocks T_{i,j},
+    normalizing context vectors u_{t,i} = sum_j phi(T_{i,j}) h_j^s to update:
+    h_{t+1}^r = tanh(relationSyn_s(h^s) + relationSyn_u(u_t)).
+  - RSM (Relation -> Entity channel, Eq. 11-13):
+    Thresholded relation scores (G_{i,j} >= beta) weight context vectors r_{t,i} = sum_j phi(phi_beta(G_{i,j})) h_j^s:
+    h_{t+1}^o = tanh(targetSyn_s(h^s) + targetSyn_r(r_t)).
 
-Only the FINAL recurrent step is supervised (Eq. 3/6/14/15 in the paper).
-
-IMPORTANT -- content_mask: forward() takes an optional `content_mask`
-argument (1 for real-word subword positions, 0 for CLS/SEP/PAD), built by
-JointAOPEDataset from word_ids. This is used everywhere instead of the raw
-`attention_mask` (which is 1 for CLS/SEP too) -- for CRF loss masking,
-entity-span decoding during ESM, RSM's relation weighting, and the
-relation BCE loss. Without this, the CRF's start/end transitions get
-misapplied to CLS/SEP during decoding (never seen during training, since
-CRF loss masking already excludes them via aspect_labels == -100), and
-span decoding during ESM can silently splice CLS/SEP into a decoded span.
-If content_mask isn't provided, falls back to attention_mask (keeps the
-model usable with older non-CRF datasets, but loses this fix's benefit).
+Final joint objective (Eq. 16):
+  L(theta) = L_E + L_R
 """
 import os
 import sys
 
 import torch
+import torch.nn.functional as F
 from torch import nn
 from transformers import AutoConfig, AutoModel
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 sys.path.insert(0, os.path.dirname(__file__))
-from bio_labels import decode_bio_spans
+from bio_labels import decode_5way_bio_spans, decode_bio_spans
 from crf import LinearChainCRF
 
-NUM_BIO_LABELS = 3  # O, B, I
+NUM_BIO_LABELS = 5  # 0: O, 1: B-ASP, 2: I-ASP, 3: B-OPN, 4: I-OPN
+
+
+class RelationAttention(nn.Module):
+    """
+    Biaffine relation attention (Eq. 4-5 in Chen et al., ACL 2020):
+      gamma(h_i^r, h_j^r) = v * tanh(W_ta h_i^r + W_ja h_j^r + b)
+      G^t_{i, j} = softmax_j(gamma(h_i^r, h_j^r))
+    Produces a row-stochastic attention matrix where sum_j G^t_{i, j} = 1.
+    """
+
+    def __init__(self, hidden_dim: int, attention_dim: int | None = None):
+        super().__init__()
+        self.hidden_dim = hidden_dim
+        self.attention_dim = attention_dim or hidden_dim
+
+        self.w_ta = nn.Parameter(torch.empty(self.attention_dim, self.hidden_dim))
+        self.w_ja = nn.Parameter(torch.empty(self.attention_dim, self.hidden_dim))
+        self.b = nn.Parameter(torch.zeros(1, 1, 1, self.attention_dim))
+        self.v = nn.Parameter(torch.empty(1, self.attention_dim))
+
+        nn.init.xavier_uniform_(self.w_ta)
+        nn.init.xavier_uniform_(self.w_ja)
+        nn.init.xavier_uniform_(self.v)
+
+        self.softmax = nn.Softmax(dim=2)
+
+    def forward(
+        self,
+        relation_hidden: torch.Tensor,
+        mask2d: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        """
+        relation_hidden: (B, N, H)
+        mask2d: (B, N, N) boolean mask (True for content token pairs, False for padding/special)
+        Returns: (B, N, N) row-stochastic attention matrix G^t
+        """
+        ta = F.linear(relation_hidden, self.w_ta).unsqueeze(2)  # (B, N, 1, A)
+        ja = F.linear(relation_hidden, self.w_ja).unsqueeze(1)  # (B, 1, N, A)
+        alpha = torch.tanh(ta + ja + self.b)                   # (B, N, N, A)
+        scores = F.linear(alpha, self.v).squeeze(-1)            # (B, N, N)
+
+        if mask2d is not None:
+            scores = scores.masked_fill(~mask2d, -1e9)
+
+        g = self.softmax(scores)  # (B, N, N)
+
+        if mask2d is not None:
+            g = g * mask2d.float()
+        return g
 
 
 class JointAOPESDRN(nn.Module):
@@ -59,14 +99,14 @@ class JointAOPESDRN(nn.Module):
         dropout: float = 0.1,
         bio_class_weights: list | None = None,
         span_loss_weight: float = 1.0,
-        use_crf: bool = False,
+        use_crf: bool = True,
     ):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
         self.encoder = AutoModel.from_pretrained(model_name)
         h = self.config.hidden_size
         self.T = num_recurrent_steps
-        self.beta = relation_threshold  # filters weak relation scores in RSM, Eq. 12
+        self.beta = relation_threshold  # filters weak relation scores in RSM (Eq. 12)
         self.span_loss_weight = span_loss_weight
         self.use_crf = use_crf
 
@@ -77,170 +117,209 @@ class JointAOPESDRN(nn.Module):
         self.register_buffer("bio_weights", bio_w)
 
         self.dropout = nn.Dropout(dropout)
-        self.aspect_head = nn.Linear(h, NUM_BIO_LABELS)
-        self.opinion_head = nn.Linear(h, NUM_BIO_LABELS)
 
+        # Entity channel: unified 5-way BIO projection (Eq. 1-2)
+        self.target_head = nn.Linear(h, NUM_BIO_LABELS)
+
+        # CRF layer for 5-tag sequence decoding with syntactic BIO constraints
         if self.use_crf:
-            # bio_weights passed here are used ONLY inside the CRF's forward()
-            # (NLL loss) -- decode() explicitly skips them (see crf.py fix).
-            # Applying a class-weight boost to B/I emissions at decode time
-            # would bias every prediction toward B/I regardless of actual
-            # confidence, which isn't what class weighting is for.
-            self.aspect_crf = LinearChainCRF(
-                num_tags=NUM_BIO_LABELS,
-                bio_weights=self.bio_weights,
-                enforce_bio_constraints=True,
-            )
-            self.opinion_crf = LinearChainCRF(
+            self.crf = LinearChainCRF(
                 num_tags=NUM_BIO_LABELS,
                 bio_weights=self.bio_weights,
                 enforce_bio_constraints=True,
             )
 
-        # Relation scoring (Eq. 4-5): bilinear-style pairwise attention
-        self.rel_w1 = nn.Linear(h, h, bias=False)
-        self.rel_w2 = nn.Linear(h, h, bias=False)
-        self.rel_score = nn.Linear(h, 1, bias=False)
+        # Target Synchronization (RSM, Eq. 11-13)
+        self.targetSyn_r = nn.Linear(h, h, bias=False)
+        self.targetSyn_s = nn.Linear(h, h, bias=False)
 
-        # ESM (Eq. 10): entity semantics + context -> next relation hidden state
-        self.esm_proj = nn.Linear(h * 2, h)
-        # RSM (Eq. 13): relation semantics + context -> next entity hidden state
-        self.rsm_proj = nn.Linear(h * 2, h)
+        # Relation Synchronization (ESM, Eq. 8-10)
+        self.relationSyn_u = nn.Linear(h, h, bias=False)
+        self.relationSyn_s = nn.Linear(h, h, bias=False)
+
+        # Relation detection unit: biaffine relation attention (Eq. 4-5)
+        self.relation_attention = RelationAttention(hidden_dim=h, attention_dim=h)
+
+        # Official relation loss negative/positive class weights [0.01, 1.0] (Eq. 15)
+        self.register_buffer("relation_loss_weights", torch.tensor([0.01, 1.0], dtype=torch.float32))
 
     def decode_tags(
         self,
         logits: torch.Tensor,
         mask: torch.Tensor | None = None,
-        channel: str = "aspect",
-    ) -> list:
+        **kwargs,
+    ) -> list[list[int]]:
         """
         Decodes subword BIO tags for a batch of sequences. `mask` should be
-        content_mask (real-word positions only), not raw attention_mask --
-        see module docstring. If use_crf=True, performs global Viterbi
-        decoding with BIO constraints; otherwise greedy argmax (mask is
-        unused in that path since argmax is position-independent and
-        callers already restrict to content positions before use).
+        content_mask (real-word positions only). If use_crf=True, performs
+        global Viterbi decoding with BIO constraints; otherwise greedy argmax.
+        Returns (B, N) list of tag IDs in {0, 1, 2, 3, 4}.
         """
         if self.use_crf:
-            crf_layer = self.aspect_crf if channel == "aspect" else self.opinion_crf
-            preds = crf_layer.decode(logits, mask=mask)
+            preds = self.crf.decode(logits, mask=mask)
             return preds.cpu().tolist()
         return logits.argmax(-1).cpu().tolist()
 
-    def _relation_logits(self, h_r):
-        # h_r: (B, T, H) -> (B, T, T) pairwise scores, Eq. 4-5
-        B, N, H = h_r.shape
-        a = self.rel_w1(h_r).unsqueeze(2).expand(B, N, N, H)
-        b = self.rel_w2(h_r).unsqueeze(1).expand(B, N, N, H)
-        scores = self.rel_score(torch.tanh(a + b)).squeeze(-1)  # (B, N, N)
-        return scores
+    def _make_entity_tensor(
+        self,
+        tag_preds: list[list[int]],
+        batch_size: int,
+        seq_len: int,
+        device: torch.device,
+        content_mask: torch.Tensor,
+    ) -> torch.Tensor:
+        """
+        ESM entity block matrix construction (Eq. 8-9 in Chen et al. 2020).
+        For each detected aspect or opinion span [s, e), sets T[b, s:e, s:e] = 1.0,
+        grouping all tokens that belong to the same entity.
+        """
+        t_tensor = torch.zeros((batch_size, seq_len, seq_len), dtype=torch.float32, device=device)
 
-    def _entity_semantics(self, aspect_logits, opinion_logits, h_s, content_mask):
-        """ESM: for each token, average context vectors of tokens sharing
-        its (decoded) aspect or opinion span -- a discrete approximation of
-        SDRN's soft same-entity probability (Eq. 8-9). Decodes only over
-        real-word positions (content_mask), then maps local span indices
-        back to original sequence positions -- fixes the earlier version's
-        bug where CLS/SEP could be spliced into a decoded span."""
-        B = h_s.shape[0]
-        u = h_s.clone()  # default: every position falls back to its own context vector
-        a_pred = self.decode_tags(aspect_logits, mask=content_mask, channel="aspect")
-        o_pred = self.decode_tags(opinion_logits, mask=content_mask, channel="opinion")
-        id2tag = {0: "O", 1: "B", 2: "I"}
-
-        for b in range(B):
+        for b in range(batch_size):
             valid_positions = torch.nonzero(content_mask[b], as_tuple=True)[0].tolist()
             if not valid_positions:
                 continue
-            a_tags = [id2tag[a_pred[b][pos]] for pos in valid_positions]
-            o_tags = [id2tag[o_pred[b][pos]] for pos in valid_positions]
-            spans_local = decode_bio_spans(a_tags) + decode_bio_spans(o_tags)
 
-            # Map each local (0-indexed-into-valid_positions) span to a set
-            # of original sequence positions, then average their context
-            # vectors -- explicit per-index mapping, doesn't assume
-            # valid_positions is contiguous even though in practice it is.
-            for s_local, e_local in spans_local:
-                orig_positions = [valid_positions[i] for i in range(s_local, e_local)]
-                span_vec = h_s[b, orig_positions].mean(dim=0)
-                for pos in orig_positions:
-                    u[b, pos] = span_vec
-        return u
+            # Extract spans within valid positions
+            seq = tag_preds[b]
+            a_begin = -1
+            o_begin = -1
 
-    def _relation_semantics(self, rel_scores, h_s, content_mask):
-        """RSM: for each token, weighted average of context vectors using
-        thresholded relation scores (Eq. 11-12). content_mask excludes
-        CLS/SEP so they never contribute to or receive relation weight."""
-        weights = torch.sigmoid(rel_scores)
-        weights = torch.where(weights >= self.beta, weights, torch.zeros_like(weights))
-        mask2d = content_mask.float().unsqueeze(1) * content_mask.float().unsqueeze(2)
-        weights = weights * mask2d
-        denom = weights.sum(dim=-1, keepdim=True).clamp(min=1e-6)
-        weights = weights / denom
-        r = torch.bmm(weights, h_s)
-        return r
+            for pos in valid_positions:
+                tag = seq[pos]
+                # Close aspect span if tag is not continuation (I-ASP = 2)
+                if a_begin != -1 and tag != 2:
+                    t_tensor[b, a_begin:pos, a_begin:pos] = 1.0
+                    a_begin = -1
+                # Close opinion span if tag is not continuation (I-OPN = 4)
+                if o_begin != -1 and tag != 4:
+                    t_tensor[b, o_begin:pos, o_begin:pos] = 1.0
+                    o_begin = -1
 
-    def forward(self, input_ids, attention_mask, aspect_labels=None, opinion_labels=None,
-                relation_labels=None, content_mask=None, **kwargs):
+                if tag == 1:  # B-ASP
+                    a_begin = pos
+                elif tag == 3:  # B-OPN
+                    o_begin = pos
+
+            # Close any trailing spans
+            if a_begin != -1:
+                t_tensor[b, a_begin:valid_positions[-1] + 1, a_begin:valid_positions[-1] + 1] = 1.0
+            if o_begin != -1:
+                t_tensor[b, o_begin:valid_positions[-1] + 1, o_begin:valid_positions[-1] + 1] = 1.0
+
+        return t_tensor
+
+    def forward(
+        self,
+        input_ids: torch.Tensor,
+        attention_mask: torch.Tensor,
+        labels: torch.Tensor | None = None,
+        relation_labels: torch.Tensor | None = None,
+        content_mask: torch.Tensor | None = None,
+        aspect_labels: torch.Tensor | None = None,
+        opinion_labels: torch.Tensor | None = None,
+        **kwargs,
+    ) -> dict:
         if content_mask is None:
-            # Fallback for callers that don't provide it -- CLS/SEP will be
-            # (incorrectly) treated as content positions. Update the caller
-            # to pass content_mask from JointAOPEDataset instead.
             content_mask = attention_mask
         content_mask = content_mask.bool()
 
-        out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
-        h_s = self.dropout(out.last_hidden_state)  # (B, N, H), fixed context representation
+        B, N = input_ids.shape
+        mask2d = content_mask.unsqueeze(1) & content_mask.unsqueeze(2)
 
-        h_o = h_s  # entity-channel hidden state, starts from context representation
-        h_r = h_s  # relation-channel hidden state
+        # Convert separate aspect_labels and opinion_labels to 5-way labels if needed
+        if labels is None and aspect_labels is not None and opinion_labels is not None:
+            labels = torch.zeros_like(aspect_labels)
+            labels = torch.where(aspect_labels == 1, 1, labels)
+            labels = torch.where(aspect_labels == 2, 2, labels)
+            labels = torch.where((labels == 0) & (opinion_labels == 1), 3, labels)
+            labels = torch.where((labels == 0) & (opinion_labels == 2), 4, labels)
+            labels = torch.where(aspect_labels == -100, -100, labels)
 
-        aspect_logits = self.aspect_head(h_o)
-        opinion_logits = self.opinion_head(h_o)
-        rel_logits = self._relation_logits(h_r)
+        # Context representation sequence H^s (Eq. 3)
+        encoder_out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
+        h_s = self.dropout(encoder_out.last_hidden_state)  # (B, N, H)
 
-        for _ in range(self.T - 1):
-            # ESM: entity -> relation channel
-            u = self._entity_semantics(aspect_logits, opinion_logits, h_s, content_mask)
-            h_r = torch.tanh(self.esm_proj(torch.cat([u, h_s], dim=-1)))
+        # Initialize T_tensor and R_tensor to zero (Section 3.3.1 & 3.3.2)
+        t_tensor = torch.zeros((B, N, N), dtype=torch.float32, device=h_s.device)
+        r_tensor = torch.zeros((B, N, N), dtype=torch.float32, device=h_s.device)
 
-            # RSM: relation -> entity channel
-            r = self._relation_semantics(rel_logits, h_s, content_mask)
-            h_o = torch.tanh(self.rsm_proj(torch.cat([r, h_s], dim=-1)))
+        target_emissions = None
+        relation_score = None
 
-            aspect_logits = self.aspect_head(h_o)
-            opinion_logits = self.opinion_head(h_o)
-            rel_logits = self._relation_logits(h_r)
+        # Synchronous recurrent iterations (Eq. 8-13)
+        for step in range(self.T):
+            # 1. Target Synchronization Mechanism (RSM, Eq. 11-13)
+            # Filter weak relation scores below beta
+            r_filtered = torch.where(r_tensor >= self.beta, r_tensor, torch.zeros_like(r_tensor))
+            r_filtered = r_filtered * mask2d.float()
+
+            target_weighted = torch.bmm(r_filtered, h_s)
+            target_div = r_filtered.sum(dim=-1, keepdim=True)
+            target_div = target_div + (target_div == 0).float()
+            target_r = target_weighted / target_div
+
+            # Update target hidden state h_o (Eq. 13)
+            target_hidden = torch.tanh(self.targetSyn_s(h_s) + self.targetSyn_r(target_r))
+
+            # 2. Relation Synchronization Mechanism (ESM, Eq. 8-10)
+            t_masked = t_tensor * mask2d.float()
+            relation_weighted = torch.bmm(t_masked, h_s)
+            relation_div = t_masked.sum(dim=-1, keepdim=True)
+            relation_div = relation_div + (relation_div == 0).float()
+            relation_u = relation_weighted / relation_div
+
+            # Update relation hidden state h_r (Eq. 10)
+            relation_hidden = torch.tanh(self.relationSyn_s(h_s) + self.relationSyn_u(relation_u))
+
+            # 3. Entity Extraction Unit: compute 5-way emission scores (Eq. 1-2)
+            target_emissions = self.target_head(target_hidden)
+
+            # 4. Relation Detection Unit: compute row-stochastic attention matrix G^t (Eq. 4-5)
+            relation_score = self.relation_attention(relation_hidden, mask2d=mask2d)
+
+            # If not at the final recurrent step, update T and R for next iteration
+            if step < self.T - 1:
+                # Update R_tensor with current relation scores
+                r_tensor = relation_score
+                # Update T_tensor with decoded entity spans from current emissions
+                tag_preds = self.decode_tags(target_emissions, mask=content_mask)
+                t_tensor = self._make_entity_tensor(tag_preds, B, N, h_s.device, content_mask)
 
         loss = None
-        if aspect_labels is not None and opinion_labels is not None and relation_labels is not None:
+        loss_e = None
+        loss_r = None
+
+        # Compute joint loss at the final step T (Eq. 14-16)
+        if labels is not None and relation_labels is not None:
+            # 1. Entity Loss L_E (Eq. 14)
+            mask_e = content_mask & (labels != -100)
             if self.use_crf:
-                # content_mask already excludes CLS/SEP/PAD; the extra
-                # (aspect_labels != -100) check is now redundant with it
-                # (both encode exactly the same positions -- see
-                # dataset.py's content_mask construction) but kept as a
-                # defensive safety net in case the two ever diverge.
-                mask_a = content_mask & (aspect_labels != -100)
-                mask_o = content_mask & (opinion_labels != -100)
-                loss_a = self.aspect_crf(aspect_logits, aspect_labels, mask=mask_a)
-                loss_o = self.opinion_crf(opinion_logits, opinion_labels, mask=mask_o)
+                loss_e = self.crf(target_emissions, labels, mask=mask_e)
             else:
                 ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
-                loss_a = ce(aspect_logits.reshape(-1, NUM_BIO_LABELS), aspect_labels.reshape(-1))
-                loss_o = ce(opinion_logits.reshape(-1, NUM_BIO_LABELS), opinion_labels.reshape(-1))
+                loss_e = ce(target_emissions.reshape(-1, NUM_BIO_LABELS), labels.reshape(-1))
 
-            mask2d = (content_mask.float().unsqueeze(1) * content_mask.float().unsqueeze(2))
-            bce = nn.BCEWithLogitsLoss(reduction="none")
-            rel_loss_raw = bce(rel_logits, relation_labels.float())
-            # Normalize relation loss per-sequence (batch_size) rather than per-pair (N^2),
-            # bringing L_R to the same ~20-30 scale as CRF sequence NLL (Eq. 15-16 in SDRN)
-            loss_r = (rel_loss_raw * mask2d).sum() / content_mask.size(0)
+            # 2. Relation Loss L_R (Eq. 15): Class-weighted cross entropy on [1 - G, G]
+            rel_ce = nn.CrossEntropyLoss(weight=self.relation_loss_weights, ignore_index=-100)
+            r_flat = relation_score.reshape(-1, 1)
+            r_probs = torch.cat([1.0 - r_flat, r_flat], dim=1)  # (B*N*N, 2)
+            rel_labels_flat = relation_labels.reshape(-1).long()
+            # Non-content token pairs are ignored
+            mask2d_flat = mask2d.reshape(-1)
+            rel_labels_flat = torch.where(mask2d_flat, rel_labels_flat, torch.full_like(rel_labels_flat, -100))
+            loss_r = rel_ce(r_probs, rel_labels_flat)
 
-            loss = self.span_loss_weight * (loss_a + loss_o) + loss_r
+            # 3. Total Loss (Eq. 16): L(theta) = L_E + L_R
+            loss = self.span_loss_weight * loss_e + loss_r
 
         return {
             "loss": loss,
-            "aspect_logits": aspect_logits,
-            "opinion_logits": opinion_logits,
-            "relation_logits": rel_logits,
+            "loss_e": loss_e,
+            "loss_r": loss_r,
+            "logits": target_emissions,
+            "relation_logits": relation_score,
+            # Backward compatibility aliases:
+            "aspect_logits": target_emissions,
+            "opinion_logits": target_emissions,
         }
