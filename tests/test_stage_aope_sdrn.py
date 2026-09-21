@@ -2,6 +2,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_aope_sdrn"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "common"))
 from relation_utils import (
     build_word_relation_matrix,
     compute_prf,
@@ -58,16 +59,17 @@ def test_correlation_degree_perfect_and_zero():
 
 
 def test_correlation_degree_partial_match():
-    # Multi-token spans with partial relation
+    # Multi-token spans with partial relation (Eq. 17 in Chen et al. 2020)
     # Suppose aspect is (0, 2) [tokens 0, 1], opinion is (2, 4) [tokens 2, 3]
-    # Matrix only links (0, 2)
+    # Matrix only links (0, 2) and (2, 0)
     matrix = [[0] * 5 for _ in range(5)]
     matrix[0][2] = 1
     matrix[2][0] = 1
 
     deg = correlation_degree(matrix, (0, 2), (2, 4))
-    # Aspect len 2, Opinion len 2 -> 4 pairs total, only 1 linked -> 1/4 = 0.25
-    assert abs(deg - 0.25) < 1e-6
+    # Aspect len 2 (token 0 linked -> 1/2), Opinion len 2 (token 2 linked -> 1/2) -> (0.5 + 0.5) / 2 = 0.5
+    assert abs(deg - 0.5) < 1e-6
+
 
 
 def test_explicit_pairs_filters_implicit():
@@ -161,6 +163,37 @@ def test_sweep_thresholds():
     assert sweep["best_metrics"]["f1"] == 1.0
 
 
+def test_build_word_bio_5way_and_decode_5way():
+    from bio_labels import build_word_bio_5way, decode_5way_bio_spans
+
+    # 7 tokens: aspect at (1, 3) [tokens 1, 2], opinion at (4, 6) [tokens 4, 5]
+    a_spans = [(1, 3)]
+    o_spans = [(4, 6)]
+    tags = build_word_bio_5way(7, a_spans, o_spans)
+    assert tags == ["O", "B-ASP", "I-ASP", "O", "B-OPN", "I-OPN", "O"]
+
+    dec_a, dec_o = decode_5way_bio_spans(tags)
+    assert dec_a == [(1, 3)]
+    assert dec_o == [(4, 6)]
+
+
+def test_align_and_decode_subwords_5way():
+    from align import align_labels_to_subwords_5way, decode_subword_predictions_5way
+
+    # Word tags: ["O", "B-ASP", "B-OPN"]
+    word_tags = ["O", "B-ASP", "B-OPN"]
+    # Subwords: CLS, word0, word1_sub1, word1_sub2, word2, SEP
+    word_ids = [None, 0, 1, 1, 2, None]
+    sub_labels = align_labels_to_subwords_5way(word_ids, word_tags)
+    # None -> -100, word0 -> 0 (O), word1_sub1 -> 1 (B-ASP), word1_sub2 -> 2 (I-ASP), word2 -> 3 (B-OPN), None -> -100
+    assert sub_labels == [-100, 0, 1, 2, 3, -100]
+
+    # Decode predictions back to words
+    pred_sub_ids = [0, 0, 1, 2, 3, 0]
+    decoded_word_tags = decode_subword_predictions_5way(word_ids, pred_sub_ids)
+    assert decoded_word_tags == ["O", "B-ASP", "B-OPN"]
+
+
 def test_stage_aope_sdrn_config_explicit_and_weights():
     import yaml
 
@@ -171,8 +204,8 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert cfg.get("data", {}).get("train") == "data/prepared_explicit/train.jsonl"
     assert cfg.get("data", {}).get("dev") == "data/prepared_explicit/dev.jsonl"
     assert cfg.get("data", {}).get("test") == "data/prepared_explicit/test.jsonl"
-    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 5.0, 5.0]
-    assert cfg.get("training", {}).get("span_loss_weight") == 3.0
+    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 5.0, 5.0, 5.0, 5.0]
+    assert cfg.get("training", {}).get("span_loss_weight") == 1.0
     assert cfg.get("use_crf") is True
 
 
@@ -190,19 +223,5 @@ if __name__ == "__main__":
         print(f"  PASSED: {fn.__name__}")
     print("All tests passed successfully!")
 
-
-if __name__ == "__main__":
-    import inspect
-
-    current_module = sys.modules[__name__]
-    test_funcs = [
-        obj for name, obj in inspect.getmembers(current_module, inspect.isfunction)
-        if name.startswith("test_")
-    ]
-    print(f"Running {len(test_funcs)} unit tests...")
-    for fn in test_funcs:
-        fn()
-        print(f"  PASSED: {fn.__name__}")
-    print("All tests passed successfully!")
 
 

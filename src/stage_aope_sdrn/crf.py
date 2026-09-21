@@ -78,7 +78,7 @@ def viterbi_decode_reference(
 
 def validate_bio_path_reference(path: list[int]) -> bool:
     """
-    Pure-Python reference validator for BIO tag sequence constraints.
+    Pure-Python reference validator for BIO tag sequence constraints (3-tag).
     Returns True if valid, False if it starts with 'I' (2) or contains 'O' -> 'I' (0 -> 2).
     Empty paths are valid.
     """
@@ -92,17 +92,35 @@ def validate_bio_path_reference(path: list[int]) -> bool:
     return True
 
 
+def validate_5way_bio_path_reference(path: list[int]) -> bool:
+    """
+    Pure-Python reference validator for unified 5-way BIO tag constraints:
+      0: 'O', 1: 'B-ASP', 2: 'I-ASP', 3: 'B-OPN', 4: 'I-OPN'
+    Returns False if sequence starts with I-ASP (2) or I-OPN (4),
+    or contains transitions: O -> I-*, ASP -> I-OPN, OPN -> I-ASP.
+    """
+    if not path:
+        return True
+    if path[0] in (2, 4):
+        return False
+    forbidden = {(0, 2), (0, 4), (1, 4), (2, 4), (3, 2), (4, 2)}
+    for t in range(1, len(path)):
+        if (path[t - 1], path[t]) in forbidden:
+            return False
+    return True
+
+
 if TORCH_AVAILABLE:
 
     class LinearChainCRF(nn.Module):
         """
         Linear-Chain CRF supporting batch-first tensors and BIO constraints.
-        Tags: 0: 'O', 1: 'B', 2: 'I'.
+        Supports 3 tags (O, B, I) and 5 tags (O, B-ASP, I-ASP, B-OPN, I-OPN).
         """
 
         def __init__(
             self,
-            num_tags: int = 3,
+            num_tags: int = 5,
             bio_weights: torch.Tensor | list[float] | None = None,
             enforce_bio_constraints: bool = True,
         ):
@@ -133,6 +151,24 @@ if TORCH_AVAILABLE:
                 start_mask[2] = True
                 self.register_buffer("forbidden_trans_mask", trans_mask)
                 self.register_buffer("forbidden_start_mask", start_mask)
+            elif self.enforce_bio_constraints and self.num_tags == 5:
+                # 0: O, 1: B-ASP, 2: I-ASP, 3: B-OPN, 4: I-OPN
+                # Disallow START -> I-ASP, START -> I-OPN
+                # Disallow O -> I-ASP, O -> I-OPN
+                # Disallow B-ASP -> I-OPN, I-ASP -> I-OPN
+                # Disallow B-OPN -> I-ASP, I-OPN -> I-ASP
+                trans_mask = torch.zeros(num_tags, num_tags, dtype=torch.bool)
+                trans_mask[0, 2] = True
+                trans_mask[0, 4] = True
+                trans_mask[1, 4] = True
+                trans_mask[2, 4] = True
+                trans_mask[3, 2] = True
+                trans_mask[4, 2] = True
+                start_mask = torch.zeros(num_tags, dtype=torch.bool)
+                start_mask[2] = True
+                start_mask[4] = True
+                self.register_buffer("forbidden_trans_mask", trans_mask)
+                self.register_buffer("forbidden_start_mask", start_mask)
             else:
                 self.forbidden_trans_mask = None
                 self.forbidden_start_mask = None
@@ -161,8 +197,8 @@ if TORCH_AVAILABLE:
         ):
             """
             Validates that active gold sequences obey syntactic BIO constraints:
-              - An active sequence cannot start with 'I' (tag 2).
-              - An active sequence cannot transition from 'O' (tag 0) to 'I' (tag 2).
+              - An active sequence cannot start with a forbidden tag (e.g. I-tag).
+              - An active sequence cannot execute a forbidden transition.
             Empty/inactive sequences (lengths == 0) are ignored.
             Raises ValueError if any active gold path violates BIO syntax.
             """
@@ -170,26 +206,33 @@ if TORCH_AVAILABLE:
             if not active.any():
                 return
 
-            # Check 1: START -> I (first active tag is I)
-            starts_with_i = active & (packed_tags[:, 0] == 2)
-            if starts_with_i.any():
-                bad_idx = int(torch.nonzero(starts_with_i, as_tuple=True)[0][0].item())
-                raise ValueError(
-                    f"Invalid BIO gold path for example {bad_idx}: active sequence starts with 'I' (tag 2)."
-                )
+            # Check 1: START transitions
+            if self.forbidden_start_mask is not None:
+                starts_forbidden = active & self.forbidden_start_mask[packed_tags[:, 0]]
+                if starts_forbidden.any():
+                    bad_idx = int(torch.nonzero(starts_forbidden, as_tuple=True)[0][0].item())
+                    bad_tag = int(packed_tags[bad_idx, 0].item())
+                    raise ValueError(
+                        f"Invalid BIO gold path for example {bad_idx}: active sequence starts with forbidden tag {bad_tag}."
+                    )
 
-            # Check 2: O -> I transition
-            if packed_tags.shape[1] > 1:
+            # Check 2: Forbidden step-to-step transitions
+            if self.forbidden_trans_mask is not None and packed_tags.shape[1] > 1:
                 valid_pairs = active.unsqueeze(1) & packed_mask[:, :-1] & packed_mask[:, 1:]
-                o_to_i = valid_pairs & (packed_tags[:, :-1] == 0) & (packed_tags[:, 1:] == 2)
-                if o_to_i.any():
-                    match_indices = torch.nonzero(o_to_i, as_tuple=True)
+                from_tags = packed_tags[:, :-1]
+                to_tags = packed_tags[:, 1:]
+                is_forbidden = self.forbidden_trans_mask[from_tags, to_tags] & valid_pairs
+                if is_forbidden.any():
+                    match_indices = torch.nonzero(is_forbidden, as_tuple=True)
                     bad_idx = int(match_indices[0][0].item())
                     bad_pos = int(match_indices[1][0].item())
+                    f_tag = int(from_tags[bad_idx, bad_pos].item())
+                    t_tag = int(to_tags[bad_idx, bad_pos].item())
                     raise ValueError(
-                        f"Invalid BIO gold path for example {bad_idx}: contains forbidden 'O' -> 'I' "
-                        f"transition at step {bad_pos} -> {bad_pos + 1}."
+                        f"Invalid BIO gold path for example {bad_idx}: contains forbidden transition "
+                        f"{f_tag} -> {t_tag} at step {bad_pos} -> {bad_pos + 1}."
                     )
+
 
         def _apply_bio_weights(self, emissions: torch.Tensor) -> torch.Tensor:
             """Scales emissions by class weight -- used ONLY inside the NLL

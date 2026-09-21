@@ -13,8 +13,8 @@ import torch
 from torch.utils.data import Dataset
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from align import align_labels_to_subwords
-from bio_labels import build_word_bio
+from align import align_labels_to_subwords, align_labels_to_subwords_5way
+from bio_labels import build_word_bio, build_word_bio_5way
 from relation_utils import build_word_relation_matrix, explicit_pairs
 
 
@@ -40,6 +40,7 @@ class JointAOPEDataset(Dataset):
         o_spans = [p[1] for p in pairs]
         a_word_tags = build_word_bio(n, a_spans)
         o_word_tags = build_word_bio(n, o_spans)
+        unified_word_tags = build_word_bio_5way(n, a_spans, o_spans)
         word_rel_matrix = build_word_relation_matrix(n, pairs)
 
         enc = self.tokenizer(tokens, is_split_into_words=True, truncation=True,
@@ -48,6 +49,7 @@ class JointAOPEDataset(Dataset):
 
         a_label_ids = align_labels_to_subwords(word_ids, a_word_tags)
         o_label_ids = align_labels_to_subwords(word_ids, o_word_tags)
+        unified_label_ids = align_labels_to_subwords_5way(word_ids, unified_word_tags)
 
         # Project the word-level relation matrix onto subwords: every
         # subword of word i inherits word i's relation row/column.
@@ -64,6 +66,7 @@ class JointAOPEDataset(Dataset):
 
         item = {k: torch.tensor(v) for k, v in enc.items() if k != "overflow_to_sample_mapping"}
         item["content_mask"] = torch.tensor([wid is not None for wid in word_ids], dtype=torch.bool)
+        item["labels"] = torch.tensor(unified_label_ids)
         item["aspect_labels"] = torch.tensor(a_label_ids)
         item["opinion_labels"] = torch.tensor(o_label_ids)
         item["relation_labels"] = torch.tensor(rel_matrix)

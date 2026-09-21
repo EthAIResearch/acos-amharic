@@ -36,10 +36,13 @@ def build_word_relation_matrix(n_tokens: int, pairs: list) -> list:
 
 def correlation_degree(rel_matrix, a_span: tuple, o_span: tuple) -> float:
     """
-    SDRN's inference-time pair scoring (Eq. 17): the bidirectional average
-    relation score between an aspect span and an opinion span, using the
-    (predicted or gold) token-pair relation matrix. A pair is accepted if
-    this exceeds a threshold (0.5 default, matching the paper).
+    SDRN's inference-time pair scoring (Eq. 17 in Chen et al. 2020):
+    Bidirectional average relation score between aspect span `a` and opinion span `o`:
+        delta(a, o) = 0.5 * ( (sum_{k in a, l in o} G_{k,l}) / |a| + (sum_{l in o, k in a} G_{l,k}) / |o| )
+    Since G is row-stochastic (softmax over columns), each token k in a distributes
+    at most 1.0 attention across all tokens, so sum_{l in o} G_{k, l} <= 1.0.
+    Dividing by |a| and |o| normalizes each direction to [0, 1].
+    A pair is accepted if delta(a, o) >= threshold (default 0.5).
     """
     a1, a2 = a_span
     o1, o2 = o_span
@@ -49,7 +52,8 @@ def correlation_degree(rel_matrix, a_span: tuple, o_span: tuple) -> float:
 
     sum_ao = sum(rel_matrix[k][l] for k in range(a1, a2) for l in range(o1, o2))
     sum_oa = sum(rel_matrix[l][k] for l in range(o1, o2) for k in range(a1, a2))
-    return 0.5 * (sum_ao / (len_a * len_o) + sum_oa / (len_o * len_a))
+    return 0.5 * (sum_ao / len_a + sum_oa / len_o)
+
 
 
 def compute_prf(pred_items_per_ex: list, gold_items_per_ex: list) -> dict:
