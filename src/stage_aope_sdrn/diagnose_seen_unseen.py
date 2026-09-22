@@ -275,7 +275,8 @@ def print_vocab_report(results: dict):
         print(f"  Test span instances : {total:,}")
         print()
 
-        pct = lambda n: f"{n / total * 100:.1f}%" if total > 0 else "N/A"
+        def pct(n: int, t: int = total) -> str:
+            return f"{n / t * 100:.1f}%" if t > 0 else "N/A"
 
         print(f"  Granularity          │ Seen          │ Unseen")
         print(f"  ─────────────────────┼───────────────┼───────────────")
