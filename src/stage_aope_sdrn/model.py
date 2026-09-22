@@ -37,6 +37,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 sys.path.insert(0, os.path.dirname(__file__))
 from bio_labels import decode_5way_bio_spans, decode_bio_spans
 from crf import LinearChainCRF
+from loss import MultiClassDiceLoss
 
 NUM_BIO_LABELS = 5  # 0: O, 1: B-ASP, 2: I-ASP, 3: B-OPN, 4: I-OPN
 
@@ -101,6 +102,7 @@ class JointAOPESDRN(nn.Module):
         dropout: float = 0.1,
         bio_class_weights: list | None = None,
         span_loss_weight: float = 1.0,
+        dice_loss_weight: float = 0.0,
         use_crf: bool = True,
     ):
         super().__init__()
@@ -110,6 +112,7 @@ class JointAOPESDRN(nn.Module):
         self.T = num_recurrent_steps
         self.beta = relation_threshold  # filters weak relation scores in RSM (Eq. 12)
         self.span_loss_weight = span_loss_weight
+        self.dice_loss_weight = dice_loss_weight
         self.use_crf = use_crf
 
         if bio_class_weights is not None:
@@ -133,6 +136,15 @@ class JointAOPESDRN(nn.Module):
                 bio_weights=self.bio_weights,
                 enforce_bio_constraints=True,
             )
+
+        # Auxiliary Multi-Class Generalized Dice Loss (Li et al., ACL 2020)
+        if self.dice_loss_weight > 0.0:
+            self.dice_loss = MultiClassDiceLoss(
+                num_classes=NUM_BIO_LABELS,
+                weight=self.bio_weights,
+            )
+        else:
+            self.dice_loss = None
 
         # Target Synchronization (RSM, Eq. 11-13)
         self.targetSyn_r = nn.Linear(h, h, bias=False)
@@ -313,6 +325,11 @@ class JointAOPESDRN(nn.Module):
                 ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
                 loss_e = ce(target_emissions.reshape(-1, NUM_BIO_LABELS), labels.reshape(-1))
 
+            loss_dice = None
+            if self.dice_loss is not None and self.dice_loss_weight > 0.0:
+                loss_dice = self.dice_loss(target_emissions, labels, mask=mask_e)
+                loss_e = loss_e + self.dice_loss_weight * loss_dice
+
             # 2. Relation Loss L_R (Eq. 15): Class-weighted cross entropy on [1 - G, G]
             rel_ce = nn.CrossEntropyLoss(weight=self.relation_loss_weights, ignore_index=-100)
             r_flat = relation_score.reshape(-1, 1)
@@ -330,6 +347,7 @@ class JointAOPESDRN(nn.Module):
             "loss": loss,
             "loss_e": loss_e,
             "loss_r": loss_r,
+            "loss_dice": loss_dice,
             "logits": target_emissions,
             "relation_logits": relation_score,
             # Backward compatibility aliases:
