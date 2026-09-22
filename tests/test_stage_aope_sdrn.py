@@ -314,10 +314,11 @@ def test_opinion_emission_bias_viterbi_boost():
     assert decoded_biased == [0, 3, 0]  # Step 1 successfully shifted to B-OPN (idx 3)
 def test_joint_aope_sdrn_forward_eval_mode_no_labels():
     try:
+        from unittest.mock import MagicMock, patch
+
         import torch
-        import torch.nn as nn
-        from unittest.mock import patch, MagicMock
         from model import JointAOPESDRN
+        from torch import nn
     except ImportError:
         return
 
