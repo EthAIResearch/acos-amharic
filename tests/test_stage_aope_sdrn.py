@@ -469,6 +469,67 @@ def test_joint_aope_sdrn_forward_eval_mode_no_labels():
         assert out["relation_logits"] is not None
 
 
+def test_joint_aope_dataset_word_labels_and_collate():
+    try:
+        from unittest.mock import MagicMock
+        import torch
+        from dataset import JointAOPEDataset, collate_fn
+        from align import ID2LABEL_5WAY
+        from bio_labels import decode_5way_bio_spans
+    except ImportError:
+        return
+
+    # Mock tokenizer returning word_ids
+    mock_enc = {
+        "input_ids": [101, 10, 20, 30, 40, 102],
+        "attention_mask": [1, 1, 1, 1, 1, 1],
+    }
+    word_ids_mock = [None, 0, 1, 2, 3, None]
+
+    class MockBatchEncoding(dict):
+        def word_ids(self, batch_index=0):
+            return word_ids_mock
+
+    mock_tokenizer = MagicMock()
+    mock_tokenizer.side_effect = lambda tokens, **kwargs: MockBatchEncoding(mock_enc)
+
+    ds = JointAOPEDataset.__new__(JointAOPEDataset)
+    ds.tokenizer = mock_tokenizer
+    ds.max_length = 6
+    ds.max_words = 8
+    ds.records = [
+        {
+            "tokens": ["ምግቡ", "በጣም", "ጥሩ", "ነው"],
+            "quads": [
+                {"a_start": 0, "a_end": 1, "o_start": 1, "o_end": 3}
+            ],
+        }
+    ]
+
+    item = ds[0]
+
+    # Verify word_labels is a long tensor (NOT string)
+    assert isinstance(item["word_labels"], torch.Tensor)
+    assert item["word_labels"].dtype == torch.long
+    assert item["word_labels"].tolist()[:4] == [1, 3, 4, 0]  # B-ASP, B-OPN, I-OPN, O
+    assert all(x == -100 for x in item["word_labels"].tolist()[4:])
+
+    # Verify collate_fn dynamically slices to max_m
+    batch = collate_fn([item, item])
+    assert batch["word_labels"].shape == (2, 4)
+    assert batch["subword_to_word"].shape == (2, 4, 6)
+    assert batch["word_relation_labels"].shape == (2, 4, 4)
+    assert batch["word_relation_labels"][0, 0, 1].item() == 1
+    assert batch["word_relation_labels"][0, 1, 0].item() == 1
+
+    # Verify decode_5way_bio_spans with ID2LABEL_5WAY
+    word_tags = [ID2LABEL_5WAY[pid] for pid in batch["word_labels"][0].tolist()]
+    assert word_tags == ["B-ASP", "B-OPN", "I-OPN", "O"]
+    a_spans, o_spans = decode_5way_bio_spans(word_tags)
+    assert a_spans == [(0, 1)]
+    assert o_spans == [(1, 3)]
+
+
 if __name__ == "__main__":
     import inspect
 

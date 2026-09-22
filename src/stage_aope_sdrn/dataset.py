@@ -13,7 +13,7 @@ import torch
 from torch.utils.data import Dataset
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from align import align_labels_to_subwords, align_labels_to_subwords_5way
+from align import align_labels_to_subwords, align_labels_to_subwords_5way, LABEL2ID_5WAY
 from bio_labels import build_word_bio, build_word_bio_5way
 from relation_utils import build_word_relation_matrix, explicit_pairs
 
@@ -80,7 +80,7 @@ class JointAOPEDataset(Dataset):
             sis = word_to_subwords[wi]
             if sis:
                 word_mask[wi] = True
-                word_labels[wi] = unified_word_tags[wi]
+                word_labels[wi] = LABEL2ID_5WAY.get(unified_word_tags[wi], 0)
                 inv_len = 1.0 / len(sis)
                 for si in sis:
                     subword_to_word[wi][si] = inv_len
@@ -111,8 +111,11 @@ class JointAOPEDataset(Dataset):
 def collate_fn(batch):
     # Dynamically slice word-level tensors to max words in this batch
     if "word_mask" in batch[0]:
-        max_m = max(int(b["word_mask"].sum().item()) for b in batch)
-        max_m = max(max_m, 1)
+        max_m = 1
+        for b in batch:
+            nz = b["word_mask"].nonzero()
+            if len(nz) > 0:
+                max_m = max(max_m, int(nz[-1].item()) + 1)
         collated = {}
         for k in batch[0]:
             if k in ("subword_to_word", "word_mask", "word_labels"):

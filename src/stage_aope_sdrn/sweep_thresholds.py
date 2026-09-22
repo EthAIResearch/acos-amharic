@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 
 import torch
 import yaml
-from align import decode_subword_predictions, decode_subword_predictions_5way
+from align import decode_subword_predictions, decode_subword_predictions_5way, ID2LABEL_5WAY
 from bio_labels import decode_5way_bio_spans, decode_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
@@ -175,7 +175,7 @@ def run_sweep(
             for i, item in enumerate(c_batch["items"]):
                 if c_batch.get("is_word_level", False):
                     n_words = len(item["rec"]["tokens"])
-                    word_tags = pred_ids[i][:n_words]
+                    word_tags = [ID2LABEL_5WAY.get(pid, "O") for pid in pred_ids[i][:n_words]]
                 else:
                     word_ids = item["word_ids"]
                     word_tags = decode_subword_predictions_5way(

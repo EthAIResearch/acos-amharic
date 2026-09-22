@@ -68,7 +68,7 @@ def classify_span_boundary_match(gold_span: tuple[int, int], pred_spans: list[tu
 def main():
     import torch
     import yaml
-    from align import decode_subword_predictions_5way
+    from align import decode_subword_predictions_5way, ID2LABEL_5WAY
     from bio_labels import decode_5way_bio_spans
     from dataset import JointAOPEDataset, collate_fn
     from model import JointAOPESDRN
@@ -152,10 +152,24 @@ def main():
         else:
             content_mask = attn.bool()
 
-        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
+        subword_to_word = batch.get("subword_to_word")
+        word_mask = batch.get("word_mask")
+        if subword_to_word is not None:
+            subword_to_word = subword_to_word.to(device)
+            word_mask = word_mask.to(device)
+
+        out = model(
+            input_ids=input_ids,
+            attention_mask=attn,
+            content_mask=content_mask,
+            subword_to_word=subword_to_word,
+            word_mask=word_mask,
+        )
+        is_word_level = out.get("is_word_level", False)
+        decode_mask = word_mask if is_word_level else content_mask
         pred_ids = model.decode_tags(
             out["logits"],
-            mask=content_mask,
+            mask=decode_mask,
             opinion_emission_bias=args.opinion_bias,
         )
 
@@ -163,19 +177,23 @@ def main():
         for i in range(bsz):
             rec = test_ds.records[rec_idx]
             rec_idx += 1
-            enc = tokenizer(
-                rec["tokens"],
-                is_split_into_words=True,
-                truncation=True,
-                max_length=test_ds.max_length,
-            )
-            word_ids = enc.word_ids(batch_index=0)
+            n_words = len(rec["tokens"])
 
-            word_tags = decode_subword_predictions_5way(
-                word_ids,
-                pred_ids[i][:len(word_ids)],
-                strategy=args.subword_aggregation,
-            )
+            if is_word_level:
+                word_tags = [ID2LABEL_5WAY.get(pid, "O") for pid in pred_ids[i][:n_words]]
+            else:
+                enc = tokenizer(
+                    rec["tokens"],
+                    is_split_into_words=True,
+                    truncation=True,
+                    max_length=test_ds.max_length,
+                )
+                word_ids = enc.word_ids(batch_index=0)
+                word_tags = decode_subword_predictions_5way(
+                    word_ids,
+                    pred_ids[i][:len(word_ids)],
+                    strategy=args.subword_aggregation,
+                )
             pred_aspects, pred_opinions = decode_5way_bio_spans(word_tags)
             g_pairs = explicit_pairs(rec["quads"])
 

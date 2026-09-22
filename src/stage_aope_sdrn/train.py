@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 import numpy as np
 import torch
 import yaml
-from align import decode_subword_predictions, decode_subword_predictions_5way
+from align import decode_subword_predictions, decode_subword_predictions_5way, ID2LABEL_5WAY
 from bio_labels import decode_5way_bio_spans, decode_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
@@ -137,7 +137,7 @@ def evaluate(
 
             if is_word_level:
                 # Phase 3 Word-Level: direct word tag slicing and word-level relation matrix
-                word_tags = pred_ids[i][:n_words]
+                word_tags = [ID2LABEL_5WAY.get(pid, "O") for pid in pred_ids[i][:n_words]]
                 a_spans, o_spans = decode_5way_bio_spans(word_tags)
                 word_rel = [row[:n_words] for row in rel_scores[i][:n_words]]
             else:
