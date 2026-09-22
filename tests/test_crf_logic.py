@@ -216,6 +216,7 @@ def test_config_stage_aope_sdrn_crf_enabled():
     assert cfg.get("output_dir") in (
         "results/stage_aope_sdrn/afroxlmr_crf_run1",
         "results/stage_aope_sdrn/afroxlmr_crf_run2",
+        "results/stage_aope_sdrn/afroxlmr_crf_run3",
     )
 
 

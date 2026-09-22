@@ -75,6 +75,7 @@ def load_config_defaults(config_path):
         "fp16": training.get("fp16"),
         "bio_class_weights": training.get("bio_class_weights"),
         "span_loss_weight": training.get("span_loss_weight"),
+        "dice_loss_weight": training.get("dice_loss_weight"),
     })
     return {k: v for k, v in flat.items() if v is not None}
 
