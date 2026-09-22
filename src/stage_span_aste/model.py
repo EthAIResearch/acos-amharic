@@ -144,9 +144,10 @@ class SpanASTEModel(nn.Module):
         if not spans:
             return torch.empty((0, 2 * word_hidden.size(-1) + self.width_embedding.embedding_dim), device=device), torch.empty((0,), dtype=torch.long, device=device)
 
-        starts = torch.tensor([s for s, e in spans], dtype=torch.long, device=device)
-        ends = torch.tensor([e - 1 for s, e in spans], dtype=torch.long, device=device)
-        widths = torch.tensor([bucket_value(e - s) for s, e in spans], dtype=torch.long, device=device)
+        max_idx = max(word_hidden.size(0) - 1, 0)
+        starts = torch.clamp(torch.tensor([s for s, e in spans], dtype=torch.long, device=device), 0, max_idx)
+        ends = torch.clamp(torch.tensor([e - 1 for s, e in spans], dtype=torch.long, device=device), 0, max_idx)
+        widths = torch.clamp(torch.tensor([bucket_value(e - s) for s, e in spans], dtype=torch.long, device=device), 0, 9)
 
         start_reps = word_hidden[starts]  # (K, d)
         end_reps = word_hidden[ends]      # (K, d)
@@ -208,9 +209,11 @@ class SpanASTEModel(nn.Module):
             # Mention Loss
             if gold_mention_labels is not None and b < len(gold_mention_labels):
                 m_labels = gold_mention_labels[b].to(device)
-                m_loss = F.cross_entropy(mention_logits, m_labels)
-                total_mention_loss = total_mention_loss + m_loss
-                num_mention_examples += 1
+                if m_labels.numel() > 0 and mention_logits.size(0) == m_labels.size(0):
+                    m_labels = torch.clamp(m_labels, 0, 2)
+                    m_loss = F.cross_entropy(mention_logits, m_labels)
+                    total_mention_loss = total_mention_loss + m_loss
+                    num_mention_examples += 1
 
             # 4. Dual-Channel Span Pruning (Eq. 4)
             # k = ceil(n * z)
@@ -245,19 +248,23 @@ class SpanASTEModel(nn.Module):
 
             # 5. Triplet Module: Form Pair Representations for S^t x S^o
             if num_t > 0 and num_o > 0:
-                t_reps = span_reps[torch.tensor(top_t_indices, dtype=torch.long, device=device)]  # (num_t, span_dim)
-                o_reps = span_reps[torch.tensor(top_o_indices, dtype=torch.long, device=device)]  # (num_o, span_dim)
+                max_span_idx = max(span_reps.size(0) - 1, 0)
+                t_idx_t = torch.clamp(torch.tensor(top_t_indices, dtype=torch.long, device=device), 0, max_span_idx)
+                o_idx_t = torch.clamp(torch.tensor(top_o_indices, dtype=torch.long, device=device), 0, max_span_idx)
+
+                t_reps = span_reps[t_idx_t]  # (num_t, span_dim)
+                o_reps = span_reps[o_idx_t]  # (num_o, span_dim)
 
                 # Pair expansion
                 t_expanded = t_reps.unsqueeze(1).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
                 o_expanded = o_reps.unsqueeze(0).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
 
-                # Compute pairwise token distances
-                dist_indices = torch.zeros((num_t, num_o), dtype=torch.long, device=device)
-                for ti, t_span in enumerate(pruned_target_spans):
-                    for oi, o_span in enumerate(pruned_opinion_spans):
-                        raw_dist = compute_span_distance(t_span, o_span)
-                        dist_indices[ti, oi] = bucket_value(raw_dist)
+                # Compute pairwise token distances on CPU list then move to CUDA tensor once
+                dist_matrix = [
+                    [bucket_value(compute_span_distance(t_span, o_span)) for o_span in pruned_opinion_spans]
+                    for t_span in pruned_target_spans
+                ]
+                dist_indices = torch.clamp(torch.tensor(dist_matrix, dtype=torch.long, device=device), 0, 9)
 
                 dist_reps = self.distance_embedding(dist_indices)  # (num_t, num_o, dist_dim)
 
@@ -269,13 +276,12 @@ class SpanASTEModel(nn.Module):
                 # Relation Loss
                 if gold_pairs is not None and b < len(gold_pairs):
                     gold_dict = {(p[0], p[1]): p[2] for p in gold_pairs[b]}
-                    pair_labels = torch.zeros(num_t * num_o, dtype=torch.long, device=device)
-                    idx = 0
-                    for t_span in pruned_target_spans:
-                        for o_span in pruned_opinion_spans:
-                            rel = gold_dict.get((t_span, o_span), RELATION2ID["INVALID"])
-                            pair_labels[idx] = rel
-                            idx += 1
+                    pair_labels_list = [
+                        gold_dict.get((t_span, o_span), RELATION2ID["INVALID"])
+                        for t_span in pruned_target_spans
+                        for o_span in pruned_opinion_spans
+                    ]
+                    pair_labels = torch.clamp(torch.tensor(pair_labels_list, dtype=torch.long, device=device), 0, 3)
 
                     r_loss = F.cross_entropy(
                         relation_logits,
