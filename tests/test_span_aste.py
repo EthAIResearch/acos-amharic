@@ -10,7 +10,7 @@ import sys
 
 # Add src directories to sys.path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_span_aste"))
-from evaluate import compute_prf, evaluate_batch_predictions, summarize_metrics
+from evaluation import compute_prf, evaluate_batch_predictions, summarize_metrics
 from span_utils import (
     MENTION2ID,
     RELATION2ID,

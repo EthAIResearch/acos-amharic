@@ -20,7 +20,7 @@ from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
 sys.path.insert(0, os.path.dirname(__file__))
 from dataset import SpanASTEDataset, collate_fn
-from evaluate import evaluate_batch_predictions, summarize_metrics
+from evaluation import evaluate_batch_predictions, summarize_metrics
 from model import SpanASTEModel
 
 
