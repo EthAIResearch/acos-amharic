@@ -259,10 +259,11 @@ def test_subword_to_word_pooling_matrix():
 
 def test_word_level_sdrn_forward_mock():
     try:
+        from unittest.mock import MagicMock, patch
+
         import torch
-        import torch.nn as nn
-        from unittest.mock import patch, MagicMock
         from model import JointAOPESDRN
+        from torch import nn
     except ImportError:
         return
 
