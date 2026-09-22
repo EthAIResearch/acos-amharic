@@ -87,44 +87,62 @@ def run_sweep(
         else:
             content_mask = attn.bool()
 
-        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
+        subword_to_word = batch.get("subword_to_word")
+        word_mask = batch.get("word_mask")
+        if subword_to_word is not None:
+            subword_to_word = subword_to_word.to(device)
+            word_mask = word_mask.to(device)
+
+        out = model(
+            input_ids=input_ids,
+            attention_mask=attn,
+            content_mask=content_mask,
+            subword_to_word=subword_to_word,
+            word_mask=word_mask,
+        )
         logits = out["logits"]
         rel_scores = out["relation_logits"].cpu().tolist()
+        is_word_level = out.get("is_word_level", False)
 
         bsz = input_ids.size(0)
         batch_items = []
         for i in range(bsz):
             rec = dataset.records[rec_idx]
             rec_idx += 1
-            enc = tokenizer(
-                rec["tokens"],
-                is_split_into_words=True,
-                truncation=True,
-                max_length=dataset.max_length,
-            )
-            word_ids = enc.word_ids(batch_index=0)
-
-            # Map subword-level relation matrix back to words via max-pooling
             n_words = len(rec["tokens"])
-            word_to_subwords = {w: [] for w in range(n_words)}
-            for si, wid in enumerate(word_ids):
-                if wid is not None and wid < n_words:
-                    word_to_subwords[wid].append(si)
 
-            word_rel = [[0.0] * n_words for _ in range(n_words)]
-            for wi in range(n_words):
-                for wj in range(n_words):
-                    sis = word_to_subwords[wi]
-                    sjs = word_to_subwords[wj]
-                    if sis and sjs:
-                        sub_scores = [
-                            rel_scores[i][si][sj]
-                            for si in sis
-                            for sj in sjs
-                            if si < len(rel_scores[i]) and sj < len(rel_scores[i])
-                        ]
-                        if sub_scores:
-                            word_rel[wi][wj] = max(sub_scores)
+            if is_word_level:
+                word_ids = list(range(n_words))
+                word_rel = [row[:n_words] for row in rel_scores[i][:n_words]]
+            else:
+                enc = tokenizer(
+                    rec["tokens"],
+                    is_split_into_words=True,
+                    truncation=True,
+                    max_length=dataset.max_length,
+                )
+                word_ids = enc.word_ids(batch_index=0)
+
+                # Map subword-level relation matrix back to words via max-pooling
+                word_to_subwords = {w: [] for w in range(n_words)}
+                for si, wid in enumerate(word_ids):
+                    if wid is not None and wid < n_words:
+                        word_to_subwords[wid].append(si)
+
+                word_rel = [[0.0] * n_words for _ in range(n_words)]
+                for wi in range(n_words):
+                    for wj in range(n_words):
+                        sis = word_to_subwords[wi]
+                        sjs = word_to_subwords[wj]
+                        if sis and sjs:
+                            sub_scores = [
+                                rel_scores[i][si][sj]
+                                for si in sis
+                                for sj in sjs
+                                if si < len(rel_scores[i]) and sj < len(rel_scores[i])
+                            ]
+                            if sub_scores:
+                                word_rel[wi][wj] = max(sub_scores)
 
             g_pairs = explicit_pairs(rec["quads"])
             batch_items.append({
@@ -136,7 +154,8 @@ def run_sweep(
 
         cached_batches.append({
             "logits": logits,
-            "content_mask": content_mask,
+            "mask": word_mask if is_word_level else content_mask,
+            "is_word_level": is_word_level,
             "items": batch_items,
         })
 
@@ -150,16 +169,20 @@ def run_sweep(
         for c_batch in cached_batches:
             pred_ids = model.decode_tags(
                 c_batch["logits"],
-                mask=c_batch["content_mask"],
+                mask=c_batch["mask"],
                 opinion_emission_bias=bias,
             )
             for i, item in enumerate(c_batch["items"]):
-                word_ids = item["word_ids"]
-                word_tags = decode_subword_predictions_5way(
-                    word_ids,
-                    pred_ids[i][:len(word_ids)],
-                    strategy=subword_aggregation,
-                )
+                if c_batch.get("is_word_level", False):
+                    n_words = len(item["rec"]["tokens"])
+                    word_tags = pred_ids[i][:n_words]
+                else:
+                    word_ids = item["word_ids"]
+                    word_tags = decode_subword_predictions_5way(
+                        word_ids,
+                        pred_ids[i][:len(word_ids)],
+                        strategy=subword_aggregation,
+                    )
                 a_spans, o_spans = decode_5way_bio_spans(word_tags)
                 g_pairs = item["g_pairs"]
                 g_aspects = [p[0] for p in g_pairs]

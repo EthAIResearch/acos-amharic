@@ -51,6 +51,7 @@ def load_config_defaults(config_path):
     flat = {
         "model_name": cfg.get("model_name"),
         "use_crf": cfg.get("use_crf"),
+        "word_level": cfg.get("word_level"),
         "output_dir": cfg.get("output_dir"),
         "num_recurrent_steps": cfg.get("num_recurrent_steps"),
         "relation_threshold": cfg.get("relation_threshold"),
@@ -62,6 +63,7 @@ def load_config_defaults(config_path):
         "dev": data.get("dev"),
         "test": data.get("test"),
         "max_length": data.get("max_length"),
+        "max_words": data.get("max_words"),
     })
     training = cfg.get("training", {})
     flat.update({
@@ -108,26 +110,67 @@ def evaluate(
         else:
             content_mask = attn.bool()
 
-        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
-        # Unified 5-way BIO decoding
-        pred_ids = model.decode_tags(out["logits"], mask=content_mask)
-        # G^t relation attention matrix is already in [0, 1]
+        subword_to_word = batch.get("subword_to_word")
+        word_mask = batch.get("word_mask")
+        if subword_to_word is not None:
+            subword_to_word = subword_to_word.to(device)
+            word_mask = word_mask.to(device)
+
+        out = model(
+            input_ids=input_ids,
+            attention_mask=attn,
+            content_mask=content_mask,
+            subword_to_word=subword_to_word,
+            word_mask=word_mask,
+        )
+
+        is_word_level = out.get("is_word_level", False)
+        decode_mask = word_mask if is_word_level else content_mask
+        pred_ids = model.decode_tags(out["logits"], mask=decode_mask)
         rel_scores = out["relation_logits"].cpu().tolist()
 
         bsz = input_ids.size(0)
         for i in range(bsz):
             rec = dataset.records[rec_idx]
             rec_idx += 1
-            enc = tokenizer(
-                rec["tokens"],
-                is_split_into_words=True,
-                truncation=True,
-                max_length=dataset.max_length,
-            )
-            word_ids = enc.word_ids(batch_index=0)
+            n_words = len(rec["tokens"])
 
-            word_tags = decode_subword_predictions_5way(word_ids, pred_ids[i][:len(word_ids)])
-            a_spans, o_spans = decode_5way_bio_spans(word_tags)
+            if is_word_level:
+                # Phase 3 Word-Level: direct word tag slicing and word-level relation matrix
+                word_tags = pred_ids[i][:n_words]
+                a_spans, o_spans = decode_5way_bio_spans(word_tags)
+                word_rel = [row[:n_words] for row in rel_scores[i][:n_words]]
+            else:
+                # Legacy subword-level decoding
+                enc = tokenizer(
+                    rec["tokens"],
+                    is_split_into_words=True,
+                    truncation=True,
+                    max_length=dataset.max_length,
+                )
+                word_ids = enc.word_ids(batch_index=0)
+                word_tags = decode_subword_predictions_5way(word_ids, pred_ids[i][:len(word_ids)])
+                a_spans, o_spans = decode_5way_bio_spans(word_tags)
+
+                word_to_subwords = {w: [] for w in range(n_words)}
+                for si, wid in enumerate(word_ids):
+                    if wid is not None and wid < n_words:
+                        word_to_subwords[wid].append(si)
+
+                word_rel = [[0.0] * n_words for _ in range(n_words)]
+                for wi in range(n_words):
+                    for wj in range(n_words):
+                        sis = word_to_subwords[wi]
+                        sjs = word_to_subwords[wj]
+                        if sis and sjs:
+                            sub_scores = [
+                                rel_scores[i][si][sj]
+                                for si in sis
+                                for sj in sjs
+                                if si < len(rel_scores[i]) and sj < len(rel_scores[i])
+                            ]
+                            if sub_scores:
+                                word_rel[wi][wj] = max(sub_scores)
 
             g_pairs = explicit_pairs(rec["quads"])
             g_aspects = [p[0] for p in g_pairs]
@@ -138,29 +181,6 @@ def evaluate(
             all_pred_opinions.append(o_spans)
             all_gold_opinions.append(g_opinions)
             all_gold_pairs.append(g_pairs)
-
-            # Map subword-level relation matrix back to words via max-pooling
-            # across all subwords for words wi and wj
-            n_words = len(rec["tokens"])
-            word_to_subwords = {w: [] for w in range(n_words)}
-            for si, wid in enumerate(word_ids):
-                if wid is not None and wid < n_words:
-                    word_to_subwords[wid].append(si)
-
-            word_rel = [[0.0] * n_words for _ in range(n_words)]
-            for wi in range(n_words):
-                for wj in range(n_words):
-                    sis = word_to_subwords[wi]
-                    sjs = word_to_subwords[wj]
-                    if sis and sjs:
-                        sub_scores = [
-                            rel_scores[i][si][sj]
-                            for si in sis
-                            for sj in sjs
-                            if si < len(rel_scores[i]) and sj < len(rel_scores[i])
-                        ]
-                        if sub_scores:
-                            word_rel[wi][wj] = max(sub_scores)
 
             ex_candidates = []
             for a_span in a_spans:
@@ -235,6 +255,11 @@ def main():
     ap.add_argument("--use_crf", action="store_true", default=False,
                      help="Use Linear-Chain CRF for span sequence decoding.")
     ap.add_argument("--no_crf", dest="use_crf", action="store_false")
+    ap.add_argument("--word_level", action="store_true", default=True,
+                     help="Operate SDRN and CRF at word level using subword pooling (Phase 3).")
+    ap.add_argument("--no_word_level", dest="word_level", action="store_false")
+    ap.add_argument("--max_words", type=int, default=128,
+                     help="Max words per sequence in word-level SDRN.")
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
 
@@ -256,9 +281,9 @@ def main():
         json.dump(vars(args), f, indent=2)
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
-    train_ds = JointAOPEDataset(args.train, tokenizer, max_length=args.max_length)
-    dev_ds = JointAOPEDataset(args.dev, tokenizer, max_length=args.max_length) if args.dev else None
-    test_ds = JointAOPEDataset(args.test, tokenizer, max_length=args.max_length)
+    train_ds = JointAOPEDataset(args.train, tokenizer, max_length=args.max_length, max_words=args.max_words)
+    dev_ds = JointAOPEDataset(args.dev, tokenizer, max_length=args.max_length, max_words=args.max_words) if args.dev else None
+    test_ds = JointAOPEDataset(args.test, tokenizer, max_length=args.max_length, max_words=args.max_words)
 
     model = JointAOPESDRN(
         args.model_name,

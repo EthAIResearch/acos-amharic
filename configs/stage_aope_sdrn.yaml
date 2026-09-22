@@ -4,6 +4,7 @@
 
 model_name: Davlan/afro-xlmr-base
 use_crf: true                 # Linear-Chain CRF for structured BIO sequence decoding
+word_level: true              # Phase 3: Subword-to-word pooling, word-level CRF and relation attention
 num_recurrent_steps: 2       # SDRN paper: best on 3/3 benchmarks, more steps show diminishing returns
 relation_threshold: 0.1      # beta in RSM (Eq. 12)
 pair_accept_threshold: 0.5   # delta-hat in Eq. 17
@@ -13,6 +14,7 @@ data:
   dev: data/prepared_explicit/dev.jsonl
   test: data/prepared_explicit/test.jsonl
   max_length: 256
+  max_words: 128
 
 training:
   epochs: 10
@@ -27,10 +29,11 @@ training:
   span_loss_weight: 2.0                          # prioritizes entity boundary learning relative to relation matrix
   dice_loss_weight: 1.0                          # auxiliary Multi-Class Dice Loss (Li et al., ACL 2020) to maximize soft token F1
 
-output_dir: results/stage_aope_sdrn/afroxlmr_crf_run3
+output_dir: results/stage_aope_sdrn/afroxlmr_word_sdrn_run1
 
 notes: >
-  Phase 2 training run 3 on data/prepared_explicit with AfroXLMR-base, exact SDRN architecture (ACL 2020),
-  5-way BIO Linear-Chain CRF, active Multi-Class Dice Loss (weight=1.0), asymmetric opinion weights [1.0, 4.0, 4.0, 8.0, 8.0],
-  and span loss weight (2.0) to directly optimize token-level F1 on minority opinions and boost recall.
+  Phase 3 training run on data/prepared_explicit with AfroXLMR-base, Word-Level SDRN architecture,
+  subword-to-word pooling, 5-way BIO word-level Linear-Chain CRF, active Multi-Class Dice Loss (weight=1.0),
+  asymmetric opinion weights [1.0, 4.0, 4.0, 8.0, 8.0], and span loss weight (2.0) to eliminate
+  subword boundary fragmentation and shatter the opinion recall bottleneck.
 

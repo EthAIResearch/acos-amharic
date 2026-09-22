@@ -217,6 +217,7 @@ def test_config_stage_aope_sdrn_crf_enabled():
         "results/stage_aope_sdrn/afroxlmr_crf_run1",
         "results/stage_aope_sdrn/afroxlmr_crf_run2",
         "results/stage_aope_sdrn/afroxlmr_crf_run3",
+        "results/stage_aope_sdrn/afroxlmr_word_sdrn_run1",
     )
 
 
