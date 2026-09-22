@@ -62,29 +62,118 @@ def align_labels_to_subwords_5way(word_ids: list[int], word_tags: list[str]) -> 
     return label_ids
 
 
-def decode_subword_predictions(word_ids: list[int], pred_ids: list[int]) -> list[str]:
+def decode_subword_predictions(
+    word_ids: list[int],
+    pred_ids: list[int],
+    strategy: str = "entity_first",
+) -> list[str]:
     """Inverse: take the model's per-subword predictions and reduce back to one
-    tag per word (using the first subword's prediction for each word -- the
-    standard convention for token classification with subword tokenizers)."""
-    word_tags: dict[int, str] = {}
+    tag per word.
+
+    Strategies:
+      - "first": uses the first subword's prediction.
+      - "entity_first": entity-aware aggregation. If the first subword predicted non-O,
+        uses it; if the first subword was 'O' (e.g. grammatical prefix) but a later
+        subword predicted an entity, rescues the entity tag for the word.
+    """
+    if strategy == "first":
+        word_tags: dict[int, str] = {}
+        for wid, pid in zip(word_ids, pred_ids):
+            if wid is None:
+                continue
+            if wid not in word_tags:
+                word_tags[wid] = ID2LABEL[pid]
+        n_words = max(word_tags) + 1 if word_tags else 0
+        return [word_tags.get(i, "O") for i in range(n_words)]
+
+    word_subwords: dict[int, list[int]] = {}
     for wid, pid in zip(word_ids, pred_ids):
         if wid is None:
             continue
-        if wid not in word_tags:
-            word_tags[wid] = ID2LABEL[pid]
-    n_words = max(word_tags) + 1 if word_tags else 0
-    return [word_tags.get(i, "O") for i in range(n_words)]
+        if wid not in word_subwords:
+            word_subwords[wid] = []
+        word_subwords[wid].append(pid)
+
+    n_words = max(word_subwords) + 1 if word_subwords else 0
+    final_tags: list[str] = ["O"] * n_words
+
+    for wid in range(n_words):
+        pids = word_subwords.get(wid, [])
+        if not pids:
+            final_tags[wid] = "O"
+            continue
+        p0 = pids[0]
+        if p0 != 0:
+            final_tags[wid] = ID2LABEL[p0]
+        else:
+            non_o = [p for p in pids if p != 0]
+            if not non_o:
+                final_tags[wid] = "O"
+            else:
+                tag = ID2LABEL[non_o[0]]
+                prev_tag = final_tags[wid - 1] if wid > 0 else "O"
+                if tag == "I" and prev_tag not in ("B", "I"):
+                    tag = "B"
+                final_tags[wid] = tag
+
+    return final_tags
 
 
-def decode_subword_predictions_5way(word_ids: list[int], pred_ids: list[int]) -> list[str]:
-    """Inverse for 5-way BIO: takes per-subword predictions and reduces to word-level tags
-    using the first subword's prediction."""
-    word_tags: dict[int, str] = {}
+def decode_subword_predictions_5way(
+    word_ids: list[int],
+    pred_ids: list[int],
+    strategy: str = "entity_first",
+) -> list[str]:
+    """Inverse for 5-way BIO: takes per-subword predictions and reduces to word-level tags.
+
+    Strategies:
+      - "first": uses the first subword's prediction.
+      - "entity_first": entity-aware aggregation. If the first subword predicted non-O,
+        uses it; if the first subword was 'O' (common in Amharic with morphological prefixes
+        like 'የ-', 'በ-', 'አል-') but a later subword predicted an entity, rescues the entity
+        tag for the word, promoting orphaned I tags to B when starting a new span.
+    """
+    if strategy == "first":
+        word_tags: dict[int, str] = {}
+        for wid, pid in zip(word_ids, pred_ids):
+            if wid is None:
+                continue
+            if wid not in word_tags:
+                word_tags[wid] = ID2LABEL_5WAY[pid]
+        n_words = max(word_tags) + 1 if word_tags else 0
+        return [word_tags.get(i, "O") for i in range(n_words)]
+
+    word_subwords: dict[int, list[int]] = {}
     for wid, pid in zip(word_ids, pred_ids):
         if wid is None:
             continue
-        if wid not in word_tags:
-            word_tags[wid] = ID2LABEL_5WAY[pid]
-    n_words = max(word_tags) + 1 if word_tags else 0
-    return [word_tags.get(i, "O") for i in range(n_words)]
+        if wid not in word_subwords:
+            word_subwords[wid] = []
+        word_subwords[wid].append(pid)
+
+    n_words = max(word_subwords) + 1 if word_subwords else 0
+    final_tags: list[str] = ["O"] * n_words
+
+    for wid in range(n_words):
+        pids = word_subwords.get(wid, [])
+        if not pids:
+            final_tags[wid] = "O"
+            continue
+        p0 = pids[0]
+        if p0 != 0:
+            final_tags[wid] = ID2LABEL_5WAY[p0]
+        else:
+            non_o = [p for p in pids if p != 0]
+            if not non_o:
+                final_tags[wid] = "O"
+            else:
+                tag = ID2LABEL_5WAY[non_o[0]]
+                prev_tag = final_tags[wid - 1] if wid > 0 else "O"
+                if tag == "I-ASP" and prev_tag not in ("B-ASP", "I-ASP"):
+                    tag = "B-ASP"
+                elif tag == "I-OPN" and prev_tag not in ("B-OPN", "I-OPN"):
+                    tag = "B-OPN"
+                final_tags[wid] = tag
+
+    return final_tags
 

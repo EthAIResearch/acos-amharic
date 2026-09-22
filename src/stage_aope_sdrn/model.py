@@ -152,6 +152,7 @@ class JointAOPESDRN(nn.Module):
         self,
         logits: torch.Tensor,
         mask: torch.Tensor | None = None,
+        opinion_emission_bias: float = 0.0,
         **kwargs,
     ) -> list[list[int]]:
         """
@@ -161,9 +162,15 @@ class JointAOPESDRN(nn.Module):
         Returns (B, N) list of tag IDs in {0, 1, 2, 3, 4}.
         """
         if self.use_crf:
-            preds = self.crf.decode(logits, mask=mask)
+            preds = self.crf.decode(
+                logits, mask=mask, opinion_emission_bias=opinion_emission_bias
+            )
             return preds.cpu().tolist()
-        return (logits * self.bio_weights.view(1, 1, -1)).argmax(-1).cpu().tolist()
+        weighted = logits * self.bio_weights.view(1, 1, -1)
+        if opinion_emission_bias != 0.0 and weighted.shape[-1] >= 5:
+            weighted = weighted.clone()
+            weighted[:, :, 3:5] += opinion_emission_bias
+        return weighted.argmax(-1).cpu().tolist()
 
 
     def _make_entity_tensor(

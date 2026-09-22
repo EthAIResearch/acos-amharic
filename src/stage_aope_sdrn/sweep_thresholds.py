@@ -49,21 +49,35 @@ def parse_args():
     parser.add_argument("--use_crf", action="store_true", default=None,
                         help="Use Linear-Chain CRF decoding. Defaults to config setting.")
     parser.add_argument("--no_crf", dest="use_crf", action="store_false")
+    parser.add_argument("--subword_aggregation", choices=["entity_first", "first"], default="entity_first",
+                        help="Strategy to aggregate subword predictions to word tags.")
+    parser.add_argument("--opinion_bias", type=float, default=0.0,
+                        help="Single additive opinion emission bias to evaluate.")
+    parser.add_argument("--opinion_bias_list", type=float, nargs="+", default=None,
+                        help="List of opinion emission biases to sweep, e.g. 0.0 0.5 1.0 1.5 2.0")
     return parser.parse_args()
 
 
 @torch.no_grad()
-def run_sweep(model, dataset, tokenizer, device, batch_size=16):
+def run_sweep(
+    model,
+    dataset,
+    tokenizer,
+    device,
+    batch_size: int = 16,
+    subword_aggregation: str = "entity_first",
+    opinion_emission_bias: float = 0.0,
+    opinion_bias_list: list[float] | None = None,
+):
     model.eval()
     loader = DataLoader(dataset, batch_size=batch_size, collate_fn=collate_fn)
 
-    all_pred_aspects, all_gold_aspects = [], []
-    all_pred_opinions, all_gold_opinions = [], []
-    candidates_with_scores_per_ex = []
-    all_gold_pairs = []
+    biases = opinion_bias_list if opinion_bias_list is not None else [opinion_emission_bias]
+
+    cached_batches = []
     rec_idx = 0
 
-    print("Running forward inference pass over test set...")
+    print("Running forward inference pass over dataset...")
     for batch in tqdm(loader, desc="Inference"):
         input_ids = batch["input_ids"].to(device)
         attn = batch["attention_mask"].to(device)
@@ -74,10 +88,11 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
             content_mask = attn.bool()
 
         out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
-        pred_ids = model.decode_tags(out["logits"], mask=content_mask)
+        logits = out["logits"]
         rel_scores = out["relation_logits"].cpu().tolist()
 
         bsz = input_ids.size(0)
+        batch_items = []
         for i in range(bsz):
             rec = dataset.records[rec_idx]
             rec_idx += 1
@@ -89,21 +104,7 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
             )
             word_ids = enc.word_ids(batch_index=0)
 
-            word_tags = decode_subword_predictions_5way(word_ids, pred_ids[i][:len(word_ids)])
-            a_spans, o_spans = decode_5way_bio_spans(word_tags)
-
-            g_pairs = explicit_pairs(rec["quads"])
-            g_aspects = [p[0] for p in g_pairs]
-            g_opinions = [p[1] for p in g_pairs]
-
-            all_pred_aspects.append(a_spans)
-            all_gold_aspects.append(g_aspects)
-            all_pred_opinions.append(o_spans)
-            all_gold_opinions.append(g_opinions)
-            all_gold_pairs.append(g_pairs)
-
             # Map subword-level relation matrix back to words via max-pooling
-            # across all subwords for words wi and wj
             n_words = len(rec["tokens"])
             word_to_subwords = {w: [] for w in range(n_words)}
             for si, wid in enumerate(word_ids):
@@ -125,23 +126,82 @@ def run_sweep(model, dataset, tokenizer, device, batch_size=16):
                         if sub_scores:
                             word_rel[wi][wj] = max(sub_scores)
 
-            # Cache scored candidate pairs
-            ex_candidates = []
-            for a_span in a_spans:
-                for o_span in o_spans:
-                    score = correlation_degree(word_rel, a_span, o_span)
-                    ex_candidates.append(((a_span, o_span), score))
-            candidates_with_scores_per_ex.append(ex_candidates)
+            g_pairs = explicit_pairs(rec["quads"])
+            batch_items.append({
+                "rec": rec,
+                "word_ids": word_ids,
+                "word_rel": word_rel,
+                "g_pairs": g_pairs,
+            })
 
-    aspect_prf = compute_prf(all_pred_aspects, all_gold_aspects)
-    opinion_prf = compute_prf(all_pred_opinions, all_gold_opinions)
-    sweep_data = sweep_thresholds(candidates_with_scores_per_ex, all_gold_pairs)
+        cached_batches.append({
+            "logits": logits,
+            "content_mask": content_mask,
+            "items": batch_items,
+        })
 
+    all_bias_results = []
+    for bias in biases:
+        all_pred_aspects, all_gold_aspects = [], []
+        all_pred_opinions, all_gold_opinions = [], []
+        candidates_with_scores_per_ex = []
+        all_gold_pairs = []
+
+        for c_batch in cached_batches:
+            pred_ids = model.decode_tags(
+                c_batch["logits"],
+                mask=c_batch["content_mask"],
+                opinion_emission_bias=bias,
+            )
+            for i, item in enumerate(c_batch["items"]):
+                word_ids = item["word_ids"]
+                word_tags = decode_subword_predictions_5way(
+                    word_ids,
+                    pred_ids[i][:len(word_ids)],
+                    strategy=subword_aggregation,
+                )
+                a_spans, o_spans = decode_5way_bio_spans(word_tags)
+                g_pairs = item["g_pairs"]
+                g_aspects = [p[0] for p in g_pairs]
+                g_opinions = [p[1] for p in g_pairs]
+
+                all_pred_aspects.append(a_spans)
+                all_gold_aspects.append(g_aspects)
+                all_pred_opinions.append(o_spans)
+                all_gold_opinions.append(g_opinions)
+                all_gold_pairs.append(g_pairs)
+
+                ex_candidates = []
+                for a_span in a_spans:
+                    for o_span in o_spans:
+                        score = correlation_degree(item["word_rel"], a_span, o_span)
+                        ex_candidates.append(((a_span, o_span), score))
+                candidates_with_scores_per_ex.append(ex_candidates)
+
+        aspect_prf = compute_prf(all_pred_aspects, all_gold_aspects)
+        opinion_prf = compute_prf(all_pred_opinions, all_gold_opinions)
+        sweep_data = sweep_thresholds(candidates_with_scores_per_ex, all_gold_pairs)
+
+        bias_result = {
+            "opinion_bias": bias,
+            "subword_aggregation": subword_aggregation,
+            "aspect_metrics": aspect_prf,
+            "opinion_metrics": opinion_prf,
+            "theoretical_pair_recall_ceiling": aspect_prf["recall"] * opinion_prf["recall"],
+            "sweep_results": sweep_data,
+        }
+        all_bias_results.append(bias_result)
+
+    if len(all_bias_results) == 1:
+        return all_bias_results[0]
+
+    best_bias_entry = max(
+        all_bias_results,
+        key=lambda x: x["sweep_results"]["best_metrics"]["f1"],
+    )
     return {
-        "aspect_metrics": aspect_prf,
-        "opinion_metrics": opinion_prf,
-        "theoretical_pair_recall_ceiling": aspect_prf["recall"] * opinion_prf["recall"],
-        "sweep_results": sweep_data,
+        "best_bias_result": best_bias_entry,
+        "all_bias_results": all_bias_results,
     }
 
 
@@ -174,6 +234,11 @@ def main():
     print(f"Loading checkpoint: {checkpoint}")
     print(f"Test dataset: {test_path}")
     print(f"Use CRF decoding: {use_crf}")
+    print(f"Subword aggregation: {args.subword_aggregation}")
+    if args.opinion_bias_list:
+        print(f"Opinion bias list to sweep: {args.opinion_bias_list}")
+    else:
+        print(f"Opinion emission bias: {args.opinion_bias:.2f}")
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     test_ds = JointAOPEDataset(test_path, tokenizer, max_length=args.max_length)
@@ -194,34 +259,62 @@ def main():
     model.load_state_dict(state_dict, strict=False)
     model.to(device)
 
-    results = run_sweep(model, test_ds, tokenizer, device, batch_size=args.batch_size)
+    results = run_sweep(
+        model,
+        test_ds,
+        tokenizer,
+        device,
+        batch_size=args.batch_size,
+        subword_aggregation=args.subword_aggregation,
+        opinion_emission_bias=args.opinion_bias,
+        opinion_bias_list=args.opinion_bias_list,
+    )
 
-    # Output report
-    a_m = results["aspect_metrics"]
-    o_m = results["opinion_metrics"]
-    s_d = results["sweep_results"]
+    if "all_bias_results" in results:
+        print("\n" + "=" * 92)
+        print("OPINION EMISSION BIAS SWEEP SUMMARY")
+        print("=" * 92)
+        print(f"{'Bias':>6} | {'Opn Prec':>9} | {'Opn Rec':>8} | {'Opn F1':>8} | {'Ceiling R':>9} | {'Best Delta':>10} | {'Pair Prec':>9} | {'Pair Rec':>8} | {'Pair F1':>8}")
+        print("-" * 92)
+        for res in results["all_bias_results"]:
+            b = res["opinion_bias"]
+            om = res["opinion_metrics"]
+            ceil_r = res["sweep_results"]["candidate_ceiling_recall"] * 100
+            bm = res["sweep_results"]["best_metrics"]
+            is_best = " *" if res == results["best_bias_result"] else ""
+            print(f"{b:>6.2f} | {om['precision']:>9.4f} | {om['recall']:>8.4f} | {om['f1']:>8.4f} | {ceil_r:>8.2f}% | {bm['threshold']:>10.2f} | {bm['precision']:>9.4f} | {bm['recall']:>8.4f} | {bm['f1']:>8.4f}{is_best}")
+        print("=" * 92)
+        best_r = results["best_bias_result"]
+        print(f"Optimal Opinion Bias: {best_r['opinion_bias']:.2f}")
+        print(f"Optimal Relation Delta: {best_r['sweep_results']['best_threshold']:.2f}")
+        b_bm = best_r["sweep_results"]["best_metrics"]
+        print(f"Best Pair Metrics: Precision={b_bm['precision']:.4f}, Recall={b_bm['recall']:.4f}, F1={b_bm['f1']:.4f}")
+    else:
+        a_m = results["aspect_metrics"]
+        o_m = results["opinion_metrics"]
+        s_d = results["sweep_results"]
 
-    print("\n" + "=" * 78)
-    print("SPAN EXTRACTION METRICS (ROOT BOTTLENECK ANALYSIS)")
-    print("=" * 78)
-    print(f"Aspect Spans  : Precision={a_m['precision']:.4f}  Recall={a_m['recall']:.4f}  F1={a_m['f1']:.4f}  (TP={a_m['tp']}, FP={a_m['fp']}, FN={a_m['fn']})")
-    print(f"Opinion Spans : Precision={o_m['precision']:.4f}  Recall={o_m['recall']:.4f}  F1={o_m['f1']:.4f}  (TP={o_m['tp']}, FP={o_m['fp']}, FN={o_m['fn']})")
-    print(f"Theoretical Pair Recall Ceiling (Aspect R * Opinion R) : {results['theoretical_pair_recall_ceiling'] * 100:.2f}%")
-    print(f"Candidate Pair Recall Ceiling (All proposed pairs)     : {s_d['candidate_ceiling_recall'] * 100:.2f}%")
+        print("\n" + "=" * 78)
+        print("SPAN EXTRACTION METRICS (ROOT BOTTLENECK ANALYSIS)")
+        print("=" * 78)
+        print(f"Aspect Spans  : Precision={a_m['precision']:.4f}  Recall={a_m['recall']:.4f}  F1={a_m['f1']:.4f}  (TP={a_m['tp']}, FP={a_m['fp']}, FN={a_m['fn']})")
+        print(f"Opinion Spans : Precision={o_m['precision']:.4f}  Recall={o_m['recall']:.4f}  F1={o_m['f1']:.4f}  (TP={o_m['tp']}, FP={o_m['fp']}, FN={o_m['fn']})")
+        print(f"Theoretical Pair Recall Ceiling (Aspect R * Opinion R) : {results['theoretical_pair_recall_ceiling'] * 100:.2f}%")
+        print(f"Candidate Pair Recall Ceiling (All proposed pairs)     : {s_d['candidate_ceiling_recall'] * 100:.2f}%")
 
-    print("\n" + "=" * 78)
-    print("THRESHOLD SWEEP TABLE (delta-hat vs. Pair Precision, Recall, F1)")
-    print("=" * 78)
-    print(f"{'Threshold':>10} | {'Precision':>10} | {'Recall':>10} | {'F1 Score':>10} | {'TP':>6} | {'FP':>6} | {'FN':>6}")
-    print("-" * 78)
-    for row in s_d["sweep"]:
-        is_best = " *" if row["threshold"] == round(s_d["best_threshold"], 4) else ""
-        print(f"{row['threshold']:>10.2f} | {row['precision']:>10.4f} | {row['recall']:>10.4f} | {row['f1']:>10.4f}{is_best} | {row['tp']:>6} | {row['fp']:>6} | {row['fn']:>6}")
+        print("\n" + "=" * 78)
+        print("THRESHOLD SWEEP TABLE (delta-hat vs. Pair Precision, Recall, F1)")
+        print("=" * 78)
+        print(f"{'Threshold':>10} | {'Precision':>10} | {'Recall':>10} | {'F1 Score':>10} | {'TP':>6} | {'FP':>6} | {'FN':>6}")
+        print("-" * 78)
+        for row in s_d["sweep"]:
+            is_best = " *" if row["threshold"] == round(s_d["best_threshold"], 4) else ""
+            print(f"{row['threshold']:>10.2f} | {row['precision']:>10.4f} | {row['recall']:>10.4f} | {row['f1']:>10.4f}{is_best} | {row['tp']:>6} | {row['fp']:>6} | {row['fn']:>6}")
 
-    print("=" * 78)
-    b_m = s_d["best_metrics"]
-    print(f"Optimal Threshold by F1: delta-hat = {s_d['best_threshold']:.2f}")
-    print(f"Optimal Pair Metrics   : Precision={b_m['precision']:.4f}, Recall={b_m['recall']:.4f}, F1={b_m['f1']:.4f}")
+        print("=" * 78)
+        b_m = s_d["best_metrics"]
+        print(f"Optimal Threshold by F1: delta-hat = {s_d['best_threshold']:.2f}")
+        print(f"Optimal Pair Metrics   : Precision={b_m['precision']:.4f}, Recall={b_m['recall']:.4f}, F1={b_m['f1']:.4f}")
 
     # Save results
     out_dir = os.path.dirname(checkpoint) if checkpoint and os.path.dirname(checkpoint) else "."

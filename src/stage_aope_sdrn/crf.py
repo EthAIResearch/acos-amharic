@@ -365,16 +365,25 @@ if TORCH_AVAILABLE:
             return nll
 
         def decode(
-            self, emissions: torch.Tensor, mask: torch.Tensor | None = None
+            self,
+            emissions: torch.Tensor,
+            mask: torch.Tensor | None = None,
+            opinion_emission_bias: float = 0.0,
         ) -> torch.Tensor:
             """
             Performs Viterbi decoding.
             emissions: (B, T, K)
             mask: (B, T) bool
+            opinion_emission_bias: additive bias applied to B-OPN (idx 3) and I-OPN (idx 4)
+              emissions to tune precision-recall trade-off for opinion terms.
             Returns:
               (B, T) torch.LongTensor with decoded tag IDs.
             """
             emissions = self._apply_bio_weights(emissions)
+            if opinion_emission_bias != 0.0:
+                emissions = emissions.clone()
+                if emissions.shape[-1] >= 5:
+                    emissions[:, :, 3:5] += opinion_emission_bias
             B, T = emissions.shape[:2]
 
 
