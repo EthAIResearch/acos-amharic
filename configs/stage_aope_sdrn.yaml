@@ -27,10 +27,10 @@ training:
   span_loss_weight: 2.0                          # prioritizes entity boundary learning relative to relation matrix
   dice_loss_weight: 1.0                          # auxiliary Multi-Class Dice Loss (Li et al., ACL 2020) to maximize soft token F1
 
-output_dir: results/stage_aope_sdrn/afroxlmr_crf_run2
+output_dir: results/stage_aope_sdrn/afroxlmr_crf_run3
 
 notes: >
-  Phase 2 training run on data/prepared_explicit with AfroXLMR-base, exact SDRN architecture (ACL 2020),
-  5-way BIO Linear-Chain CRF, auxiliary Multi-Class Dice Loss, asymmetric opinion weights [1.0, 4.0, 4.0, 8.0, 8.0],
-  and increased span loss weight (2.0) to shatter the opinion recall bottleneck.
+  Phase 2 training run 3 on data/prepared_explicit with AfroXLMR-base, exact SDRN architecture (ACL 2020),
+  5-way BIO Linear-Chain CRF, active Multi-Class Dice Loss (weight=1.0), asymmetric opinion weights [1.0, 4.0, 4.0, 8.0, 8.0],
+  and span loss weight (2.0) to directly optimize token-level F1 on minority opinions and boost recall.
 

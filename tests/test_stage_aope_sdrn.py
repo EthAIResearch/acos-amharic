@@ -207,7 +207,7 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 4.0, 4.0, 8.0, 8.0]
     assert cfg.get("training", {}).get("span_loss_weight") == 2.0
     assert cfg.get("training", {}).get("dice_loss_weight") == 1.0
-    assert cfg.get("output_dir") == "results/stage_aope_sdrn/afroxlmr_crf_run2"
+    assert cfg.get("output_dir") == "results/stage_aope_sdrn/afroxlmr_crf_run3"
     assert cfg.get("use_crf") is True
 
     try:
