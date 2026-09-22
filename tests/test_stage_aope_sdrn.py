@@ -312,6 +312,41 @@ def test_opinion_emission_bias_viterbi_boost():
     ]
     decoded_biased = viterbi_decode_reference(emissions_biased, transitions, start, end)
     assert decoded_biased == [0, 3, 0]  # Step 1 successfully shifted to B-OPN (idx 3)
+def test_joint_aope_sdrn_forward_eval_mode_no_labels():
+    try:
+        from unittest.mock import MagicMock, patch
+
+        import torch
+        from model import JointAOPESDRN
+        from torch import nn
+    except ImportError:
+        return
+
+    mock_config = MagicMock()
+    mock_config.hidden_size = 16
+    mock_output = MagicMock()
+    mock_output.last_hidden_state = torch.randn(2, 4, 16)
+
+    with patch("transformers.AutoConfig.from_pretrained", return_value=mock_config), \
+         patch("transformers.AutoModel.from_pretrained", return_value=nn.Linear(16, 16)):
+        model = JointAOPESDRN(
+            model_name="dummy",
+            num_recurrent_steps=2,
+            dice_loss_weight=1.0,
+            use_crf=True,
+        )
+        model.encoder = MagicMock(side_effect=lambda input_ids, attention_mask: mock_output)
+
+        input_ids = torch.tensor([[1, 2, 3, 0], [1, 2, 0, 0]])
+        attn = torch.tensor([[1, 1, 1, 0], [1, 1, 0, 0]])
+        content_mask = torch.tensor([[False, True, True, False], [False, True, False, False]])
+
+        # Forward without labels (eval mode in evaluate())
+        out = model(input_ids=input_ids, attention_mask=attn, content_mask=content_mask)
+        assert out["loss"] is None
+        assert out["loss_dice"] is None
+        assert out["logits"] is not None
+        assert out["relation_logits"] is not None
 
 
 if __name__ == "__main__":

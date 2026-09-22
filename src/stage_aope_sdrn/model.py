@@ -314,6 +314,7 @@ class JointAOPESDRN(nn.Module):
         loss = None
         loss_e = None
         loss_r = None
+        loss_dice = None
 
         # Compute joint loss at the final step T (Eq. 14-16)
         if labels is not None and relation_labels is not None:
@@ -325,7 +326,6 @@ class JointAOPESDRN(nn.Module):
                 ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
                 loss_e = ce(target_emissions.reshape(-1, NUM_BIO_LABELS), labels.reshape(-1))
 
-            loss_dice = None
             if self.dice_loss is not None and self.dice_loss_weight > 0.0:
                 loss_dice = self.dice_loss(target_emissions, labels, mask=mask_e)
                 loss_e = loss_e + self.dice_loss_weight * loss_dice
