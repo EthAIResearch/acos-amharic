@@ -9,8 +9,8 @@ Includes:
 """
 try:
     import torch
-    from torch import nn
     import torch.nn.functional as F
+    from torch import nn
 
     TORCH_AVAILABLE = True
 except ImportError:
