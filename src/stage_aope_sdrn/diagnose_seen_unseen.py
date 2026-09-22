@@ -278,8 +278,8 @@ def print_vocab_report(results: dict):
         def pct(n: int, t: int = total) -> str:
             return f"{n / t * 100:.1f}%" if t > 0 else "N/A"
 
-        print(f"  Granularity          │ Seen          │ Unseen")
-        print(f"  ─────────────────────┼───────────────┼───────────────")
+        print("  Granularity          │ Seen          │ Unseen")
+        print("  ─────────────────────┼───────────────┼───────────────")
         print(
             f"  Exact span match     │ {c['exact_seen']:>5} ({pct(c['exact_seen']):>5}) │ "
             f"{c['exact_unseen']:>5} ({pct(c['exact_unseen']):>5})"
@@ -294,7 +294,7 @@ def print_vocab_report(results: dict):
         )
         print()
 
-        print(f"  Word-length breakdown of exact-unseen:")
+        print("  Word-length breakdown of exact-unseen:")
         print(
             f"    Single-word unseen: {c['single_word_exact_unseen']} / {c['single_word']} "
             f"({c['single_word_exact_unseen'] / c['single_word'] * 100:.1f}%)"
@@ -325,7 +325,7 @@ def print_vocab_report(results: dict):
 
         if c["example_no_trigram_overlap"]:
             print(
-                f"  Examples with NO trigram overlap (completely novel morphology):"
+                "  Examples with NO trigram overlap (completely novel morphology):"
             )
             for surf, jacc, best in c["example_no_trigram_overlap"]:
                 best_str = best if best else "—"
@@ -340,7 +340,7 @@ def model_recall_analysis(args, train_path: str, test_path: str, trigram_thresho
     """Run model inference and report recall bucketed by seen/unseen."""
     import torch
     import yaml
-    from align import decode_subword_predictions_5way, ID2LABEL_5WAY
+    from align import ID2LABEL_5WAY, decode_subword_predictions_5way
     from bio_labels import decode_5way_bio_spans
     from dataset import JointAOPEDataset, collate_fn
     from model import JointAOPESDRN
@@ -575,7 +575,7 @@ def print_model_report(results: dict):
             r = c["tp"] / total
             return f"{c['tp']:>5} / {total:<5} ({r * 100:>5.1f}%)"
 
-        print(f"\n  By vocabulary granularity:")
+        print("\n  By vocabulary granularity:")
         print(f"  {'Granularity':<25s} │ {'Seen Recall':<25s} │ {'Unseen Recall':<25s}")
         print(f"  {'─' * 25}┼{'─' * 27}┼{'─' * 27}")
         for gran in ("exact", "token", "trigram"):
@@ -589,7 +589,7 @@ def print_model_report(results: dict):
             print(f"  {label:<25s} │ {s:<25s} │ {u:<25s}")
 
         if span_type == "opinion":
-            print(f"\n  By word length:")
+            print("\n  By word length:")
             print(f"  {'Length':<25s} │ {'Recall':<25s}")
             print(f"  {'─' * 25}┼{'─' * 27}")
             for wl in ("single_word", "multi_word"):
@@ -597,7 +597,7 @@ def print_model_report(results: dict):
                 label = "Single-word" if wl == "single_word" else "Multi-word"
                 print(f"  {label:<25s} │ {s:<25s}")
 
-            print(f"\n  Cross-analysis (word length × exact-seen):")
+            print("\n  Cross-analysis (word length × exact-seen):")
             print(
                 f"  {'Bucket':<30s} │ {'Recall':<25s}"
             )
