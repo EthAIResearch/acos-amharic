@@ -13,7 +13,7 @@ import torch
 from torch.utils.data import Dataset
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
-from align import align_labels_to_subwords, align_labels_to_subwords_5way, LABEL2ID_5WAY
+from align import LABEL2ID_5WAY, align_labels_to_subwords, align_labels_to_subwords_5way
 from bio_labels import build_word_bio, build_word_bio_5way
 from relation_utils import build_word_relation_matrix, explicit_pairs
 

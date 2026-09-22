@@ -68,7 +68,7 @@ def classify_span_boundary_match(gold_span: tuple[int, int], pred_spans: list[tu
 def main():
     import torch
     import yaml
-    from align import decode_subword_predictions_5way, ID2LABEL_5WAY
+    from align import ID2LABEL_5WAY, decode_subword_predictions_5way
     from bio_labels import decode_5way_bio_spans
     from dataset import JointAOPEDataset, collate_fn
     from model import JointAOPESDRN

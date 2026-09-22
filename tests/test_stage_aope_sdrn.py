@@ -472,10 +472,11 @@ def test_joint_aope_sdrn_forward_eval_mode_no_labels():
 def test_joint_aope_dataset_word_labels_and_collate():
     try:
         from unittest.mock import MagicMock
+
         import torch
-        from dataset import JointAOPEDataset, collate_fn
         from align import ID2LABEL_5WAY
         from bio_labels import decode_5way_bio_spans
+        from dataset import JointAOPEDataset, collate_fn
     except ImportError:
         return
 
