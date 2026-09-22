@@ -215,7 +215,7 @@ class SpanASTEModel(nn.Module):
 
             # 4. Dual-Channel Span Pruning (Eq. 4)
             # k = ceil(n * z)
-            k = max(1, int(round(n_w * self.pruning_ratio)))
+            k = max(1, round(n_w * self.pruning_ratio))
             k = min(k, num_spans)
 
             target_scores = mention_probs[:, MENTION2ID["TARGET"]]   # (num_spans,)
@@ -266,7 +266,6 @@ class SpanASTEModel(nn.Module):
                 flat_pair_reps = pair_reps.view(num_t * num_o, -1)
 
                 relation_logits = self.relation_classifier(flat_pair_reps)  # (num_t * num_o, 4)
-                relation_probs = F.softmax(relation_logits, dim=-1)          # (num_t * num_o, 4)
 
                 # Relation Loss
                 if gold_pairs is not None and b < len(gold_pairs):
