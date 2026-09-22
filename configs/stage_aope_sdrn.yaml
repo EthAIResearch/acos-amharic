@@ -23,13 +23,14 @@ training:
   seed: 42
   weight_decay: 0.01
   fp16: true
-  bio_class_weights: [1.0, 5.0, 5.0, 5.0, 5.0]  # [O, B-ASP, I-ASP, B-OPN, I-OPN] - counteracts 95% 'O' dominance to lift recall
-  span_loss_weight: 1.0                          # L = L_E + L_R (Eq. 16 in SDRN paper)
+  bio_class_weights: [1.0, 4.0, 4.0, 8.0, 8.0]  # [O, B-ASP, I-ASP, B-OPN, I-OPN] - asymmetric weights penalize missed opinions 2x
+  span_loss_weight: 2.0                          # prioritizes entity boundary learning relative to relation matrix
+  dice_loss_weight: 1.0                          # auxiliary Multi-Class Dice Loss (Li et al., ACL 2020) to maximize soft token F1
 
-output_dir: results/stage_aope_sdrn/afroxlmr_crf_run1
+output_dir: results/stage_aope_sdrn/afroxlmr_crf_run2
 
 notes: >
-  Trained on data/prepared_explicit with AfroXLMR-base, exact SDRN architecture (ACL 2020),
-  unified 5-way BIO Linear-Chain CRF layer, row-stochastic biaffine RelationAttention,
-  ESM/RSM synchronization channels, and class-weighted relation cross-entropy loss.
+  Phase 2 training run on data/prepared_explicit with AfroXLMR-base, exact SDRN architecture (ACL 2020),
+  5-way BIO Linear-Chain CRF, auxiliary Multi-Class Dice Loss, asymmetric opinion weights [1.0, 4.0, 4.0, 8.0, 8.0],
+  and increased span loss weight (2.0) to shatter the opinion recall bottleneck.
 

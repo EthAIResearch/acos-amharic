@@ -213,7 +213,10 @@ def test_config_stage_aope_sdrn_crf_enabled():
     with open(config_path, encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
     assert cfg.get("use_crf") is True
-    assert cfg.get("output_dir") == "results/stage_aope_sdrn/afroxlmr_crf_run1"
+    assert cfg.get("output_dir") in (
+        "results/stage_aope_sdrn/afroxlmr_crf_run1",
+        "results/stage_aope_sdrn/afroxlmr_crf_run2",
+    )
 
 
 if __name__ == "__main__":

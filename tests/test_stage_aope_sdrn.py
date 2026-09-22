@@ -204,9 +204,42 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert cfg.get("data", {}).get("train") == "data/prepared_explicit/train.jsonl"
     assert cfg.get("data", {}).get("dev") == "data/prepared_explicit/dev.jsonl"
     assert cfg.get("data", {}).get("test") == "data/prepared_explicit/test.jsonl"
-    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 5.0, 5.0, 5.0, 5.0]
-    assert cfg.get("training", {}).get("span_loss_weight") == 1.0
+    assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 4.0, 4.0, 8.0, 8.0]
+    assert cfg.get("training", {}).get("span_loss_weight") == 2.0
+    assert cfg.get("training", {}).get("dice_loss_weight") == 1.0
+    assert cfg.get("output_dir") == "results/stage_aope_sdrn/afroxlmr_crf_run2"
     assert cfg.get("use_crf") is True
+
+
+def test_multiclass_dice_loss():
+    try:
+        import torch
+        from loss import MultiClassDiceLoss
+    except ImportError:
+        return
+
+    dice_fn = MultiClassDiceLoss(num_classes=5, weight=[1.0, 4.0, 4.0, 8.0, 8.0])
+
+    # Case 1: Near-perfect logits for label 3 (B-OPN)
+    logits_perfect = torch.tensor([[[-10.0, -10.0, -10.0, 10.0, -10.0]]])
+    labels = torch.tensor([[3]])
+    loss_perfect = dice_fn(logits_perfect, labels)
+    assert loss_perfect.item() < 0.05
+
+    # Case 2: Wrong prediction (predicts O=0, target is B-OPN=3)
+    logits_wrong = torch.tensor([[[10.0, -10.0, -10.0, -10.0, -10.0]]])
+    loss_wrong = dice_fn(logits_wrong, labels)
+    assert loss_wrong.item() > loss_perfect.item()
+
+    # Case 3: Masking ignores padding/special tokens
+    mask = torch.tensor([[False]])
+    loss_masked = dice_fn(logits_wrong, labels, mask=mask)
+    assert loss_masked.item() == 0.0
+
+    # Case 4: ignore_index (-100) ignored
+    labels_ignore = torch.tensor([[-100]])
+    loss_ignore = dice_fn(logits_wrong, labels_ignore)
+    assert loss_ignore.item() == 0.0
 
 
 def test_bio_class_weights_validation_and_expansion():

@@ -227,6 +227,8 @@ def main():
                      help="Weights for BIO classes [O, B-ASP, I-ASP, B-OPN, I-OPN] to counter 'O' token dominance.")
     ap.add_argument("--span_loss_weight", type=float, default=1.0,
                      help="Scaling factor for span cross-entropy loss relative to relation BCE loss.")
+    ap.add_argument("--dice_loss_weight", type=float, default=0.0,
+                     help="Scaling factor for auxiliary Multi-Class Dice Loss (Li et al., ACL 2020).")
     ap.add_argument("--head_lr", type=float, default=1e-3,
                      help="Learning rate for non-encoder SDRN heads (CRF, ESM, RSM, relation attention). SDRN paper uses 1e-3.")
     ap.add_argument("--use_crf", action="store_true", default=False,
@@ -263,6 +265,7 @@ def main():
         relation_threshold=args.relation_threshold,
         bio_class_weights=args.bio_class_weights,
         span_loss_weight=args.span_loss_weight,
+        dice_loss_weight=args.dice_loss_weight,
         use_crf=args.use_crf,
     ).to(device)
 
