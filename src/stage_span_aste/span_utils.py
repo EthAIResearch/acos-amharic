@@ -35,8 +35,7 @@ ID2RELATION = {0: "INVALID", 1: "POSITIVE", 2: "NEGATIVE", 3: "NEUTRAL"}
 
 def bucket_value(val: int) -> int:
     """Map an integer value (e.g. width or distance) into one of 10 bucket indices."""
-    if val < 0:
-        val = 0
+    val = max(val, 0)
     for idx, (low, high) in enumerate(BUCKET_RANGES):
         if low <= val <= high:
             return idx

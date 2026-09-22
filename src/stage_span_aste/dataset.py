@@ -13,10 +13,10 @@ from torch.utils.data import Dataset
 
 sys.path.insert(0, os.path.dirname(__file__))
 from span_utils import (
+    RELATION2ID,
     build_gold_span_labels,
     enumerate_spans,
     extract_explicit_triplets,
-    RELATION2ID,
 )
 
 

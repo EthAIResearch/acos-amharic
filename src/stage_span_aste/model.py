@@ -9,16 +9,15 @@ Implements Span-ASTE (Xu et al., ACL 2021; arXiv:2107.12214):
   5. End-to-End Multi-Task Loss (Eq. 7)
 """
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-from transformers import AutoConfig, AutoModel
-
 from span_utils import (
-    bucket_value,
-    compute_span_distance,
     MENTION2ID,
     RELATION2ID,
+    bucket_value,
+    compute_span_distance,
 )
+from torch import nn
+from transformers import AutoConfig, AutoModel
 
 
 class MLP(nn.Module):

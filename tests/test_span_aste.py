@@ -10,17 +10,17 @@ import sys
 
 # Add src directories to sys.path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_span_aste"))
+from evaluate import compute_prf, evaluate_batch_predictions, summarize_metrics
 from span_utils import (
-    bucket_value,
-    compute_span_distance,
-    enumerate_spans,
-    build_gold_span_labels,
-    build_gold_pair_labels,
-    extract_explicit_triplets,
     MENTION2ID,
     RELATION2ID,
+    bucket_value,
+    build_gold_pair_labels,
+    build_gold_span_labels,
+    compute_span_distance,
+    enumerate_spans,
+    extract_explicit_triplets,
 )
-from evaluate import compute_prf, evaluate_batch_predictions, summarize_metrics
 
 
 def test_bucket_value_boundaries():
@@ -131,8 +131,8 @@ def test_evaluate_batch_predictions():
 def test_span_aste_model_mock_forward():
     try:
         import torch
-        import torch.nn as nn
         from model import MLP, SpanASTEModel
+        from torch import nn
     except ImportError:
         return
 

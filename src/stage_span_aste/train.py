@@ -11,9 +11,9 @@ import argparse
 import json
 import os
 import sys
-import yaml
 
 import torch
+import yaml
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
