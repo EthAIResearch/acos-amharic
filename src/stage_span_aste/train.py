@@ -1,0 +1,301 @@
+"""
+Training Script for Span-ASTE (ACL 2021)
+========================================
+Trains the Span-ASTE model on Amharic ACOS explicit-both pairs/triplets:
+  - AdamW optimizer with differential learning rates (5e-5 for encoder, 1e-3 for heads)
+  - Linear warmup for 10% steps + linear decay
+  - Evaluates ASTE, AOPE, ATE, and OTE on dev set every epoch
+  - Saves best checkpoint and test results to output directory
+"""
+import argparse
+import json
+import os
+import sys
+import yaml
+
+import torch
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import AutoTokenizer, get_linear_schedule_with_warmup
+
+sys.path.insert(0, os.path.dirname(__file__))
+from dataset import SpanASTEDataset, collate_fn
+from evaluate import evaluate_batch_predictions, summarize_metrics
+from model import SpanASTEModel
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Train Span-ASTE model.")
+    parser.add_argument("--config", default="configs/stage_span_aste.yaml", help="Path to YAML config")
+    parser.add_argument("--train", default=None, help="Train JSONL path")
+    parser.add_argument("--dev", default=None, help="Dev JSONL path")
+    parser.add_argument("--test", default=None, help="Test JSONL path")
+    parser.add_argument("--model_name", default=None)
+    parser.add_argument("--output_dir", default=None)
+    parser.add_argument("--batch_size", type=int, default=None)
+    parser.add_argument("--epochs", type=int, default=None)
+    parser.add_argument("--lr_transformer", type=float, default=None)
+    parser.add_argument("--lr_head", type=float, default=None)
+    parser.add_argument("--max_span_length", type=int, default=None)
+    parser.add_argument("--pruning_ratio", type=float, default=None)
+    parser.add_argument("--device", default=None)
+    return parser.parse_args()
+
+
+def load_config(config_path: str) -> dict:
+    if os.path.exists(config_path):
+        with open(config_path, encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {}
+
+
+def run_evaluation(model, dataloader, device) -> dict:
+    """Evaluates model over a DataLoader and computes full metrics."""
+    model.eval()
+    accumulated_counts = {
+        "aste": {"tp": 0, "fp": 0, "fn": 0},
+        "aope": {"tp": 0, "fp": 0, "fn": 0},
+        "ate": {"tp": 0, "fp": 0, "fn": 0},
+        "ote": {"tp": 0, "fp": 0, "fn": 0},
+        "candidate_ceiling": {"reachable": 0, "total_gold_pairs": 0},
+    }
+
+    with torch.no_grad():
+        for batch in dataloader:
+            input_ids = batch["input_ids"].to(device)
+            attention_mask = batch["attention_mask"].to(device)
+            subword_to_word = batch["subword_to_word"].to(device)
+
+            out = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                subword_to_word=subword_to_word,
+                seq_spans=batch["seq_spans"],
+                gold_mention_labels=None,  # No gold labels during inference evaluation
+                gold_pairs=None,
+                num_words=batch["num_words"],
+            )
+
+            batch_counts = evaluate_batch_predictions(
+                batch_outputs=out["batch_outputs"],
+                raw_quads=batch["raw_quads"],
+            )
+
+            for task in ("aste", "aope", "ate", "ote"):
+                for k in ("tp", "fp", "fn"):
+                    accumulated_counts[task][k] += batch_counts[task][k]
+            accumulated_counts["candidate_ceiling"]["reachable"] += batch_counts["candidate_ceiling"]["reachable"]
+            accumulated_counts["candidate_ceiling"]["total_gold_pairs"] += batch_counts["candidate_ceiling"]["total_gold_pairs"]
+
+    return summarize_metrics(accumulated_counts)
+
+
+def main():
+    args = parse_args()
+    cfg = load_config(args.config)
+
+    # Resolve settings from CLI or config
+    model_name = args.model_name or cfg.get("model_name", "Davlan/afro-xlmr-base")
+    output_dir = args.output_dir or cfg.get("output_dir", "results/stage_span_aste/afroxlmr_run1")
+    os.makedirs(output_dir, exist_ok=True)
+
+    data_cfg = cfg.get("data", {})
+    train_path = args.train or data_cfg.get("train", "data/prepared_explicit/train.jsonl")
+    dev_path = args.dev or data_cfg.get("dev", "data/prepared_explicit/dev.jsonl")
+    test_path = args.test or data_cfg.get("test", "data/prepared_explicit/test.jsonl")
+
+    training_cfg = cfg.get("training", {})
+    batch_size = args.batch_size or training_cfg.get("batch_size", 4)
+    epochs = args.epochs or training_cfg.get("epochs", 10)
+    lr_transformer = args.lr_transformer or training_cfg.get("lr_transformer", 5e-5)
+    lr_head = args.lr_head or training_cfg.get("lr_head", 1e-3)
+    weight_decay = training_cfg.get("weight_decay", 1e-2)
+    warmup_ratio = training_cfg.get("warmup_ratio", 0.1)
+
+    model_cfg = cfg.get("model", {})
+    max_length = model_cfg.get("max_length", 256)
+    max_words = model_cfg.get("max_words", 128)
+    max_span_length = args.max_span_length or model_cfg.get("max_span_length", 8)
+    pruning_ratio = args.pruning_ratio or model_cfg.get("pruning_ratio", 0.5)
+    width_dim = model_cfg.get("width_dim", 20)
+    distance_dim = model_cfg.get("distance_dim", 128)
+    hidden_dim = model_cfg.get("hidden_dim", 150)
+    dropout = model_cfg.get("dropout", 0.4)
+
+    device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(device_str)
+    print(f"Device: {device}")
+    print(f"Model backbone: {model_name}")
+    print(f"Output directory: {output_dir}")
+
+    # Save resolved arguments
+    resolved_args = {
+        "model_name": model_name,
+        "train_path": train_path,
+        "dev_path": dev_path,
+        "test_path": test_path,
+        "batch_size": batch_size,
+        "epochs": epochs,
+        "lr_transformer": lr_transformer,
+        "lr_head": lr_head,
+        "max_span_length": max_span_length,
+        "pruning_ratio": pruning_ratio,
+        "width_dim": width_dim,
+        "distance_dim": distance_dim,
+        "hidden_dim": hidden_dim,
+        "dropout": dropout,
+    }
+    with open(os.path.join(output_dir, "resolved_args.json"), "w", encoding="utf-8") as f:
+        json.dump(resolved_args, f, indent=2)
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    print("Loading datasets...")
+    train_dataset = SpanASTEDataset(
+        train_path,
+        tokenizer,
+        max_length=max_length,
+        max_words=max_words,
+        max_span_length=max_span_length,
+    )
+    dev_dataset = SpanASTEDataset(
+        dev_path,
+        tokenizer,
+        max_length=max_length,
+        max_words=max_words,
+        max_span_length=max_span_length,
+    )
+    test_dataset = SpanASTEDataset(
+        test_path,
+        tokenizer,
+        max_length=max_length,
+        max_words=max_words,
+        max_span_length=max_span_length,
+    )
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
+    dev_loader = DataLoader(dev_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
+
+    print(f"Train samples: {len(train_dataset):,}")
+    print(f"Dev samples  : {len(dev_dataset):,}")
+    print(f"Test samples : {len(test_dataset):,}")
+
+    model = SpanASTEModel(
+        model_name=model_name,
+        max_span_length=max_span_length,
+        pruning_ratio=pruning_ratio,
+        width_dim=width_dim,
+        distance_dim=distance_dim,
+        hidden_dim=hidden_dim,
+        dropout=dropout,
+    )
+    model.to(device)
+
+    # Differential learning rates matching Section 3.2 of the paper:
+    # 5e-5 for transformer with weight decay 1e-2; 1e-3 for task heads with 0 weight decay
+    encoder_params = list(model.encoder.parameters())
+    head_params = [
+        p for n, p in model.named_parameters() if not n.startswith("encoder.")
+    ]
+
+    optimizer = torch.optim.AdamW(
+        [
+            {"params": encoder_params, "lr": lr_transformer, "weight_decay": weight_decay},
+            {"params": head_params, "lr": lr_head, "weight_decay": 0.0},
+        ]
+    )
+
+    total_steps = len(train_loader) * epochs
+    warmup_steps = int(total_steps * warmup_ratio)
+    scheduler = get_linear_schedule_with_warmup(
+        optimizer,
+        num_warmup_steps=warmup_steps,
+        num_training_steps=total_steps,
+    )
+
+    best_dev_f1 = -1.0
+    best_checkpoint_path = os.path.join(output_dir, "best_model.pt")
+
+    print("\nStarting training...")
+    for epoch in range(1, epochs + 1):
+        model.train()
+        train_loss = 0.0
+        train_m_loss = 0.0
+        train_r_loss = 0.0
+
+        pbar = tqdm(train_loader, desc=f"Epoch {epoch}/{epochs}")
+        for batch in pbar:
+            optimizer.zero_grad()
+
+            input_ids = batch["input_ids"].to(device)
+            attention_mask = batch["attention_mask"].to(device)
+            subword_to_word = batch["subword_to_word"].to(device)
+
+            out = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                subword_to_word=subword_to_word,
+                seq_spans=batch["seq_spans"],
+                gold_mention_labels=batch["gold_mention_labels"],
+                gold_pairs=batch["gold_pairs"],
+                num_words=batch["num_words"],
+            )
+
+            loss = out["loss"]
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            optimizer.step()
+            scheduler.step()
+
+            train_loss += loss.item()
+            train_m_loss += out["mention_loss"].item()
+            train_r_loss += out["relation_loss"].item()
+            pbar.set_postfix({
+                "loss": f"{loss.item():.4f}",
+                "m_loss": f"{out['mention_loss'].item():.4f}",
+                "r_loss": f"{out['relation_loss'].item():.4f}",
+            })
+
+        avg_loss = train_loss / len(train_loader)
+        print(f"\nEpoch {epoch} complete | Train Loss: {avg_loss:.4f} (Mention: {train_m_loss/len(train_loader):.4f}, Relation: {train_r_loss/len(train_loader):.4f})")
+
+        # Evaluate on dev set
+        print("Evaluating on Dev split...")
+        dev_metrics = run_evaluation(model, dev_loader, device)
+        aope_f1 = dev_metrics["aope"]["f1"]
+        aste_f1 = dev_metrics["aste"]["f1"]
+        print(f"  Dev AOPE: P={dev_metrics['aope']['precision']*100:.2f}%, R={dev_metrics['aope']['recall']*100:.2f}%, F1={aope_f1*100:.2f}%")
+        print(f"  Dev ASTE: P={dev_metrics['aste']['precision']*100:.2f}%, R={dev_metrics['aste']['recall']*100:.2f}%, F1={aste_f1*100:.2f}%")
+        print(f"  Dev ATE : F1={dev_metrics['ate']['f1']*100:.2f}% | Dev OTE: F1={dev_metrics['ote']['f1']*100:.2f}%")
+        print(f"  Dev Candidate Ceiling R={dev_metrics['candidate_ceiling_recall']*100:.2f}% | Conversion={dev_metrics['candidate_conversion_efficiency']*100:.2f}%")
+
+        # Save best checkpoint (based on AOPE pair F1)
+        if aope_f1 > best_dev_f1:
+            best_dev_f1 = aope_f1
+            torch.save(model.state_dict(), best_checkpoint_path)
+            with open(os.path.join(output_dir, "best_dev_metrics.json"), "w", encoding="utf-8") as f:
+                json.dump(dev_metrics, f, indent=2)
+            print(f"  ★ New best Dev AOPE F1: {aope_f1*100:.2f}% -> Checkpoint saved!")
+
+    # Final evaluation on Test split using best checkpoint
+    print("\n" + "=" * 80)
+    print("FINAL TEST EVALUATION USING BEST CHECKPOINT")
+    print("=" * 80)
+    if os.path.exists(best_checkpoint_path):
+        model.load_state_dict(torch.load(best_checkpoint_path, map_location=device))
+    test_metrics = run_evaluation(model, test_loader, device)
+    with open(os.path.join(output_dir, "best_metrics.json"), "w", encoding="utf-8") as f:
+        json.dump(test_metrics, f, indent=2)
+
+    print(f"Test AOPE Pair Extraction: P={test_metrics['aope']['precision']*100:.2f}%, R={test_metrics['aope']['recall']*100:.2f}%, F1={test_metrics['aope']['f1']*100:.2f}%")
+    print(f"Test ASTE Triplet Extraction: P={test_metrics['aste']['precision']*100:.2f}%, R={test_metrics['aste']['recall']*100:.2f}%, F1={test_metrics['aste']['f1']*100:.2f}%")
+    print(f"Test ATE Aspect Extraction: P={test_metrics['ate']['precision']*100:.2f}%, R={test_metrics['ate']['recall']*100:.2f}%, F1={test_metrics['ate']['f1']*100:.2f}%")
+    print(f"Test OTE Opinion Extraction: P={test_metrics['ote']['precision']*100:.2f}%, R={test_metrics['ote']['recall']*100:.2f}%, F1={test_metrics['ote']['f1']*100:.2f}%")
+    print(f"Test Candidate Ceiling Recall: {test_metrics['candidate_ceiling_recall']*100:.2f}%")
+    print(f"Test Candidate Conversion Efficiency: {test_metrics['candidate_conversion_efficiency']*100:.2f}%")
+    print(f"\nAll results saved to: {output_dir}")
+
+
+if __name__ == "__main__":
+    main()
