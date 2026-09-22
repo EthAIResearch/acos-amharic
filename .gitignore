@@ -8,9 +8,12 @@ __pycache__/
 data/raw/*.tsv
 data/raw_explicit/*.tsv
 
-# Model checkpoints (large -- use Git LFS or external hosting)
+# Model checkpoints and tokenizer files (large -- use Git LFS or external hosting)
 results/**/*.pt
 results/**/*.bin
+results/**/tokenizer*
+results/**/*.txt
+marimo_backup_codes*
 *.ckpt
 
 # Notebooks checkpoints

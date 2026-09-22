@@ -243,14 +243,15 @@ class JointAOPESDRN(nn.Module):
         content_mask: torch.Tensor | None = None,
         aspect_labels: torch.Tensor | None = None,
         opinion_labels: torch.Tensor | None = None,
+        subword_to_word: torch.Tensor | None = None,
+        word_mask: torch.Tensor | None = None,
+        word_labels: torch.Tensor | None = None,
+        word_relation_labels: torch.Tensor | None = None,
         **kwargs,
     ) -> dict:
         if content_mask is None:
             content_mask = attention_mask
         content_mask = content_mask.bool()
-
-        B, N = input_ids.shape
-        mask2d = content_mask.unsqueeze(1) & content_mask.unsqueeze(2)
 
         # Convert separate aspect_labels and opinion_labels to 5-way labels if needed
         if labels is None and aspect_labels is not None and opinion_labels is not None:
@@ -263,7 +264,26 @@ class JointAOPESDRN(nn.Module):
 
         # Context representation sequence H^s (Eq. 3)
         encoder_out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
-        h_s = self.dropout(encoder_out.last_hidden_state)  # (B, N, H)
+        h_sub = self.dropout(encoder_out.last_hidden_state)  # (B, L, H)
+
+        if subword_to_word is not None:
+            # Phase 3: Word-Level SDRN (pooling subwords into word representations)
+            # subword_to_word: (B, M, L)
+            h_word = torch.bmm(subword_to_word.to(h_sub.dtype), h_sub)  # (B, M, H)
+            h_s = h_word
+            B, N = h_s.shape[:2]
+            active_mask = word_mask.bool() if word_mask is not None else (h_s.abs().sum(dim=-1) > 0)
+            target_labels = word_labels if word_labels is not None else labels
+            target_rel_labels = word_relation_labels if word_relation_labels is not None else relation_labels
+        else:
+            # Subword-level SDRN (Legacy)
+            h_s = h_sub
+            B, N = input_ids.shape
+            active_mask = content_mask
+            target_labels = labels
+            target_rel_labels = relation_labels
+
+        mask2d = active_mask.unsqueeze(1) & active_mask.unsqueeze(2)
 
         # Initialize T_tensor and R_tensor to zero (Section 3.3.1 & 3.3.2)
         t_tensor = torch.zeros((B, N, N), dtype=torch.float32, device=h_s.device)
@@ -308,8 +328,8 @@ class JointAOPESDRN(nn.Module):
                 # Update R_tensor with current relation scores
                 r_tensor = relation_score
                 # Update T_tensor with decoded entity spans from current emissions
-                tag_preds = self.decode_tags(target_emissions, mask=content_mask)
-                t_tensor = self._make_entity_tensor(tag_preds, B, N, h_s.device, content_mask)
+                tag_preds = self.decode_tags(target_emissions, mask=active_mask)
+                t_tensor = self._make_entity_tensor(tag_preds, B, N, h_s.device, active_mask)
 
         loss = None
         loss_e = None
@@ -317,24 +337,24 @@ class JointAOPESDRN(nn.Module):
         loss_dice = None
 
         # Compute joint loss at the final step T (Eq. 14-16)
-        if labels is not None and relation_labels is not None:
+        if target_labels is not None and target_rel_labels is not None:
             # 1. Entity Loss L_E (Eq. 14)
-            mask_e = content_mask & (labels != -100)
+            mask_e = active_mask & (target_labels != -100)
             if self.use_crf:
-                loss_e = self.crf(target_emissions, labels, mask=mask_e)
+                loss_e = self.crf(target_emissions, target_labels, mask=mask_e)
             else:
                 ce = nn.CrossEntropyLoss(weight=self.bio_weights, ignore_index=-100)
-                loss_e = ce(target_emissions.reshape(-1, NUM_BIO_LABELS), labels.reshape(-1))
+                loss_e = ce(target_emissions.reshape(-1, NUM_BIO_LABELS), target_labels.reshape(-1))
 
             if self.dice_loss is not None and self.dice_loss_weight > 0.0:
-                loss_dice = self.dice_loss(target_emissions, labels, mask=mask_e)
+                loss_dice = self.dice_loss(target_emissions, target_labels, mask=mask_e)
                 loss_e = loss_e + self.dice_loss_weight * loss_dice
 
             # 2. Relation Loss L_R (Eq. 15): Class-weighted cross entropy on [1 - G, G]
             rel_ce = nn.CrossEntropyLoss(weight=self.relation_loss_weights, ignore_index=-100)
             r_flat = relation_score.reshape(-1, 1)
             r_probs = torch.cat([1.0 - r_flat, r_flat], dim=1)  # (B*N*N, 2)
-            rel_labels_flat = relation_labels.reshape(-1).long()
+            rel_labels_flat = target_rel_labels.reshape(-1).long()
             # Non-content token pairs are ignored
             mask2d_flat = mask2d.reshape(-1)
             rel_labels_flat = torch.where(mask2d_flat, rel_labels_flat, torch.full_like(rel_labels_flat, -100))
@@ -350,6 +370,8 @@ class JointAOPESDRN(nn.Module):
             "loss_dice": loss_dice,
             "logits": target_emissions,
             "relation_logits": relation_score,
+            "word_mask": active_mask,
+            "is_word_level": subword_to_word is not None,
             # Backward compatibility aliases:
             "aspect_logits": target_emissions,
             "opinion_logits": target_emissions,

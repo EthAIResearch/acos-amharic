@@ -207,8 +207,13 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
     assert cfg.get("training", {}).get("bio_class_weights") == [1.0, 4.0, 4.0, 8.0, 8.0]
     assert cfg.get("training", {}).get("span_loss_weight") == 2.0
     assert cfg.get("training", {}).get("dice_loss_weight") == 1.0
-    assert cfg.get("output_dir") == "results/stage_aope_sdrn/afroxlmr_crf_run3"
+    assert cfg.get("output_dir") in (
+        "results/stage_aope_sdrn/afroxlmr_crf_run3",
+        "results/stage_aope_sdrn/afroxlmr_word_sdrn_run1",
+    )
     assert cfg.get("use_crf") is True
+    assert cfg.get("word_level") is True
+    assert cfg.get("data", {}).get("max_words") == 128
 
     try:
         from train import load_config_defaults
@@ -216,8 +221,114 @@ def test_stage_aope_sdrn_config_explicit_and_weights():
         assert defaults.get("dice_loss_weight") == 1.0
         assert defaults.get("span_loss_weight") == 2.0
         assert defaults.get("bio_class_weights") == [1.0, 4.0, 4.0, 8.0, 8.0]
+        assert defaults.get("word_level") is True
+        assert defaults.get("max_words") == 128
     except ImportError:
         pass
+
+
+def test_subword_to_word_pooling_matrix():
+    # Verify subword-to-word pooling logic
+    # 3 words: w0 (2 subwords: 0, 1), w1 (1 subword: 2), w2 (3 subwords: 3, 4, 5)
+    word_ids = [0, 0, 1, 2, 2, 2, None]
+    L = len(word_ids)
+    M = 4
+
+    word_to_subwords = [[] for _ in range(M)]
+    for si, wi in enumerate(word_ids):
+        if wi is not None and wi < M:
+            word_to_subwords[wi].append(si)
+
+    subword_to_word = [[0.0] * L for _ in range(M)]
+    word_mask = [False] * M
+
+    for wi in range(3):
+        sis = word_to_subwords[wi]
+        if sis:
+            word_mask[wi] = True
+            inv_len = 1.0 / len(sis)
+            for si in sis:
+                subword_to_word[wi][si] = inv_len
+
+    assert word_mask == [True, True, True, False]
+    assert subword_to_word[0][0] == 0.5 and subword_to_word[0][1] == 0.5
+    assert subword_to_word[1][2] == 1.0
+    assert abs(subword_to_word[2][3] - 1.0 / 3.0) < 1e-5
+    assert subword_to_word[3] == [0.0] * L
+
+
+def test_word_level_sdrn_forward_mock():
+    try:
+        from unittest.mock import MagicMock, patch
+
+        import torch
+        from model import JointAOPESDRN
+        from torch import nn
+    except ImportError:
+        return
+
+    mock_config = MagicMock()
+    mock_config.hidden_size = 16
+    mock_output = MagicMock()
+    mock_output.last_hidden_state = torch.randn(2, 6, 16)  # 2 samples, 6 subwords, dim 16
+
+    with patch("transformers.AutoConfig.from_pretrained", return_value=mock_config), \
+         patch("transformers.AutoModel.from_pretrained", return_value=nn.Linear(16, 16)):
+        model = JointAOPESDRN(
+            model_name="dummy",
+            num_recurrent_steps=2,
+            dice_loss_weight=1.0,
+            use_crf=True,
+        )
+        model.encoder = MagicMock(side_effect=lambda input_ids, attention_mask: mock_output)
+
+        input_ids = torch.tensor([[1, 2, 3, 4, 5, 0], [1, 2, 3, 0, 0, 0]])
+        attn = torch.tensor([[1, 1, 1, 1, 1, 0], [1, 1, 1, 0, 0, 0]])
+
+        # 3 words pooled from 6 subwords
+        # sample 0: w0=[1, 2], w1=[3], w2=[4, 5]
+        # sample 1: w0=[1], w1=[2], w2=[3]
+        subword_to_word = torch.zeros(2, 3, 6)
+        subword_to_word[0, 0, 0:2] = 0.5
+        subword_to_word[0, 1, 2] = 1.0
+        subword_to_word[0, 2, 3:5] = 0.5
+
+        subword_to_word[1, 0, 0] = 1.0
+        subword_to_word[1, 1, 1] = 1.0
+        subword_to_word[1, 2, 2] = 1.0
+
+        word_mask = torch.tensor([[True, True, True], [True, True, True]])
+
+        # Eval mode forward without labels
+        out = model(
+            input_ids=input_ids,
+            attention_mask=attn,
+            subword_to_word=subword_to_word,
+            word_mask=word_mask,
+        )
+        assert out["is_word_level"] is True
+        assert out["logits"].shape == (2, 3, 5)  # 2 samples, 3 words, 5 BIO classes
+        assert out["relation_logits"].shape == (2, 3, 3)  # 2 samples, 3x3 word relation matrix
+        assert out["loss"] is None
+
+        # Train mode forward with word labels and word relation labels
+        word_labels = torch.tensor([[1, 2, 0], [3, 4, 0]])  # B-ASP, I-ASP, O / B-OPN, I-OPN, O
+        word_rel = torch.tensor([
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ])
+        out_train = model(
+            input_ids=input_ids,
+            attention_mask=attn,
+            subword_to_word=subword_to_word,
+            word_mask=word_mask,
+            word_labels=word_labels,
+            word_relation_labels=word_rel,
+        )
+        assert out_train["loss"] is not None
+        assert out_train["loss_e"] is not None
+        assert out_train["loss_r"] is not None
+
 
 
 def test_multiclass_dice_loss():
@@ -356,6 +467,68 @@ def test_joint_aope_sdrn_forward_eval_mode_no_labels():
         assert out["loss_dice"] is None
         assert out["logits"] is not None
         assert out["relation_logits"] is not None
+
+
+def test_joint_aope_dataset_word_labels_and_collate():
+    try:
+        from unittest.mock import MagicMock
+
+        import torch
+        from align import ID2LABEL_5WAY
+        from bio_labels import decode_5way_bio_spans
+        from dataset import JointAOPEDataset, collate_fn
+    except ImportError:
+        return
+
+    # Mock tokenizer returning word_ids
+    mock_enc = {
+        "input_ids": [101, 10, 20, 30, 40, 102],
+        "attention_mask": [1, 1, 1, 1, 1, 1],
+    }
+    word_ids_mock = [None, 0, 1, 2, 3, None]
+
+    class MockBatchEncoding(dict):
+        def word_ids(self, batch_index=0):
+            return word_ids_mock
+
+    mock_tokenizer = MagicMock()
+    mock_tokenizer.side_effect = lambda tokens, **kwargs: MockBatchEncoding(mock_enc)
+
+    ds = JointAOPEDataset.__new__(JointAOPEDataset)
+    ds.tokenizer = mock_tokenizer
+    ds.max_length = 6
+    ds.max_words = 8
+    ds.records = [
+        {
+            "tokens": ["ምግቡ", "በጣም", "ጥሩ", "ነው"],
+            "quads": [
+                {"a_start": 0, "a_end": 1, "o_start": 1, "o_end": 3}
+            ],
+        }
+    ]
+
+    item = ds[0]
+
+    # Verify word_labels is a long tensor (NOT string)
+    assert isinstance(item["word_labels"], torch.Tensor)
+    assert item["word_labels"].dtype == torch.long
+    assert item["word_labels"].tolist()[:4] == [1, 3, 4, 0]  # B-ASP, B-OPN, I-OPN, O
+    assert all(x == -100 for x in item["word_labels"].tolist()[4:])
+
+    # Verify collate_fn dynamically slices to max_m
+    batch = collate_fn([item, item])
+    assert batch["word_labels"].shape == (2, 4)
+    assert batch["subword_to_word"].shape == (2, 4, 6)
+    assert batch["word_relation_labels"].shape == (2, 4, 4)
+    assert batch["word_relation_labels"][0, 0, 1].item() == 1
+    assert batch["word_relation_labels"][0, 1, 0].item() == 1
+
+    # Verify decode_5way_bio_spans with ID2LABEL_5WAY
+    word_tags = [ID2LABEL_5WAY[pid] for pid in batch["word_labels"][0].tolist()]
+    assert word_tags == ["B-ASP", "B-OPN", "I-OPN", "O"]
+    a_spans, o_spans = decode_5way_bio_spans(word_tags)
+    assert a_spans == [(0, 1)]
+    assert o_spans == [(1, 3)]
 
 
 if __name__ == "__main__":
