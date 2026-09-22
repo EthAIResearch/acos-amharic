@@ -221,6 +221,66 @@ def test_bio_class_weights_validation_and_expansion():
     assert len(w5) == 5
 
 
+def test_decode_subword_predictions_entity_first_rescues_prefix():
+    from align import decode_subword_predictions, decode_subword_predictions_5way
+
+    # Word 0: 1 subword, predicted O (0)
+    # Word 1: 2 subwords (e.g. prefix + root). Subword 0 predicted O (0), subword 1 predicted B-OPN (3)
+    # Word 2: 1 subword, predicted O (0)
+    word_ids = [None, 0, 1, 1, 2, None]
+    pred_sub_ids = [0, 0, 0, 3, 0, 0]
+
+    # With naive first-subword decoding, word 1 is missed (O)
+    first_tags = decode_subword_predictions_5way(word_ids, pred_sub_ids, strategy="first")
+    assert first_tags == ["O", "O", "O"]
+
+    # With entity-aware decoding, word 1 is rescued as B-OPN
+    rescued_tags = decode_subword_predictions_5way(word_ids, pred_sub_ids, strategy="entity_first")
+    assert rescued_tags == ["O", "B-OPN", "O"]
+
+    # Test orphan I promotion: subword 1 predicted I-OPN (4) without preceding entity
+    pred_sub_orphan = [0, 0, 0, 4, 0, 0]
+    rescued_orphan = decode_subword_predictions_5way(word_ids, pred_sub_orphan, strategy="entity_first")
+    assert rescued_orphan == ["O", "B-OPN", "O"]
+
+    # Test continuation preservation: word 0 is B-OPN (3), word 1 has prefix O (0) + root I-OPN (4)
+    pred_sub_cont = [0, 3, 0, 4, 0, 0]
+    rescued_cont = decode_subword_predictions_5way(word_ids, pred_sub_cont, strategy="entity_first")
+    assert rescued_cont == ["B-OPN", "I-OPN", "O"]
+
+    # Test 3-way BIO entity-aware decoding
+    pred_3way = [0, 0, 0, 2, 0, 0]  # subword 1 predicted I (2)
+    rescued_3way = decode_subword_predictions(word_ids, pred_3way, strategy="entity_first")
+    assert rescued_3way == ["O", "B", "O"]
+
+
+def test_opinion_emission_bias_viterbi_boost():
+    from crf import viterbi_decode_reference
+
+    # 3-step sequence with 5 tags [O, B-ASP, I-ASP, B-OPN, I-OPN]
+    # At step 1: O has emission 2.0, B-OPN has emission 1.6 (O would win without bias)
+    emissions_baseline = [
+        [3.0, 0.0, 0.0, 0.0, 0.0],
+        [2.0, 0.0, 0.0, 1.6, 0.0],
+        [3.0, 0.0, 0.0, 0.0, 0.0],
+    ]
+    # Uniform transitions
+    transitions = [[0.0] * 5 for _ in range(5)]
+    start = [0.0] * 5
+    end = [0.0] * 5
+
+    # Baseline: O wins at step 1
+    decoded_base = viterbi_decode_reference(emissions_baseline, transitions, start, end)
+    assert decoded_base == [0, 0, 0]
+
+    # With opinion bias +1.0 on B-OPN (idx 3) and I-OPN (idx 4):
+    emissions_biased = [
+        [row[0], row[1], row[2], row[3] + 1.0, row[4] + 1.0] for row in emissions_baseline
+    ]
+    decoded_biased = viterbi_decode_reference(emissions_biased, transitions, start, end)
+    assert decoded_biased == [0, 3, 0]  # Step 1 successfully shifted to B-OPN (idx 3)
+
+
 if __name__ == "__main__":
     import inspect
 
