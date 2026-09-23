@@ -16,6 +16,9 @@ model:
   distance_dim: 128         # Paper Appendix A: 128-dim span distance embedding
   hidden_dim: 150           # Paper Appendix A: 150 hidden size for MLPs
   dropout: 0.4              # Paper Appendix A: 0.4 dropout for MLPs
+  use_biaffine: true        # Deep Biaffine Attention for relation scoring (Dozat & Manning 2017, Nguyen & Verspoor 2018)
+  biaffine_dim: 256         # Biaffine projection dimension
+  use_span_sync: true       # Cross-span contextual synchronization (Chen et al. 2020)
 
 training:
   batch_size: 4

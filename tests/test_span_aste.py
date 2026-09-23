@@ -343,6 +343,171 @@ def test_sweep_relation_thresholds():
     assert row_050["conversion_efficiency"] == 0.50
 
 
+def test_biaffine_span_relation_classifier_forward():
+    """
+    Tests BiaffineSpanRelationClassifier forward pass, shapes, and gradients
+    with and without cross-span synchronization.
+    """
+    try:
+        import torch
+        from model import BiaffineSpanRelationClassifier
+    except ImportError:
+        return
+
+    span_dim = 48
+    biaffine_dim = 32
+    dist_dim = 16
+    out_dim = 4
+
+    # Test with use_span_sync = True
+    clf = BiaffineSpanRelationClassifier(
+        span_dim=span_dim,
+        biaffine_dim=biaffine_dim,
+        distance_dim=dist_dim,
+        out_dim=out_dim,
+        use_span_sync=True,
+        dropout=0.0,
+    )
+
+    num_t, num_o = 3, 5
+    t_spans = torch.randn(num_t, span_dim, requires_grad=True)
+    o_spans = torch.randn(num_o, span_dim, requires_grad=True)
+    dist_embeddings = torch.randn(num_t, num_o, dist_dim, requires_grad=True)
+
+    logits = clf(t_spans, o_spans, dist_embeddings)
+    assert logits.shape == (num_t * num_o, out_dim)
+
+    # Test backward pass and gradient flow to tensor U
+    loss = logits.sum()
+    loss.backward()
+    assert clf.U.grad is not None
+    assert clf.U.grad.shape == (out_dim, biaffine_dim, biaffine_dim)
+    assert t_spans.grad is not None
+    assert o_spans.grad is not None
+
+    # Test with use_span_sync = False
+    clf_no_sync = BiaffineSpanRelationClassifier(
+        span_dim=span_dim,
+        biaffine_dim=biaffine_dim,
+        distance_dim=dist_dim,
+        out_dim=out_dim,
+        use_span_sync=False,
+        dropout=0.0,
+    )
+    logits_no_sync = clf_no_sync(t_spans, o_spans, dist_embeddings)
+    assert logits_no_sync.shape == (num_t * num_o, out_dim)
+
+
+def test_biaffine_span_relation_classifier_empty_spans():
+    """
+    Tests BiaffineSpanRelationClassifier behavior when target or opinion pool is empty.
+    """
+    try:
+        import torch
+        from model import BiaffineSpanRelationClassifier
+    except ImportError:
+        return
+
+    clf = BiaffineSpanRelationClassifier(span_dim=32, biaffine_dim=16, distance_dim=8, out_dim=4)
+
+    # Zero targets
+    t_empty = torch.empty((0, 32))
+    o_spans = torch.randn(4, 32)
+    dist = torch.empty((0, 4, 8))
+    out1 = clf(t_empty, o_spans, dist)
+    assert out1.shape == (0, 4)
+
+    # Zero opinions
+    t_spans = torch.randn(3, 32)
+    o_empty = torch.empty((0, 32))
+    dist2 = torch.empty((3, 0, 8))
+    out2 = clf(t_spans, o_empty, dist2)
+    assert out2.shape == (0, 4)
+
+
+def test_span_aste_model_biaffine_forward():
+    """
+    Tests end-to-end SpanASTEModel forward pass with Biaffine relation classifier.
+    """
+    try:
+        import torch
+        from model import BiaffineSpanRelationClassifier, MLP, SpanASTEModel
+        from torch import nn
+    except ImportError:
+        return
+
+    class MockEncoder(nn.Module):
+        def __init__(self, hidden_size: int = 64):
+            super().__init__()
+            self.config = type("Config", (), {"hidden_size": hidden_size})()
+
+        def forward(self, input_ids, attention_mask=None):
+            B, L = input_ids.shape
+            d = self.config.hidden_size
+            return type("Output", (), {"last_hidden_state": torch.randn(B, L, d, device=input_ids.device)})()
+
+    model = SpanASTEModel(
+        model_name="Davlan/afro-xlmr-base",
+        max_span_length=4,
+        pruning_ratio=0.5,
+        width_dim=8,
+        distance_dim=16,
+        hidden_dim=32,
+        dropout=0.0,
+        use_biaffine=True,
+        biaffine_dim=32,
+        use_span_sync=True,
+    )
+    model.encoder = MockEncoder(hidden_size=64)
+    span_dim = 2 * 64 + 8
+    model.mention_classifier = MLP(span_dim, hidden_dim=32, out_dim=3)
+    model.relation_classifier = BiaffineSpanRelationClassifier(
+        span_dim=span_dim,
+        biaffine_dim=32,
+        distance_dim=16,
+        out_dim=4,
+        use_span_sync=True,
+    )
+
+    B, L, M = 2, 10, 6
+    input_ids = torch.randint(0, 100, (B, L))
+    attention_mask = torch.ones((B, L), dtype=torch.long)
+    subword_to_word = torch.zeros((B, M, L), dtype=torch.float32)
+    for b in range(B):
+        for m in range(M):
+            subword_to_word[b, m, min(m, L - 1)] = 1.0
+
+    seq_spans = [
+        enumerate_spans(M, max_span_length=4),
+        enumerate_spans(M, max_span_length=4),
+    ]
+    gold_mention_labels = [
+        torch.zeros(len(seq_spans[0]), dtype=torch.long),
+        torch.zeros(len(seq_spans[1]), dtype=torch.long),
+    ]
+    gold_pairs = [
+        [((0, 2), (3, 4), 1)],
+        [],
+    ]
+
+    out = model(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        subword_to_word=subword_to_word,
+        seq_spans=seq_spans,
+        gold_mention_labels=gold_mention_labels,
+        gold_pairs=gold_pairs,
+        num_words=[M, M],
+    )
+
+    assert "loss" in out
+    assert "mention_loss" in out
+    assert "relation_loss" in out
+    assert out["loss"].item() > 0.0
+    assert len(out["batch_outputs"]) == B
+    assert "candidate_pairs_with_scores" in out["batch_outputs"][0]
+
+
 if __name__ == "__main__":
     current_module = sys.modules[__name__]
     test_funcs = [

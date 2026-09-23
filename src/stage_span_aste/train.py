@@ -38,6 +38,11 @@ def parse_args():
     parser.add_argument("--lr_head", type=float, default=None)
     parser.add_argument("--max_span_length", type=int, default=None)
     parser.add_argument("--pruning_ratio", type=float, default=None)
+    parser.add_argument("--use_biaffine", action="store_true", default=None, help="Use deep biaffine relation classifier")
+    parser.add_argument("--no_biaffine", action="store_false", dest="use_biaffine", help="Disable biaffine classifier, use legacy MLP")
+    parser.add_argument("--biaffine_dim", type=int, default=None, help="Biaffine projection dimension")
+    parser.add_argument("--use_span_sync", action="store_true", default=None, help="Enable cross-span contextual synchronization")
+    parser.add_argument("--no_span_sync", action="store_false", dest="use_span_sync", help="Disable cross-span synchronization")
     parser.add_argument("--device", default=None)
     return parser.parse_args()
 
@@ -121,12 +126,16 @@ def main():
     distance_dim = model_cfg.get("distance_dim", 128)
     hidden_dim = model_cfg.get("hidden_dim", 150)
     dropout = model_cfg.get("dropout", 0.4)
+    use_biaffine = args.use_biaffine if args.use_biaffine is not None else model_cfg.get("use_biaffine", True)
+    biaffine_dim = args.biaffine_dim or model_cfg.get("biaffine_dim", 256)
+    use_span_sync = args.use_span_sync if args.use_span_sync is not None else model_cfg.get("use_span_sync", True)
 
     device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device(device_str)
     print(f"Device: {device}")
     print(f"Model backbone: {model_name}")
     print(f"Output directory: {output_dir}")
+    print(f"Biaffine relation scoring: {use_biaffine} (dim: {biaffine_dim}, span_sync: {use_span_sync})")
 
     # Save resolved arguments
     resolved_args = {
@@ -144,6 +153,9 @@ def main():
         "distance_dim": distance_dim,
         "hidden_dim": hidden_dim,
         "dropout": dropout,
+        "use_biaffine": use_biaffine,
+        "biaffine_dim": biaffine_dim,
+        "use_span_sync": use_span_sync,
     }
     with open(os.path.join(output_dir, "resolved_args.json"), "w", encoding="utf-8") as f:
         json.dump(resolved_args, f, indent=2)
@@ -189,6 +201,9 @@ def main():
         distance_dim=distance_dim,
         hidden_dim=hidden_dim,
         dropout=dropout,
+        use_biaffine=use_biaffine,
+        biaffine_dim=biaffine_dim,
+        use_span_sync=use_span_sync,
     )
     model.to(device)
 

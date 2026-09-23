@@ -47,6 +47,140 @@ class MLP(nn.Module):
         return self.net(x)
 
 
+class BiaffineSpanRelationClassifier(nn.Module):
+    """
+    Deep Biaffine Relation Classifier with Cross-Span Contextual Synchronization.
+    Synthesizes:
+      1. Dozat & Manning (ICLR 2017): Deep non-linear projections into relation subspaces + bilinear tensor scoring.
+      2. Nguyen & Verspoor (2018): Second-order biaffine attention operator for multi-class relation extraction:
+         s_{j,k} = Biaffine(h_j^(head), h_k^(tail)) = h_j^T U h_k + W [h_j; h_k] + b
+      3. Chen et al. (ACL 2020, SDRN): Cross-span contextual synchronization between aspect spans and opinion spans.
+    """
+
+    def __init__(
+        self,
+        span_dim: int,
+        biaffine_dim: int = 256,
+        distance_dim: int = 20,
+        out_dim: int = 4,
+        use_span_sync: bool = True,
+        dropout: float = 0.1,
+    ):
+        super().__init__()
+        self.span_dim = span_dim
+        self.biaffine_dim = biaffine_dim
+        self.out_dim = out_dim
+        self.use_span_sync = use_span_sync
+        self.dropout = nn.Dropout(dropout)
+
+        # 1. Deep non-linear projections into relation subspaces (Dozat & Manning 2017)
+        self.proj_aspect = nn.Sequential(
+            nn.Linear(span_dim, biaffine_dim),
+            nn.LeakyReLU(negative_slope=0.1),
+            nn.Dropout(dropout),
+        )
+        self.proj_opinion = nn.Sequential(
+            nn.Linear(span_dim, biaffine_dim),
+            nn.LeakyReLU(negative_slope=0.1),
+            nn.Dropout(dropout),
+        )
+
+        # 2. Second-order bilinear interaction tensor U: (out_dim, biaffine_dim, biaffine_dim)
+        # S_{t, o, c}^{bilinear} = h_t^T U_c h_o
+        self.U = nn.Parameter(torch.empty(out_dim, biaffine_dim, biaffine_dim))
+        nn.init.xavier_uniform_(self.U)
+
+        # 3. Cross-span contextual synchronization (Chen et al. 2020)
+        if self.use_span_sync:
+            self.sync_aspect_ctx = nn.Linear(biaffine_dim, biaffine_dim, bias=False)
+            self.sync_opinion_ctx = nn.Linear(biaffine_dim, biaffine_dim, bias=False)
+            sync_feat_dim = 2 * biaffine_dim
+        else:
+            sync_feat_dim = 0
+
+        # 4. Affine / multi-feature combination classifier
+        # Input features: [h_t; h_o; (sync_t; sync_o); h_t * h_o; distance_emb]
+        affine_in_dim = 2 * biaffine_dim + sync_feat_dim + biaffine_dim + distance_dim
+        self.affine_classifier = nn.Sequential(
+            nn.Linear(affine_in_dim, biaffine_dim),
+            nn.LeakyReLU(negative_slope=0.1),
+            nn.Dropout(dropout),
+            nn.Linear(biaffine_dim, out_dim),
+        )
+        self._init_weights()
+
+    def _init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                nn.init.xavier_normal_(m.weight)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+
+    def forward(
+        self,
+        t_spans: torch.Tensor,
+        o_spans: torch.Tensor,
+        dist_embeddings: torch.Tensor,
+    ) -> torch.Tensor:
+        """
+        Args:
+            t_spans: (N_t, span_dim) candidate aspect span representations
+            o_spans: (N_o, span_dim) candidate opinion span representations
+            dist_embeddings: (N_t, N_o, distance_dim) pairwise distance embeddings
+        Returns:
+            relation_logits: (N_t * N_o, out_dim)
+        """
+        num_t = t_spans.size(0)
+        num_o = o_spans.size(0)
+        if num_t == 0 or num_o == 0:
+            return torch.empty((0, self.out_dim), device=t_spans.device, dtype=t_spans.dtype)
+
+        # 1. Project into deep relation subspaces
+        h_t = self.proj_aspect(t_spans)    # (N_t, biaffine_dim)
+        h_o = self.proj_opinion(o_spans)  # (N_o, biaffine_dim)
+
+        # 2. Second-order bilinear tensor score: (N_t, N_o, out_dim)
+        # einsum: td,cde,oe -> toc (t: target, o: opinion, c: class, d/e: biaffine_dim)
+        bilinear_logits = torch.einsum("td,cde,oe->toc", h_t, self.U, h_o)
+
+        # 3. Cross-span contextual synchronization
+        if self.use_span_sync:
+            scale = 1.0 / (self.biaffine_dim ** 0.5)
+            # Alignment affinity matrix: (N_t, N_o)
+            affinity = torch.matmul(h_t, h_o.t()) * scale
+
+            # Aspect attends over opinions: (N_t, N_o) @ (N_o, d) -> (N_t, d)
+            attn_t = F.softmax(affinity, dim=1)
+            ctx_t = torch.matmul(attn_t, self.sync_opinion_ctx(h_o))
+
+            # Opinion attends over aspects: (N_o, N_t) @ (N_t, d) -> (N_o, d)
+            attn_o = F.softmax(affinity.t(), dim=1)
+            ctx_o = torch.matmul(attn_o, self.sync_aspect_ctx(h_t))
+
+            # Pairwise broadcast
+            ctx_t_exp = ctx_t.unsqueeze(1).expand(num_t, num_o, -1)
+            ctx_o_exp = ctx_o.unsqueeze(0).expand(num_t, num_o, -1)
+
+        # Pairwise broadcast of span projections
+        h_t_exp = h_t.unsqueeze(1).expand(num_t, num_o, -1)
+        h_o_exp = h_o.unsqueeze(0).expand(num_t, num_o, -1)
+        elem_prod = h_t_exp * h_o_exp
+
+        if self.use_span_sync:
+            pair_features = torch.cat(
+                [h_t_exp, h_o_exp, ctx_t_exp, ctx_o_exp, elem_prod, dist_embeddings], dim=-1
+            )
+        else:
+            pair_features = torch.cat(
+                [h_t_exp, h_o_exp, elem_prod, dist_embeddings], dim=-1
+            )
+
+        affine_logits = self.affine_classifier(pair_features)  # (N_t, N_o, out_dim)
+
+        total_logits = bilinear_logits + affine_logits  # (N_t, N_o, out_dim)
+        return total_logits.view(num_t * num_o, self.out_dim)
+
+
 class SpanASTEModel(nn.Module):
     """
     Span-ASTE model for Aspect-Opinion Pair and Sentiment Triplet Extraction.
@@ -64,12 +198,20 @@ class SpanASTEModel(nn.Module):
         mention_loss_weight: float = 1.0,
         relation_loss_weight: float = 1.0,
         relation_loss_weights: list[float] | None = None,
+        relation_threshold: float | None = None,
+        use_biaffine: bool = True,
+        biaffine_dim: int = 256,
+        use_span_sync: bool = True,
     ):
         super().__init__()
         self.max_span_length = max_span_length
         self.pruning_ratio = pruning_ratio
         self.mention_loss_weight = mention_loss_weight
         self.relation_loss_weight = relation_loss_weight
+        self.relation_threshold = relation_threshold
+        self.use_biaffine = use_biaffine
+        self.biaffine_dim = biaffine_dim
+        self.use_span_sync = use_span_sync
 
         # 1. Transformer Encoder
         self.encoder = AutoModel.from_pretrained(model_name)
@@ -92,14 +234,23 @@ class SpanASTEModel(nn.Module):
         )
 
         # 4. Triplet / Relation Module (Positive, Negative, Neutral, Invalid)
-        # Pair representation: [target_span; opinion_span; distance_emb]
-        pair_rep_dim = 2 * span_rep_dim + distance_dim
-        self.relation_classifier = MLP(
-            in_dim=pair_rep_dim,
-            hidden_dim=hidden_dim,
-            out_dim=4,
-            dropout=dropout,
-        )
+        if self.use_biaffine:
+            self.relation_classifier = BiaffineSpanRelationClassifier(
+                span_dim=span_rep_dim,
+                biaffine_dim=biaffine_dim,
+                distance_dim=distance_dim,
+                out_dim=4,
+                use_span_sync=use_span_sync,
+                dropout=dropout,
+            )
+        else:
+            pair_rep_dim = 2 * span_rep_dim + distance_dim
+            self.relation_classifier = MLP(
+                in_dim=pair_rep_dim,
+                hidden_dim=hidden_dim,
+                out_dim=4,
+                dropout=dropout,
+            )
 
         # Optional class weights for relation loss (e.g. to balance 90%+ Invalid pairs)
         if relation_loss_weights is not None:
@@ -259,10 +410,6 @@ class SpanASTEModel(nn.Module):
                 t_reps = span_reps[t_idx_t]  # (num_t, span_dim)
                 o_reps = span_reps[o_idx_t]  # (num_o, span_dim)
 
-                # Pair expansion
-                t_expanded = t_reps.unsqueeze(1).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
-                o_expanded = o_reps.unsqueeze(0).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
-
                 # Compute pairwise token distances on CPU list then move to CUDA tensor once
                 dist_matrix = [
                     [bucket_value(compute_span_distance(t_span, o_span)) for o_span in pruned_opinion_spans]
@@ -272,10 +419,15 @@ class SpanASTEModel(nn.Module):
 
                 dist_reps = self.distance_embedding(dist_indices)  # (num_t, num_o, dist_dim)
 
-                pair_reps = torch.cat([t_expanded, o_expanded, dist_reps], dim=-1)  # (num_t, num_o, pair_dim)
-                flat_pair_reps = pair_reps.view(num_t * num_o, -1)
-
-                relation_logits = self.relation_classifier(flat_pair_reps)  # (num_t * num_o, 4)
+                if self.use_biaffine and isinstance(self.relation_classifier, BiaffineSpanRelationClassifier):
+                    relation_logits = self.relation_classifier(t_reps, o_reps, dist_reps)  # (num_t * num_o, 4)
+                else:
+                    # Pair expansion for legacy MLP
+                    t_expanded = t_reps.unsqueeze(1).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
+                    o_expanded = o_reps.unsqueeze(0).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
+                    pair_reps = torch.cat([t_expanded, o_expanded, dist_reps], dim=-1)  # (num_t, num_o, pair_dim)
+                    flat_pair_reps = pair_reps.view(num_t * num_o, -1)
+                    relation_logits = self.relation_classifier(flat_pair_reps)  # (num_t * num_o, 4)
 
                 # Relation Loss
                 if gold_pairs is not None and b < len(gold_pairs):
