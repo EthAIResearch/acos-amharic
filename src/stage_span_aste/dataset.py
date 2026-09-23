@@ -50,21 +50,7 @@ class SpanASTEDataset(Dataset):
     def __getitem__(self, idx: int) -> dict:
         rec = self.records[idx]
         tokens = rec["tokens"]
-        n_words = len(tokens)
         quads = rec.get("quads", [])
-
-        # Enumerate spans up to max_span_length words
-        spans = enumerate_spans(n_words, max_span_length=self.max_span_length)
-
-        # Build gold mention labels: 0: INVALID, 1: TARGET, 2: OPINION
-        mention_labels = build_gold_span_labels(spans, quads)
-
-        # Build gold pairs: list of ((a_s, a_e), (o_s, o_e), rel_id)
-        gold_triplets = extract_explicit_triplets(quads)
-        gold_pairs = [
-            (a_span, o_span, RELATION2ID.get(senti, RELATION2ID["INVALID"]))
-            for a_span, o_span, senti in gold_triplets
-        ]
 
         # Tokenize with subword-to-word alignment
         enc = self.tokenizer(
@@ -76,21 +62,37 @@ class SpanASTEDataset(Dataset):
         )
         word_ids = enc.word_ids(batch_index=0)
 
-        # Build vectorized subword-to-word mean pooling matrix P (M x L)
+        # Determine valid words that were actually encoded into subwords
+        valid_words = [w for w in word_ids if w is not None]
+        num_encoded_words = (max(valid_words) + 1) if valid_words else 0
+        num_encoded_words = min(num_encoded_words, self.max_words, len(tokens))
+
+        # Enumerate candidate spans strictly within the encoded words
+        spans = enumerate_spans(num_encoded_words, max_span_length=self.max_span_length)
+
+        # Build gold mention labels: 0: INVALID, 1: TARGET, 2: OPINION
+        mention_labels = build_gold_span_labels(spans, quads)
+
+        # Build gold pairs: only keep pairs within the encoded word boundary
+        gold_triplets = extract_explicit_triplets(quads)
+        gold_pairs = [
+            (a_span, o_span, RELATION2ID.get(senti, RELATION2ID["INVALID"]))
+            for a_span, o_span, senti in gold_triplets
+            if a_span[1] <= num_encoded_words and o_span[1] <= num_encoded_words
+        ]
+
+        # Build vectorized subword-to-word mean pooling matrix P (num_encoded_words x L)
         L = self.max_length
-        M = self.max_words
+        M = num_encoded_words
         word_to_subwords = [[] for _ in range(M)]
         for si, wi in enumerate(word_ids):
             if wi is not None and wi < M:
                 word_to_subwords[wi].append(si)
 
         subword_to_word = [[0.0] * L for _ in range(M)]
-        word_mask = [False] * M
-
-        for wi in range(min(n_words, M)):
+        for wi in range(M):
             sis = word_to_subwords[wi]
             if sis:
-                word_mask[wi] = True
                 inv_len = 1.0 / len(sis)
                 for si in sis:
                     subword_to_word[wi][si] = inv_len
@@ -98,32 +100,40 @@ class SpanASTEDataset(Dataset):
         return {
             "input_ids": torch.tensor(enc["input_ids"], dtype=torch.long),
             "attention_mask": torch.tensor(enc["attention_mask"], dtype=torch.long),
-            "subword_to_word": torch.tensor(subword_to_word, dtype=torch.float32),
-            "word_mask": torch.tensor(word_mask, dtype=torch.bool),
-            "num_words": n_words,
+            "subword_to_word": torch.tensor(subword_to_word, dtype=torch.float32),  # (M, L)
+            "num_words": num_encoded_words,
             "spans": spans,
             "mention_labels": torch.tensor(mention_labels, dtype=torch.long),
             "gold_pairs": gold_pairs,
-            "tokens": tokens,
+            "tokens": tokens[:num_encoded_words],
             "raw_quads": quads,
         }
 
 
 def collate_fn(batch: list[dict]) -> dict:
     """
-    Collate function dynamically slicing word pooling matrices to the
+    Collate function dynamically padding word pooling matrices to the
     maximum active words in the current batch.
     """
-    # Find max active words across batch
-    max_m = 1
+    max_batch_words = max([b["num_words"] for b in batch], default=0)
+    max_batch_words = max(max_batch_words, 1)  # Ensure at least 1 row to prevent empty tensors
+    L = batch[0]["input_ids"].size(0)
+
+    # Pad each sample's subword_to_word to (max_batch_words, L)
+    padded_s2w = []
     for b in batch:
-        nz = b["word_mask"].nonzero()
-        if len(nz) > 0:
-            max_m = max(max_m, int(nz[-1].item()) + 1)
+        s2w = b["subword_to_word"]
+        m = s2w.size(0)
+        if m < max_batch_words:
+            padding = torch.zeros((max_batch_words - m, L), dtype=torch.float32)
+            padded = torch.cat([s2w, padding], dim=0)
+        else:
+            padded = s2w[:max_batch_words]
+        padded_s2w.append(padded)
 
     input_ids = torch.stack([b["input_ids"] for b in batch])
     attention_mask = torch.stack([b["attention_mask"] for b in batch])
-    subword_to_word = torch.stack([b["subword_to_word"][:max_m] for b in batch])
+    subword_to_word = torch.stack(padded_s2w)  # (B, max_batch_words, L)
 
     return {
         "input_ids": input_ids,

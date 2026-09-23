@@ -202,6 +202,87 @@ def test_span_aste_model_mock_forward():
     assert len(out["batch_outputs"]) == B
 
 
+def test_dataset_and_collate_long_sentence():
+    """
+    Ensures that when sentences of differing lengths (including long ones) are collated,
+    dynamic padding and span representation building do not trigger out-of-bounds indexing.
+    """
+    try:
+        import torch
+        from dataset import collate_fn
+        from model import MLP, SpanASTEModel
+        from torch import nn
+    except ImportError:
+        return
+
+    class MockEncoder(nn.Module):
+        def __init__(self, hidden_size: int = 64):
+            super().__init__()
+            self.config = type("Config", (), {"hidden_size": hidden_size})()
+
+        def forward(self, input_ids, attention_mask=None):
+            B, L = input_ids.shape
+            d = self.config.hidden_size
+            return type("Output", (), {"last_hidden_state": torch.randn(B, L, d, device=input_ids.device)})()
+
+    model = SpanASTEModel(
+        model_name="Davlan/afro-xlmr-base",
+        max_span_length=4,
+        pruning_ratio=0.5,
+        width_dim=8,
+        distance_dim=16,
+        hidden_dim=32,
+        dropout=0.0,
+    )
+    model.encoder = MockEncoder(hidden_size=64)
+    span_dim = 2 * 64 + 8
+    model.mention_classifier = MLP(span_dim, hidden_dim=32, out_dim=3)
+    model.relation_classifier = MLP(2 * span_dim + 16, hidden_dim=32, out_dim=4)
+
+    L = 64
+    max_words = 25
+
+    item1 = {
+        "input_ids": torch.randint(0, 100, (L,)),
+        "attention_mask": torch.ones(L, dtype=torch.long),
+        "subword_to_word": torch.randn(4, L),
+        "num_words": 4,
+        "spans": enumerate_spans(4, max_span_length=4),
+        "mention_labels": torch.zeros(len(enumerate_spans(4, max_span_length=4)), dtype=torch.long),
+        "gold_pairs": [((0, 1), (2, 3), 1)],
+        "tokens": ["w0", "w1", "w2", "w3"],
+        "raw_quads": [],
+    }
+
+    spans2 = enumerate_spans(max_words, max_span_length=4)
+    item2 = {
+        "input_ids": torch.randint(0, 100, (L,)),
+        "attention_mask": torch.ones(L, dtype=torch.long),
+        "subword_to_word": torch.randn(max_words, L),
+        "num_words": max_words,
+        "spans": spans2,
+        "mention_labels": torch.zeros(len(spans2), dtype=torch.long),
+        "gold_pairs": [((0, 2), (20, 23), 2)],
+        "tokens": [f"w{i}" for i in range(max_words)],
+        "raw_quads": [],
+    }
+
+    batch = collate_fn([item1, item2])
+    out = model(
+        input_ids=batch["input_ids"],
+        attention_mask=batch["attention_mask"],
+        subword_to_word=batch["subword_to_word"],
+        seq_spans=batch["seq_spans"],
+        gold_mention_labels=batch["gold_mention_labels"],
+        gold_pairs=batch["gold_pairs"],
+        num_words=batch["num_words"],
+    )
+
+    assert "loss" in out
+    assert out["loss"].item() > 0.0
+    assert len(out["batch_outputs"]) == 2
+
+
 if __name__ == "__main__":
     current_module = sys.modules[__name__]
     test_funcs = [
