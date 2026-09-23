@@ -158,10 +158,10 @@ def main():
     state_dict = torch.load(checkpoint_path, map_location=device)
 
     # Auto-detect whether checkpoint was trained with Biaffine or legacy MLP
-    if any(k.startswith("relation_classifier.net.") for k in state_dict.keys()):
+    if any(k.startswith("relation_classifier.net.") for k in state_dict):
         print("  -> Detected legacy MLP relation classifier checkpoint (use_biaffine=False).")
         use_biaffine = False
-    elif any(k.startswith("relation_classifier.U") for k in state_dict.keys()):
+    elif any(k.startswith("relation_classifier.U") for k in state_dict):
         print("  -> Detected Deep Biaffine relation classifier checkpoint (use_biaffine=True).")
         use_biaffine = True
 
