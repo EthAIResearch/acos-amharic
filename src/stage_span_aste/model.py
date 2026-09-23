@@ -165,10 +165,13 @@ class SpanASTEModel(nn.Module):
         gold_mention_labels: list[torch.Tensor] | None = None,
         gold_pairs: list[list[tuple[tuple[int, int], tuple[int, int], int]]] | None = None,
         num_words: list[int] | None = None,
+        relation_threshold: float | None = None,
     ) -> dict:
         """
         Forward pass for a batch of sequences.
         Because each sentence has dynamic span counts, spans and pairs are handled per example.
+        If relation_threshold is provided, predicts relations where P(Relation) >= relation_threshold
+        instead of hard argmax != INVALID.
         """
         device = input_ids.device
         bsz = input_ids.size(0)
@@ -193,6 +196,7 @@ class SpanASTEModel(nn.Module):
                     "target_candidates": [],
                     "opinion_candidates": [],
                     "pred_triplets": [],
+                    "candidate_pairs_with_scores": [],
                     "mention_logits": None,
                     "relation_logits": None,
                 })
@@ -291,22 +295,39 @@ class SpanASTEModel(nn.Module):
                     total_relation_loss = total_relation_loss + r_loss
                     num_relation_examples += 1
 
-                # Decode Predictions: triplets with relation != INVALID (0)
+                # Decode Predictions & Collect Candidate Pairs with Scores
                 pred_triplets = []
+                candidate_pairs_with_scores = []
+
+                rel_probs = F.softmax(relation_logits, dim=-1)  # (num_t * num_o, 4)
+                # P(Relation) = 1.0 - P(INVALID)
+                p_rel = (1.0 - rel_probs[:, RELATION2ID["INVALID"]]).view(num_t, num_o).tolist()
+                best_senti_ids = (rel_probs[:, 1:].argmax(dim=-1) + 1).view(num_t, num_o).tolist()
                 pred_rel_ids = relation_logits.argmax(dim=-1).view(num_t, num_o).tolist()
+
                 for ti, t_span in enumerate(pruned_target_spans):
                     for oi, o_span in enumerate(pruned_opinion_spans):
-                        rel_id = pred_rel_ids[ti][oi]
-                        if rel_id != RELATION2ID["INVALID"]:
-                            pred_triplets.append((t_span, o_span, rel_id))
+                        score = p_rel[ti][oi]
+                        senti = best_senti_ids[ti][oi]
+                        candidate_pairs_with_scores.append((t_span, o_span, senti, score))
+
+                        if relation_threshold is None:
+                            rel_id = pred_rel_ids[ti][oi]
+                            if rel_id != RELATION2ID["INVALID"]:
+                                pred_triplets.append((t_span, o_span, rel_id))
+                        else:
+                            if score >= relation_threshold:
+                                pred_triplets.append((t_span, o_span, senti))
             else:
                 relation_logits = None
                 pred_triplets = []
+                candidate_pairs_with_scores = []
 
             batch_outputs.append({
                 "target_candidates": pruned_target_spans,
                 "opinion_candidates": pruned_opinion_spans,
                 "pred_triplets": pred_triplets,
+                "candidate_pairs_with_scores": candidate_pairs_with_scores,
                 "mention_logits": mention_logits,
                 "relation_logits": relation_logits,
             })

@@ -10,7 +10,12 @@ import sys
 
 # Add src directories to sys.path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "stage_span_aste"))
-from evaluation import compute_prf, evaluate_batch_predictions, summarize_metrics
+from evaluation import (
+    compute_prf,
+    evaluate_batch_predictions,
+    summarize_metrics,
+    sweep_relation_thresholds,
+)
 from span_utils import (
     MENTION2ID,
     RELATION2ID,
@@ -281,6 +286,61 @@ def test_dataset_and_collate_long_sentence():
     assert "loss" in out
     assert out["loss"].item() > 0.0
     assert len(out["batch_outputs"]) == 2
+    assert "candidate_pairs_with_scores" in out["batch_outputs"][0]
+
+    # Test forward with custom relation_threshold
+    out_thresh = model(
+        input_ids=batch["input_ids"],
+        attention_mask=batch["attention_mask"],
+        subword_to_word=batch["subword_to_word"],
+        seq_spans=batch["seq_spans"],
+        gold_mention_labels=None,
+        gold_pairs=None,
+        num_words=batch["num_words"],
+        relation_threshold=0.3,
+    )
+    assert "batch_outputs" in out_thresh
+    assert len(out_thresh["batch_outputs"]) == 2
+
+
+def test_sweep_relation_thresholds():
+    """
+    Tests relation probability threshold sweep logic on mock candidates and gold quads.
+    """
+    cands_per_ex = [
+        [
+            ((0, 1), (2, 3), 1, 0.85),  # POSITIVE, score 0.85
+            ((0, 1), (4, 5), 2, 0.40),  # NEGATIVE, score 0.40
+        ],
+        [
+            ((1, 2), (3, 4), 1, 0.25),  # POSITIVE, score 0.25
+        ],
+    ]
+    raw_quads_per_ex = [
+        [{"a_start": 0, "a_end": 1, "o_start": 2, "o_end": 3, "sentiment": "POSITIVE", "category": "FOOD"}],
+        [{"a_start": 1, "a_end": 2, "o_start": 3, "o_end": 4, "sentiment": "POSITIVE", "category": "SERVICE"}],
+    ]
+
+    res = sweep_relation_thresholds(cands_per_ex, raw_quads_per_ex, thresholds=[0.20, 0.50, 0.90])
+    assert res["total_gold_pairs"] == 2
+    assert res["reachable_pairs"] == 2
+    assert res["candidate_ceiling_recall"] == 1.0
+
+    # At threshold 0.20: both pairs accepted -> 100% recall
+    row_020 = next(r for r in res["threshold_sweep"] if r["threshold"] == 0.20)
+    assert row_020["aope_recall"] == 1.0
+    assert row_020["conversion_efficiency"] == 1.0
+
+    # At threshold 0.90: no pairs accepted -> 0% recall
+    row_090 = next(r for r in res["threshold_sweep"] if r["threshold"] == 0.90)
+    assert row_090["aope_recall"] == 0.0
+    assert row_090["conversion_efficiency"] == 0.0
+
+    # At threshold 0.50: only first pair accepted -> 50% recall, 100% precision
+    row_050 = next(r for r in res["threshold_sweep"] if r["threshold"] == 0.50)
+    assert row_050["aope_recall"] == 0.50
+    assert row_050["aope_precision"] == 1.0
+    assert row_050["conversion_efficiency"] == 0.50
 
 
 if __name__ == "__main__":
