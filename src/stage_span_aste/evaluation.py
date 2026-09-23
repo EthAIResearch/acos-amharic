@@ -129,3 +129,118 @@ def summarize_metrics(counts: dict) -> dict:
         "reachable_pairs": reach_pairs,
         "total_gold_pairs": tot_pairs,
     }
+
+
+def sweep_relation_thresholds(
+    candidates_with_scores_per_ex: list[list[tuple[tuple[int, int], tuple[int, int], int, float]]],
+    raw_quads_per_ex: list[list[dict]],
+    thresholds: list[float] | None = None,
+) -> dict:
+    """
+    Evaluates pair extraction (AOPE) and triplet extraction (ASTE) across a range of
+    relation probability thresholds without recomputing model representations.
+
+    candidates_with_scores_per_ex: for each example, list of (t_span, o_span, best_senti_id, p_relation)
+    raw_quads_per_ex: for each example, list of gold quads
+    """
+    if thresholds is None:
+        thresholds = [
+            0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40,
+            0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80,
+        ]
+
+    # Pre-extract gold data per example
+    gold_triplets_per_ex = []
+    gold_pairs_per_ex = []
+    total_gold_pairs = 0
+    total_reachable_pairs = 0
+
+    for b, quads in enumerate(raw_quads_per_ex):
+        g_triplets = set(extract_explicit_triplets(quads))
+        g_pairs = {(a, o) for a, o, s in g_triplets}
+        gold_triplets_per_ex.append(g_triplets)
+        gold_pairs_per_ex.append(g_pairs)
+        total_gold_pairs += len(g_pairs)
+
+        # Reachable pairs in this example's candidate pool
+        cand_pairs = {(t, o) for t, o, s, p in candidates_with_scores_per_ex[b]}
+        total_reachable_pairs += len(g_pairs & cand_pairs)
+
+    ceiling_recall = total_reachable_pairs / total_gold_pairs if total_gold_pairs > 0 else 0.0
+
+    sweep_results = []
+    best_aope_f1 = -1.0
+    best_aope_threshold = thresholds[0]
+    best_aope_metrics = None
+
+    best_aste_f1 = -1.0
+    best_aste_threshold = thresholds[0]
+    best_aste_metrics = None
+
+    for t in thresholds:
+        tp_aope = fp_aope = fn_aope = 0
+        tp_aste = fp_aste = fn_aste = 0
+
+        for b in range(len(raw_quads_per_ex)):
+            g_triplets = gold_triplets_per_ex[b]
+            g_pairs = gold_pairs_per_ex[b]
+
+            pred_triplets = set()
+            pred_pairs = set()
+
+            for t_span, o_span, senti_id, score in candidates_with_scores_per_ex[b]:
+                if score >= t:
+                    senti_str = ID2RELATION.get(senti_id, "INVALID")
+                    if senti_str != "INVALID":
+                        pred_triplets.add((t_span, o_span, senti_str))
+                        pred_pairs.add((t_span, o_span))
+
+            tp_aope += len(pred_pairs & g_pairs)
+            fp_aope += len(pred_pairs - g_pairs)
+            fn_aope += len(g_pairs - pred_pairs)
+
+            tp_aste += len(pred_triplets & g_triplets)
+            fp_aste += len(pred_triplets - g_triplets)
+            fn_aste += len(g_triplets - pred_triplets)
+
+        aope_prf = compute_prf(tp_aope, fp_aope, fn_aope)
+        aste_prf = compute_prf(tp_aste, fp_aste, fn_aste)
+        conversion = tp_aope / total_reachable_pairs if total_reachable_pairs > 0 else 0.0
+
+        res_entry = {
+            "threshold": round(t, 2),
+            "aope_precision": round(aope_prf["precision"], 4),
+            "aope_recall": round(aope_prf["recall"], 4),
+            "aope_f1": round(aope_prf["f1"], 4),
+            "aste_precision": round(aste_prf["precision"], 4),
+            "aste_recall": round(aste_prf["recall"], 4),
+            "aste_f1": round(aste_prf["f1"], 4),
+            "conversion_efficiency": round(conversion, 4),
+            "tp_aope": tp_aope,
+            "fp_aope": fp_aope,
+            "fn_aope": fn_aope,
+        }
+        sweep_results.append(res_entry)
+
+        if aope_prf["f1"] > best_aope_f1:
+            best_aope_f1 = aope_prf["f1"]
+            best_aope_threshold = t
+            best_aope_metrics = res_entry
+
+        if aste_prf["f1"] > best_aste_f1:
+            best_aste_f1 = aste_prf["f1"]
+            best_aste_threshold = t
+            best_aste_metrics = res_entry
+
+    return {
+        "candidate_ceiling_recall": round(ceiling_recall, 4),
+        "reachable_pairs": total_reachable_pairs,
+        "total_gold_pairs": total_gold_pairs,
+        "best_aope_threshold": round(best_aope_threshold, 2),
+        "best_aope_f1": round(best_aope_f1, 4),
+        "best_aope_metrics": best_aope_metrics,
+        "best_aste_threshold": round(best_aste_threshold, 2),
+        "best_aste_f1": round(best_aste_f1, 4),
+        "best_aste_metrics": best_aste_metrics,
+        "threshold_sweep": sweep_results,
+    }
