@@ -43,6 +43,7 @@ def parse_args():
     parser.add_argument("--biaffine_dim", type=int, default=None, help="Biaffine projection dimension")
     parser.add_argument("--use_span_sync", action="store_true", default=None, help="Enable cross-span contextual synchronization")
     parser.add_argument("--no_span_sync", action="store_false", dest="use_span_sync", help="Disable cross-span synchronization")
+    parser.add_argument("--resume", action="store_true", help="Resume from best_model.pt in output_dir if present")
     parser.add_argument("--device", default=None)
     return parser.parse_args()
 
@@ -232,6 +233,16 @@ def main():
     best_dev_f1 = -1.0
     best_checkpoint_path = os.path.join(output_dir, "best_model.pt")
 
+    if args.resume and os.path.exists(best_checkpoint_path):
+        print(f"Resuming model weights from {best_checkpoint_path}...")
+        model.load_state_dict(torch.load(best_checkpoint_path, map_location=device))
+        best_dev_metrics_file = os.path.join(output_dir, "best_dev_metrics.json")
+        if os.path.exists(best_dev_metrics_file):
+            with open(best_dev_metrics_file, encoding="utf-8") as f:
+                saved_metrics = json.load(f)
+                best_dev_f1 = saved_metrics.get("aope", {}).get("f1", -1.0)
+                print(f"  Loaded prior best Dev AOPE F1: {best_dev_f1 * 100:.2f}%")
+
     print("\nStarting training...")
     for epoch in range(1, epochs + 1):
         model.train()
@@ -292,6 +303,9 @@ def main():
             with open(os.path.join(output_dir, "best_dev_metrics.json"), "w", encoding="utf-8") as f:
                 json.dump(dev_metrics, f, indent=2)
             print(f"  ★ New best Dev AOPE F1: {aope_f1*100:.2f}% -> Checkpoint saved!")
+
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
     # Final evaluation on Test split using best checkpoint
     print("\n" + "=" * 80)
