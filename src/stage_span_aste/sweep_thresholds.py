@@ -32,6 +32,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Sweep relation thresholds on Span-ASTE checkpoint.")
     parser.add_argument("--config", default="configs/stage_span_aste.yaml", help="Path to config YAML")
     parser.add_argument("--checkpoint", default=None, help="Path to checkpoint best_model.pt")
+    parser.add_argument("--output_dir", default=None, help="Output directory to save sweep JSON results")
     parser.add_argument("--split", choices=["dev", "test", "both"], default="both", help="Which split(s) to evaluate")
     parser.add_argument("--batch_size", type=int, default=None, help="Batch size for inference")
     parser.add_argument("--device", default=None, help="Device (cuda or cpu)")
@@ -122,11 +123,21 @@ def main():
     cfg = load_config(args.config)
 
     model_name = cfg.get("model_name", "Davlan/afro-xlmr-base")
-    output_dir = cfg.get("output_dir", "results/stage_span_aste/afroxlmr_run1")
-    checkpoint_path = args.checkpoint or os.path.join(output_dir, "best_model.pt")
+    default_dir = cfg.get("output_dir", "results/stage_span_aste/afroxlmr_run1")
+    checkpoint_path = args.checkpoint or os.path.join(default_dir, "best_model.pt")
 
     if not os.path.exists(checkpoint_path):
         raise FileNotFoundError(f"Checkpoint not found at: {checkpoint_path}")
+
+    # Determine output directory (priority: CLI arg > checkpoint parent directory > config output_dir)
+    output_dir = args.output_dir
+    if not output_dir:
+        if args.checkpoint:
+            output_dir = os.path.dirname(os.path.abspath(args.checkpoint))
+        else:
+            output_dir = default_dir
+    os.makedirs(output_dir, exist_ok=True)
+    print(f"Output directory for sweep results: {output_dir}")
 
     device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device(device_str)
@@ -155,7 +166,11 @@ def main():
     use_span_sync = model_cfg.get("use_span_sync", True)
 
     print(f"Loading checkpoint weights from {checkpoint_path}...")
-    state_dict = torch.load(checkpoint_path, map_location=device)
+    loaded = torch.load(checkpoint_path, map_location=device)
+    if isinstance(loaded, dict) and "model_state_dict" in loaded:
+        state_dict = loaded["model_state_dict"]
+    else:
+        state_dict = loaded
 
     # Auto-detect whether checkpoint was trained with Biaffine or legacy MLP
     if any(k.startswith("relation_classifier.net.") for k in state_dict):
@@ -164,6 +179,13 @@ def main():
     elif any(k.startswith("relation_classifier.U") for k in state_dict):
         print("  -> Detected Deep Biaffine relation classifier checkpoint (use_biaffine=True).")
         use_biaffine = True
+        u_tensor = state_dict.get("relation_classifier.U")
+        if u_tensor is not None:
+            biaffine_dim = u_tensor.shape[1]
+        affine_weight = state_dict.get("relation_classifier.affine_classifier.0.weight")
+        if affine_weight is not None:
+            use_span_sync = affine_weight.shape[1] == (biaffine_dim * 5 + distance_dim)
+        print(f"     Architecture configuration: biaffine_dim={biaffine_dim}, span_sync={use_span_sync}")
 
     # Load Tokenizer & Model
     tokenizer = AutoTokenizer.from_pretrained(model_name)
