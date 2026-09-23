@@ -431,7 +431,7 @@ def test_span_aste_model_biaffine_forward():
     """
     try:
         import torch
-        from model import BiaffineSpanRelationClassifier, MLP, SpanASTEModel
+        from model import MLP, BiaffineSpanRelationClassifier, SpanASTEModel
         from torch import nn
     except ImportError:
         return
