@@ -177,8 +177,8 @@ class BiaffineSpanRelationClassifier(nn.Module):
 
         affine_logits = self.affine_classifier(pair_features)  # (N_t, N_o, out_dim)
 
-        total_logits = bilinear_logits + affine_logits  # (N_t, N_o, out_dim)
-        return total_logits.view(num_t * num_o, self.out_dim)
+        total_logits = (bilinear_logits + affine_logits).contiguous()  # (N_t, N_o, out_dim)
+        return total_logits.reshape(num_t * num_o, self.out_dim)
 
 
 class SpanASTEModel(nn.Module):
@@ -426,7 +426,7 @@ class SpanASTEModel(nn.Module):
                     t_expanded = t_reps.unsqueeze(1).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
                     o_expanded = o_reps.unsqueeze(0).expand(num_t, num_o, -1)  # (num_t, num_o, span_dim)
                     pair_reps = torch.cat([t_expanded, o_expanded, dist_reps], dim=-1)  # (num_t, num_o, pair_dim)
-                    flat_pair_reps = pair_reps.view(num_t * num_o, -1)
+                    flat_pair_reps = pair_reps.contiguous().reshape(num_t * num_o, -1)
                     relation_logits = self.relation_classifier(flat_pair_reps)  # (num_t * num_o, 4)
 
                 # Relation Loss
@@ -453,9 +453,9 @@ class SpanASTEModel(nn.Module):
 
                 rel_probs = F.softmax(relation_logits, dim=-1)  # (num_t * num_o, 4)
                 # P(Relation) = 1.0 - P(INVALID)
-                p_rel = (1.0 - rel_probs[:, RELATION2ID["INVALID"]]).view(num_t, num_o).tolist()
-                best_senti_ids = (rel_probs[:, 1:].argmax(dim=-1) + 1).view(num_t, num_o).tolist()
-                pred_rel_ids = relation_logits.argmax(dim=-1).view(num_t, num_o).tolist()
+                p_rel = (1.0 - rel_probs[:, RELATION2ID["INVALID"]]).contiguous().reshape(num_t, num_o).tolist()
+                best_senti_ids = (rel_probs[:, 1:].argmax(dim=-1) + 1).contiguous().reshape(num_t, num_o).tolist()
+                pred_rel_ids = relation_logits.argmax(dim=-1).contiguous().reshape(num_t, num_o).tolist()
 
                 for ti, t_span in enumerate(pruned_target_spans):
                     for oi, o_span in enumerate(pruned_opinion_spans):
