@@ -202,6 +202,9 @@ class SpanASTEModel(nn.Module):
         use_biaffine: bool = True,
         biaffine_dim: int = 256,
         use_span_sync: bool = True,
+        use_span_mean_pooling: bool = True,
+        use_focal_loss: bool = False,
+        focal_gamma: float = 2.0,
     ):
         super().__init__()
         self.max_span_length = max_span_length
@@ -212,6 +215,9 @@ class SpanASTEModel(nn.Module):
         self.use_biaffine = use_biaffine
         self.biaffine_dim = biaffine_dim
         self.use_span_sync = use_span_sync
+        self.use_span_mean_pooling = use_span_mean_pooling
+        self.use_focal_loss = use_focal_loss
+        self.focal_gamma = focal_gamma
 
         # 1. Transformer Encoder
         self.encoder = AutoModel.from_pretrained(model_name)
@@ -222,8 +228,10 @@ class SpanASTEModel(nn.Module):
         self.width_embedding = nn.Embedding(10, width_dim)
         self.distance_embedding = nn.Embedding(10, distance_dim)
 
-        # Span representation size: [start_word; end_word; width_emb] -> 2*d_model + width_dim
-        span_rep_dim = 2 * d_model + width_dim
+        # Span representation size:
+        # If use_span_mean_pooling: [start_word; end_word; mean_word; width_emb] -> 3*d_model + width_dim
+        # Else: [start_word; end_word; width_emb] -> 2*d_model + width_dim
+        span_rep_dim = (3 if self.use_span_mean_pooling else 2) * d_model + width_dim
 
         # 3. Mention Module (ATE & OTE Supervision: Target, Opinion, Invalid)
         self.mention_classifier = MLP(
@@ -287,24 +295,47 @@ class SpanASTEModel(nn.Module):
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Constructs span representations for a list of spans [s, e):
-          s_{i, j} = [x_s; x_{e-1}; f_width(e - s)]
+          If use_span_mean_pooling:
+            s_{i, j} = [x_s; x_{e-1}; x_mean; f_width(e - s)]
+          Else:
+            s_{i, j} = [x_s; x_{e-1}; f_width(e - s)]
         Returns:
-          span_reps: (K, 2*d + width_dim)
+          span_reps: (K, (3 or 2)*d + width_dim)
           width_bucket_ids: (K,)
         """
+        d = word_hidden.size(-1)
+        expected_dim = (3 if self.use_span_mean_pooling else 2) * d + self.width_embedding.embedding_dim
         if not spans:
-            return torch.empty((0, 2 * word_hidden.size(-1) + self.width_embedding.embedding_dim), device=device), torch.empty((0,), dtype=torch.long, device=device)
+            return torch.empty((0, expected_dim), device=device), torch.empty((0,), dtype=torch.long, device=device)
 
-        max_idx = max(word_hidden.size(0) - 1, 0)
+        num_words = word_hidden.size(0)
+        max_idx = max(num_words - 1, 0)
         starts = torch.clamp(torch.tensor([s for s, e in spans], dtype=torch.long, device=device), 0, max_idx)
         ends = torch.clamp(torch.tensor([e - 1 for s, e in spans], dtype=torch.long, device=device), 0, max_idx)
+        ends_excl = torch.clamp(torch.tensor([e for s, e in spans], dtype=torch.long, device=device), 0, num_words)
         widths = torch.clamp(torch.tensor([bucket_value(e - s) for s, e in spans], dtype=torch.long, device=device), 0, 9)
 
         start_reps = word_hidden[starts]  # (K, d)
         end_reps = word_hidden[ends]      # (K, d)
         width_reps = self.width_embedding(widths)  # (K, width_dim)
 
-        span_reps = torch.cat([start_reps, end_reps, width_reps], dim=-1)  # (K, 2d + width_dim)
+        if self.use_span_mean_pooling:
+            # O(1) Prefix-sum vectorized span mean pooling across all candidate spans
+            # prefix: (num_words + 1, d) where prefix[0] is zero
+            prefix = torch.cat([
+                torch.zeros((1, d), device=device, dtype=word_hidden.dtype),
+                torch.cumsum(word_hidden, dim=0),
+            ], dim=0)
+            sum_reps = prefix[ends_excl] - prefix[starts]  # (K, d)
+            span_lengths = torch.clamp(
+                torch.tensor([e - s for s, e in spans], dtype=word_hidden.dtype, device=device),
+                min=1.0,
+            ).unsqueeze(-1)  # (K, 1)
+            mean_reps = sum_reps / span_lengths  # (K, d)
+            span_reps = torch.cat([start_reps, end_reps, mean_reps, width_reps], dim=-1)
+        else:
+            span_reps = torch.cat([start_reps, end_reps, width_reps], dim=-1)
+
         return span_reps, widths
 
     def forward(
@@ -439,11 +470,23 @@ class SpanASTEModel(nn.Module):
                     ]
                     pair_labels = torch.clamp(torch.tensor(pair_labels_list, dtype=torch.long, device=device), 0, 3)
 
-                    r_loss = F.cross_entropy(
-                        relation_logits,
-                        pair_labels,
-                        weight=self.relation_weights,
-                    )
+                    if self.use_focal_loss:
+                        # Multi-Class Focal Loss (Lin et al., ICCV 2017):
+                        # FL(p_t) = -alpha_t * (1 - p_t)^gamma * log(p_t)
+                        ce_raw = F.cross_entropy(relation_logits, pair_labels, reduction="none")
+                        pt = torch.exp(-ce_raw)  # True class probability p_t in [0, 1]
+                        focal_modulator = (1.0 - pt) ** self.focal_gamma
+                        if self.relation_weights is not None:
+                            alpha = self.relation_weights[pair_labels]
+                            r_loss = (alpha * focal_modulator * ce_raw).mean()
+                        else:
+                            r_loss = (focal_modulator * ce_raw).mean()
+                    else:
+                        r_loss = F.cross_entropy(
+                            relation_logits,
+                            pair_labels,
+                            weight=self.relation_weights,
+                        )
                     total_relation_loss = total_relation_loss + r_loss
                     num_relation_examples += 1
 

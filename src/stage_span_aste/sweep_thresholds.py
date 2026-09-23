@@ -20,7 +20,7 @@ import torch
 import yaml
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from transformers import AutoTokenizer
+from transformers import AutoConfig, AutoTokenizer
 
 sys.path.insert(0, os.path.dirname(__file__))
 from dataset import SpanASTEDataset, collate_fn
@@ -187,6 +187,22 @@ def main():
             use_span_sync = affine_weight.shape[1] == (biaffine_dim * 5 + distance_dim)
         print(f"     Architecture configuration: biaffine_dim={biaffine_dim}, span_sync={use_span_sync}")
 
+    # Auto-detect whether checkpoint used span mean pooling [x_start; x_end; x_mean; width]
+    use_span_mean_pooling = model_cfg.get("use_span_mean_pooling", True)
+    mention_w = state_dict.get("mention_classifier.net.0.weight")
+    if mention_w is not None:
+        try:
+            auto_cfg = AutoConfig.from_pretrained(model_name)
+            d_model = auto_cfg.hidden_size
+            if mention_w.shape[1] == 3 * d_model + width_dim:
+                use_span_mean_pooling = True
+                print("  -> Detected span mean-pooling checkpoint (use_span_mean_pooling=True).")
+            elif mention_w.shape[1] == 2 * d_model + width_dim:
+                use_span_mean_pooling = False
+                print("  -> Detected boundary-only span checkpoint (use_span_mean_pooling=False).")
+        except Exception as e:
+            print(f"  Note: Could not load AutoConfig ({e}), falling back to config setting use_span_mean_pooling={use_span_mean_pooling}")
+
     # Load Tokenizer & Model
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = SpanASTEModel(
@@ -200,6 +216,7 @@ def main():
         use_biaffine=use_biaffine,
         biaffine_dim=biaffine_dim,
         use_span_sync=use_span_sync,
+        use_span_mean_pooling=use_span_mean_pooling,
     )
     model.load_state_dict(state_dict)
     model.to(device)
