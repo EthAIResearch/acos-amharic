@@ -200,7 +200,7 @@ def main():
             elif mention_w.shape[1] == 2 * d_model + width_dim:
                 use_span_mean_pooling = False
                 print("  -> Detected boundary-only span checkpoint (use_span_mean_pooling=False).")
-        except Exception as e:
+        except (OSError, ValueError) as e:
             print(f"  Note: Could not load AutoConfig ({e}), falling back to config setting use_span_mean_pooling={use_span_mean_pooling}")
 
     # Load Tokenizer & Model
