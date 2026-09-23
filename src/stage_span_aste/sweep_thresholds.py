@@ -150,6 +150,21 @@ def main():
     dev_path = data_cfg.get("dev", "data/prepared_explicit/dev.jsonl")
     test_path = data_cfg.get("test", "data/prepared_explicit/test.jsonl")
 
+    use_biaffine = model_cfg.get("use_biaffine", True)
+    biaffine_dim = model_cfg.get("biaffine_dim", 256)
+    use_span_sync = model_cfg.get("use_span_sync", True)
+
+    print(f"Loading checkpoint weights from {checkpoint_path}...")
+    state_dict = torch.load(checkpoint_path, map_location=device)
+
+    # Auto-detect whether checkpoint was trained with Biaffine or legacy MLP
+    if any(k.startswith("relation_classifier.net.") for k in state_dict):
+        print("  -> Detected legacy MLP relation classifier checkpoint (use_biaffine=False).")
+        use_biaffine = False
+    elif any(k.startswith("relation_classifier.U") for k in state_dict):
+        print("  -> Detected Deep Biaffine relation classifier checkpoint (use_biaffine=True).")
+        use_biaffine = True
+
     # Load Tokenizer & Model
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = SpanASTEModel(
@@ -160,9 +175,10 @@ def main():
         distance_dim=distance_dim,
         hidden_dim=hidden_dim,
         dropout=dropout,
+        use_biaffine=use_biaffine,
+        biaffine_dim=biaffine_dim,
+        use_span_sync=use_span_sync,
     )
-    print(f"Loading checkpoint weights from {checkpoint_path}...")
-    state_dict = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(state_dict)
     model.to(device)
 
