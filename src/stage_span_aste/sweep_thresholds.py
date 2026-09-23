@@ -15,9 +15,9 @@ import argparse
 import json
 import os
 import sys
-import yaml
 
 import torch
+import yaml
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoTokenizer
@@ -80,9 +80,9 @@ def collect_candidate_predictions(model, dataloader, device):
 
 
 def print_sweep_table(split_name: str, sweep_results: dict):
-    print(f"\n=======================================================")
+    print("\n=======================================================")
     print(f"  Relation Threshold Sweep ({split_name.upper()} Split)")
-    print(f"=======================================================")
+    print("=======================================================")
     print(f"  Total Gold Pairs        : {sweep_results['total_gold_pairs']}")
     print(f"  Reachable Candidate Pairs: {sweep_results['reachable_pairs']} "
           f"({sweep_results['candidate_ceiling_recall'] * 100:.2f}% Ceiling Recall)")
