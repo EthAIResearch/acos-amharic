@@ -43,7 +43,9 @@ def parse_args():
     parser.add_argument("--biaffine_dim", type=int, default=None, help="Biaffine projection dimension")
     parser.add_argument("--use_span_sync", action="store_true", default=None, help="Enable cross-span contextual synchronization")
     parser.add_argument("--no_span_sync", action="store_false", dest="use_span_sync", help="Disable cross-span synchronization")
-    parser.add_argument("--resume", action="store_true", help="Resume from best_model.pt in output_dir if present")
+    parser.add_argument("--resume", action="store_true", help="Resume training from last_checkpoint.pt or best_model.pt in output_dir")
+    parser.add_argument("--resume_from", default=None, help="Explicit path to checkpoint file to resume from")
+    parser.add_argument("--start_epoch", type=int, default=None, help="Explicit start epoch (e.g. 8 when resuming from weights-only checkpoint)")
     parser.add_argument("--device", default=None)
     return parser.parse_args()
 
@@ -232,19 +234,51 @@ def main():
 
     best_dev_f1 = -1.0
     best_checkpoint_path = os.path.join(output_dir, "best_model.pt")
+    last_checkpoint_path = os.path.join(output_dir, "last_checkpoint.pt")
+    start_epoch = 1
 
-    if args.resume and os.path.exists(best_checkpoint_path):
-        print(f"Resuming model weights from {best_checkpoint_path}...")
-        model.load_state_dict(torch.load(best_checkpoint_path, map_location=device))
-        best_dev_metrics_file = os.path.join(output_dir, "best_dev_metrics.json")
-        if os.path.exists(best_dev_metrics_file):
-            with open(best_dev_metrics_file, encoding="utf-8") as f:
-                saved_metrics = json.load(f)
-                best_dev_f1 = saved_metrics.get("aope", {}).get("f1", -1.0)
-                print(f"  Loaded prior best Dev AOPE F1: {best_dev_f1 * 100:.2f}%")
+    checkpoint_to_resume = None
+    if args.resume_from:
+        checkpoint_to_resume = args.resume_from
+    elif args.resume:
+        if os.path.exists(last_checkpoint_path):
+            checkpoint_to_resume = last_checkpoint_path
+        elif os.path.exists(best_checkpoint_path):
+            checkpoint_to_resume = best_checkpoint_path
 
-    print("\nStarting training...")
-    for epoch in range(1, epochs + 1):
+    if checkpoint_to_resume and os.path.exists(checkpoint_to_resume):
+        print(f"\nResuming training from: {checkpoint_to_resume}")
+        loaded = torch.load(checkpoint_to_resume, map_location=device)
+        if isinstance(loaded, dict) and "model_state_dict" in loaded:
+            model.load_state_dict(loaded["model_state_dict"])
+            if "optimizer_state_dict" in loaded:
+                optimizer.load_state_dict(loaded["optimizer_state_dict"])
+            if "scheduler_state_dict" in loaded:
+                scheduler.load_state_dict(loaded["scheduler_state_dict"])
+            start_epoch = loaded.get("epoch", 0) + 1
+            best_dev_f1 = loaded.get("best_dev_f1", -1.0)
+            print(f"  ✓ Restored full checkpoint state. Resuming at epoch {start_epoch}/{epochs} (Prior Best Dev F1: {best_dev_f1*100:.2f}%)")
+        else:
+            model.load_state_dict(loaded)
+            best_dev_metrics_file = os.path.join(output_dir, "best_dev_metrics.json")
+            if os.path.exists(best_dev_metrics_file):
+                with open(best_dev_metrics_file, encoding="utf-8") as f:
+                    saved_metrics = json.load(f)
+                    best_dev_f1 = saved_metrics.get("aope", {}).get("f1", -1.0)
+            if args.start_epoch is not None:
+                start_epoch = args.start_epoch
+            print(f"  ✓ Restored model weights. Starting from epoch {start_epoch}/{epochs} (Prior Best Dev F1: {best_dev_f1*100:.2f}%)")
+            if start_epoch > 1:
+                steps_to_advance = (start_epoch - 1) * len(train_loader)
+                for _ in range(steps_to_advance):
+                    scheduler.step()
+                print(f"  ✓ Fast-forwarded learning rate scheduler by {steps_to_advance} steps.")
+
+    if start_epoch > epochs:
+        print(f"\nTraining already completed through epoch {epochs}! Proceeding directly to final test evaluation...")
+    else:
+        print(f"\nStarting training from epoch {start_epoch} to {epochs}...")
+    for epoch in range(start_epoch, epochs + 1):
         model.train()
         train_loss = 0.0
         train_m_loss = 0.0
@@ -303,6 +337,17 @@ def main():
             with open(os.path.join(output_dir, "best_dev_metrics.json"), "w", encoding="utf-8") as f:
                 json.dump(dev_metrics, f, indent=2)
             print(f"  ★ New best Dev AOPE F1: {aope_f1*100:.2f}% -> Checkpoint saved!")
+
+        # Always save last_checkpoint.pt with full training state for seamless crash resumption
+        last_ckpt = {
+            "epoch": epoch,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "scheduler_state_dict": scheduler.state_dict(),
+            "best_dev_f1": best_dev_f1,
+            "dev_metrics": dev_metrics,
+        }
+        torch.save(last_ckpt, last_checkpoint_path)
 
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
