@@ -508,6 +508,181 @@ def test_span_aste_model_biaffine_forward():
     assert "candidate_pairs_with_scores" in out["batch_outputs"][0]
 
 
+def test_span_mean_pooling_prefix_sum():
+    """
+    Verifies that prefix-sum vectorized span mean pooling produces the exact same
+    representations as naive slice-based mean pooling.
+    """
+    try:
+        import torch
+        from model import SpanASTEModel
+        from torch import nn
+    except ImportError:
+        return
+
+    class DummyEncoder(nn.Module):
+        def __init__(self, hidden_size: int = 16):
+            super().__init__()
+            self.config = type("Config", (), {"hidden_size": hidden_size})()
+
+        def forward(self, input_ids, attention_mask=None):
+            return None
+
+    model = SpanASTEModel(
+        model_name="Davlan/afro-xlmr-base",
+        max_span_length=4,
+        width_dim=8,
+        use_span_mean_pooling=True,
+    )
+    model.encoder = DummyEncoder(hidden_size=16)
+
+    # Synthetic word hidden states for sentence of 6 words, dim 16
+    torch.manual_seed(42)
+    M, d = 6, 16
+    word_hidden = torch.randn(M, d)
+    spans = [(0, 1), (0, 3), (1, 4), (2, 6), (5, 6)]
+    device = word_hidden.device
+
+    span_reps, _ = model.build_span_representations(word_hidden, spans, device)
+    # Expected span_rep_dim = start (16) + end (16) + mean (16) + width (8) = 56
+    assert span_reps.shape == (len(spans), 3 * d + 8)
+
+    # Check each span representation individually against naive slice
+    for idx, (s, e) in enumerate(spans):
+        expected_start = word_hidden[s]
+        expected_end = word_hidden[e - 1]
+        expected_mean = word_hidden[s:e].mean(dim=0)
+
+        actual_start = span_reps[idx, :d]
+        actual_end = span_reps[idx, d:2*d]
+        actual_mean = span_reps[idx, 2*d:3*d]
+
+        assert torch.allclose(actual_start, expected_start, atol=1e-6)
+        assert torch.allclose(actual_end, expected_end, atol=1e-6)
+        assert torch.allclose(actual_mean, expected_mean, atol=1e-6)
+
+
+def test_focal_loss_dynamic_scaling():
+    """
+    Verifies that Focal Loss scales down loss for confident predictions compared to hard errors.
+    """
+    try:
+        import torch
+        import torch.nn.functional as F
+    except ImportError:
+        return
+
+    gamma = 2.0
+    # True label is class 0 (e.g. INVALID)
+    pair_labels = torch.tensor([0, 0])
+    # Case A: Well-classified easy negative (logits strongly favor class 0)
+    # Case B: Misclassified or uncertain negative
+    relation_logits = torch.tensor([
+        [5.0, -2.0, -2.0, -2.0],  # p_0 ~ 0.999
+        [0.1,  0.2, -0.1, -0.1],  # p_0 ~ 0.25 (uncertain)
+    ])
+
+    ce_raw = F.cross_entropy(relation_logits, pair_labels, reduction="none")
+    pt = torch.exp(-ce_raw)
+    focal_weight = (1.0 - pt) ** gamma
+    fl_loss = focal_weight * ce_raw
+
+    # Easy example should have drastically smaller focal weight than uncertain one
+    assert focal_weight[0].item() < 0.01
+    assert focal_weight[1].item() > 0.40
+    assert fl_loss[0].item() < 0.001
+    assert fl_loss[1].item() > fl_loss[0].item() * 100
+
+
+def test_span_aste_model_with_mean_pooling_and_focal_loss():
+    """
+    Tests SpanASTEModel end-to-end forward pass with use_span_mean_pooling=True,
+    use_focal_loss=True, and class weights.
+    """
+    try:
+        import torch
+        from model import MLP, BiaffineSpanRelationClassifier, SpanASTEModel
+        from torch import nn
+    except ImportError:
+        return
+
+    class MockEncoder(nn.Module):
+        def __init__(self, hidden_size: int = 64):
+            super().__init__()
+            self.config = type("Config", (), {"hidden_size": hidden_size})()
+
+        def forward(self, input_ids, attention_mask=None):
+            B, L = input_ids.shape
+            d = self.config.hidden_size
+            return type("Output", (), {"last_hidden_state": torch.randn(B, L, d, device=input_ids.device)})()
+
+    weights = [0.1, 1.0, 1.0, 2.0]
+    model = SpanASTEModel(
+        model_name="Davlan/afro-xlmr-base",
+        max_span_length=4,
+        pruning_ratio=0.5,
+        width_dim=8,
+        distance_dim=16,
+        hidden_dim=32,
+        dropout=0.0,
+        use_biaffine=True,
+        biaffine_dim=32,
+        use_span_sync=True,
+        use_span_mean_pooling=True,
+        use_focal_loss=True,
+        focal_gamma=2.0,
+        relation_loss_weights=weights,
+    )
+    model.encoder = MockEncoder(hidden_size=64)
+    # span_rep_dim = 3 * 64 + 8 = 200
+    span_dim = 3 * 64 + 8
+    model.mention_classifier = MLP(span_dim, hidden_dim=32, out_dim=3)
+    model.relation_classifier = BiaffineSpanRelationClassifier(
+        span_dim=span_dim,
+        biaffine_dim=32,
+        distance_dim=16,
+        out_dim=4,
+        use_span_sync=True,
+    )
+
+    B, L, M = 2, 8, 5
+    input_ids = torch.randint(0, 100, (B, L))
+    attention_mask = torch.ones((B, L), dtype=torch.long)
+    subword_to_word = torch.zeros((B, M, L), dtype=torch.float32)
+    for b in range(B):
+        for m in range(M):
+            subword_to_word[b, m, min(m, L - 1)] = 1.0
+
+    seq_spans = [
+        enumerate_spans(M, max_span_length=3),
+        enumerate_spans(M, max_span_length=3),
+    ]
+    gold_mention_labels = [
+        torch.zeros(len(seq_spans[0]), dtype=torch.long),
+        torch.zeros(len(seq_spans[1]), dtype=torch.long),
+    ]
+    gold_pairs = [
+        [((0, 2), (2, 4), 1)],
+        [],
+    ]
+
+    out = model(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        subword_to_word=subword_to_word,
+        seq_spans=seq_spans,
+        gold_mention_labels=gold_mention_labels,
+        gold_pairs=gold_pairs,
+        num_words=[M, M],
+    )
+
+    assert "loss" in out
+    assert "mention_loss" in out
+    assert "relation_loss" in out
+    assert out["loss"].item() > 0.0
+    assert len(out["batch_outputs"]) == B
+
+
 if __name__ == "__main__":
     current_module = sys.modules[__name__]
     test_funcs = [

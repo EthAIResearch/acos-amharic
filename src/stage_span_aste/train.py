@@ -43,6 +43,12 @@ def parse_args():
     parser.add_argument("--biaffine_dim", type=int, default=None, help="Biaffine projection dimension")
     parser.add_argument("--use_span_sync", action="store_true", default=None, help="Enable cross-span contextual synchronization")
     parser.add_argument("--no_span_sync", action="store_false", dest="use_span_sync", help="Disable cross-span synchronization")
+    parser.add_argument("--use_span_mean_pooling", action="store_true", default=None, help="Enable span mean pooling")
+    parser.add_argument("--no_span_mean_pooling", action="store_false", dest="use_span_mean_pooling", help="Disable span mean pooling")
+    parser.add_argument("--use_focal_loss", action="store_true", default=None, help="Use Focal Loss for relations")
+    parser.add_argument("--no_focal_loss", action="store_false", dest="use_focal_loss", help="Use standard Cross Entropy for relations")
+    parser.add_argument("--focal_gamma", type=float, default=None, help="Focal loss gamma parameter")
+    parser.add_argument("--relation_loss_weights", type=float, nargs="+", default=None, help="Class weights for [INVALID, POS, NEG, NEU]")
     parser.add_argument("--resume", action="store_true", help="Resume training from last_checkpoint.pt or best_model.pt in output_dir")
     parser.add_argument("--resume_from", default=None, help="Explicit path to checkpoint file to resume from")
     parser.add_argument("--start_epoch", type=int, default=None, help="Explicit start epoch (e.g. 8 when resuming from weights-only checkpoint)")
@@ -132,6 +138,10 @@ def main():
     use_biaffine = args.use_biaffine if args.use_biaffine is not None else model_cfg.get("use_biaffine", True)
     biaffine_dim = args.biaffine_dim or model_cfg.get("biaffine_dim", 256)
     use_span_sync = args.use_span_sync if args.use_span_sync is not None else model_cfg.get("use_span_sync", True)
+    use_span_mean_pooling = args.use_span_mean_pooling if args.use_span_mean_pooling is not None else model_cfg.get("use_span_mean_pooling", True)
+    use_focal_loss = args.use_focal_loss if args.use_focal_loss is not None else model_cfg.get("use_focal_loss", False)
+    focal_gamma = args.focal_gamma if args.focal_gamma is not None else model_cfg.get("focal_gamma", 2.0)
+    relation_loss_weights = args.relation_loss_weights if args.relation_loss_weights is not None else model_cfg.get("relation_loss_weights", None)
 
     device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device(device_str)
@@ -139,6 +149,8 @@ def main():
     print(f"Model backbone: {model_name}")
     print(f"Output directory: {output_dir}")
     print(f"Biaffine relation scoring: {use_biaffine} (dim: {biaffine_dim}, span_sync: {use_span_sync})")
+    print(f"Span mean pooling: {use_span_mean_pooling}")
+    print(f"Relation loss mode: {'Focal Loss (gamma=' + str(focal_gamma) + ')' if use_focal_loss else 'Cross-Entropy'} | Weights: {relation_loss_weights}")
 
     # Save resolved arguments
     resolved_args = {
@@ -159,6 +171,10 @@ def main():
         "use_biaffine": use_biaffine,
         "biaffine_dim": biaffine_dim,
         "use_span_sync": use_span_sync,
+        "use_span_mean_pooling": use_span_mean_pooling,
+        "use_focal_loss": use_focal_loss,
+        "focal_gamma": focal_gamma,
+        "relation_loss_weights": relation_loss_weights,
     }
     with open(os.path.join(output_dir, "resolved_args.json"), "w", encoding="utf-8") as f:
         json.dump(resolved_args, f, indent=2)
@@ -207,6 +223,10 @@ def main():
         use_biaffine=use_biaffine,
         biaffine_dim=biaffine_dim,
         use_span_sync=use_span_sync,
+        use_span_mean_pooling=use_span_mean_pooling,
+        use_focal_loss=use_focal_loss,
+        focal_gamma=focal_gamma,
+        relation_loss_weights=relation_loss_weights,
     )
     model.to(device)
 
