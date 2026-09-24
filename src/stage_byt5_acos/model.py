@@ -17,7 +17,7 @@ class ByT5ACOSModel(nn.Module):
     def __init__(self, model_name: str = "google/byt5-base"):
         super().__init__()
         self.model_name = model_name
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name, tie_word_embeddings=False)
 
     def forward(
         self,

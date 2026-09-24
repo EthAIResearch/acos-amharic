@@ -33,8 +33,9 @@ def parse_args():
     parser.add_argument("--config", default="configs/stage_byt5_acos.yaml", help="Path to config YAML")
     parser.add_argument("--checkpoint", default=None, help="Path to checkpoint best_model.pt")
     parser.add_argument("--split", choices=["dev", "test", "both"], default="test", help="Split to evaluate")
-    parser.add_argument("--batch_size", type=int, default=8, help="Generation batch size")
+    parser.add_argument("--batch_size", type=int, default=16, help="Generation batch size")
     parser.add_argument("--num_beams", type=int, default=1, help="Beam size for generation (1 = greedy)")
+    parser.add_argument("--precision", default="auto", choices=["auto", "bf16", "fp16", "fp32"], help="Inference precision")
     parser.add_argument("--output_file", default=None, help="Path to save evaluation metrics JSON")
     parser.add_argument("--device", default=None, help="Device (cuda or cpu)")
     return parser.parse_args()
@@ -52,8 +53,9 @@ def evaluate_byt5_model(
     dataloader: DataLoader,
     tokenizer,
     device: torch.device,
-    max_target_length: int = 384,
+    max_target_length: int = 256,
     num_beams: int = 1,
+    precision: str = "bf16",
 ) -> dict:
     """
     Evaluates ByT5 model over a DataLoader and computes full ACOS metrics.
@@ -72,17 +74,28 @@ def evaluate_byt5_model(
 
     sample_predictions = []
 
+    autocast_ctx = (
+        torch.amp.autocast('cuda', dtype=torch.bfloat16)
+        if (device.type == "cuda" and precision == "bf16")
+        else (
+            torch.amp.autocast('cuda', dtype=torch.float16)
+            if (device.type == "cuda" and precision == "fp16")
+            else torch.nullcontext()
+        )
+    )
+
     with torch.no_grad():
         for batch in tqdm(dataloader, desc="Generating ACOS quads"):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
 
-            generated_ids = model.generate(
-                input_ids=input_ids,
-                attention_mask=attention_mask,
-                max_length=max_target_length,
-                num_beams=num_beams,
-            )
+            with autocast_ctx:
+                generated_ids = model.generate(
+                    input_ids=input_ids,
+                    attention_mask=attention_mask,
+                    max_length=max_target_length,
+                    num_beams=num_beams,
+                )
 
             pred_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
 
@@ -203,11 +216,19 @@ def main():
 
     device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device(device_str)
-    print(f"Using device: {device}")
+    if args.precision == "auto":
+        if device.type == "cuda":
+            precision = "bf16" if torch.cuda.is_bf16_supported() else "fp32"
+        else:
+            precision = "fp32"
+    else:
+        precision = args.precision
+
+    print(f"Using device: {device} | Precision: {precision}")
 
     model_cfg = cfg.get("model", {})
     max_source_length = model_cfg.get("max_source_length", 768)
-    max_target_length = model_cfg.get("max_target_length", 384)
+    max_target_length = model_cfg.get("max_target_length", 256)
 
     data_cfg = cfg.get("data", {})
     splits_to_evaluate = ["dev", "test"] if args.split == "both" else [args.split]
@@ -242,6 +263,7 @@ def main():
             device=device,
             max_target_length=max_target_length,
             num_beams=args.num_beams,
+            precision=precision,
         )
 
         print_metrics_table(metrics, title=f"ByT5 ACOS Evaluation ({split.upper()} Split)")
