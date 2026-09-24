@@ -132,17 +132,16 @@ def parse_target_to_quads(
 
         # Validate category
         cat_clean = category.strip()
-        if strict_categories:
-            if cat_clean not in valid_cats:
-                # Attempt case-insensitive or partial match
-                matched_cat = None
-                for c in valid_cats:
-                    if c.lower() == cat_clean.lower():
-                        matched_cat = c
-                        break
-                if not matched_cat:
-                    continue
-                cat_clean = matched_cat
+        if strict_categories and cat_clean not in valid_cats:
+            # Attempt case-insensitive or partial match
+            matched_cat = None
+            for c in valid_cats:
+                if c.lower() == cat_clean.lower():
+                    matched_cat = c
+                    break
+            if not matched_cat:
+                continue
+            cat_clean = matched_cat
 
         # Normalize NULL markers
         aspect_norm = "NULL" if aspect.upper() in {"NULL", "-1", "NONE", ""} else aspect
