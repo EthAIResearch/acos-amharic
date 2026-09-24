@@ -203,6 +203,12 @@ def main():
         except (OSError, ValueError) as e:
             print(f"  Note: Could not load AutoConfig ({e}), falling back to config setting use_span_mean_pooling={use_span_mean_pooling}")
 
+    # Auto-detect relation_weights buffer from state_dict if trained with cost-sensitive weights
+    relation_loss_weights = None
+    if "relation_weights" in state_dict:
+        relation_loss_weights = state_dict["relation_weights"].tolist()
+        print(f"  -> Detected relation_weights buffer in checkpoint: {relation_loss_weights}")
+
     # Load Tokenizer & Model
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = SpanASTEModel(
@@ -217,8 +223,9 @@ def main():
         biaffine_dim=biaffine_dim,
         use_span_sync=use_span_sync,
         use_span_mean_pooling=use_span_mean_pooling,
+        relation_loss_weights=relation_loss_weights,
     )
-    model.load_state_dict(state_dict)
+    model.load_state_dict(state_dict, strict=False)
     model.to(device)
 
     splits_to_run = ["dev", "test"] if args.split == "both" else [args.split]
