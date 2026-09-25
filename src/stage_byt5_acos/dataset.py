@@ -28,10 +28,12 @@ class ByT5ACOSDataset(Dataset):
         tokenizer,
         max_source_length: int = 768,
         max_target_length: int = 384,
+        canonical: bool = True,
     ):
         self.tokenizer = tokenizer
         self.max_source_length = max_source_length
         self.max_target_length = max_target_length
+        self.canonical = canonical
         self.examples = []
 
         if not os.path.exists(jsonl_path):
@@ -47,7 +49,7 @@ class ByT5ACOSDataset(Dataset):
                 tokens = data.get("tokens", [])
                 quads = data.get("quads", [])
 
-                target_str = quads_to_target(quads, tokens)
+                target_str = quads_to_target(quads, tokens, canonical=canonical)
                 gold_tuples = extract_gold_quad_tuples(data)
 
                 # Tokenize source sentence (ByT5 encodes directly into UTF-8 byte IDs)

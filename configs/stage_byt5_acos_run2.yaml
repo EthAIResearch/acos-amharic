@@ -1,0 +1,40 @@
+# ByT5-Base Configuration for End-to-End Amharic ACOS Quadruple Extraction - Run 2
+# ==============================================================================
+# Enhancements:
+# 1. Canonical Left-to-Right Quadruple Ordering (eliminates order permutation penalty)
+# 2. Label-Smoothed Cross-Entropy Loss (epsilon=0.1 to regularize byte token distributions)
+# 3. Extended 15-Epoch Training Horizon
+# 4. Constrained Byte-Level FSM Decoding during evaluation
+
+model_name: google/byt5-base
+output_dir: results/stage_byt5_acos/byt5_base_run2
+
+data:
+  train: data/prepared/train.jsonl
+  dev: data/prepared/dev.jsonl
+  test: data/prepared/test.jsonl
+
+model:
+  max_source_length: 768    # Raw UTF-8 bytes for Amharic input sentences (~200-250 characters)
+  max_target_length: 256    # Raw UTF-8 bytes for linearized quadruple targets (>99.8% of targets are <200 bytes)
+
+training:
+  batch_size: 4             # Per-step batch size (suitable for 16GB–24GB VRAM)
+  gradient_accumulation_steps: 4  # Effective batch size = 16
+  epochs: 15                # Extended to 15 epochs for deeper convergence
+  lr: 1.0e-4                # Recommended learning rate for ByT5 with Adafactor
+  optimizer: adafactor      # Adafactor uses factorized second moments to conserve GPU VRAM
+  weight_decay: 0.01
+  label_smoothing: 0.1      # Label smoothing regularizes byte sequence probabilities
+  canonical_ordering: true  # Sort quads left-to-right by appearance in source sentence
+  precision: auto           # 'auto' selects bf16 on Ampere/Ada/Hopper, or fp32 fallback
+  eval_batch_size: 16       # Higher throughput for validation generation
+  eval_samples: 1000        # Fast dev evaluation (~2 min vs 17 min); full dev evaluated on final test run
+  warmup_ratio: 0.05        # 5% linear warmup to prevent gradient spikes
+
+evaluation:
+  batch_size: 16            # High-throughput generation batch size
+  num_beams: 4              # Beam search width (explore multi-quad candidates)
+  length_penalty: 1.0       # Neutral length penalty
+  repetition_penalty: 1.2   # Penalty against repeated phrases
+  constrained: true         # Enable byte-level FSM constrained decoding

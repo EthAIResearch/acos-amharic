@@ -14,6 +14,7 @@ from linearization import (
     CATEGORIES,
     SENTIMENTS,
     calculate_metrics,
+    canonical_sort_quads,
     compute_set_prf,
     extract_gold_quad_tuples,
     parse_target_to_quads,
@@ -224,6 +225,77 @@ def test_byte_trie_prefix_matching():
     next_tokens, is_term = trie.get_valid_continuations([99])
     assert next_tokens == set()
     assert not is_term
+
+
+def test_canonical_sort_quads():
+    quads = [
+        # Quad C: fully implicit
+        {"a_start": -1, "a_end": -1, "category": "GOVERNANCE#TRANSPARENCY", "sentiment": "NEGATIVE", "o_start": -1, "o_end": -1},
+        # Quad B: explicit aspect starting at position 5
+        {"a_start": 5, "a_end": 6, "category": "PUBLIC_SERVICES#COMMUNITY_SUPPORT", "sentiment": "NEGATIVE", "o_start": 6, "o_end": 7},
+        # Quad A: explicit aspect starting at position 0
+        {"a_start": 0, "a_end": 1, "category": "PUBLIC_SERVICES#HEALTHCARE", "sentiment": "POSITIVE", "o_start": 1, "o_end": 3},
+        # Quad D: implicit aspect with explicit opinion at position 3
+        {"a_start": -1, "a_end": -1, "category": "PUBLIC_SERVICES#UTILITIES", "sentiment": "POSITIVE", "o_start": 3, "o_end": 4},
+    ]
+
+    sorted_quads = canonical_sort_quads(quads)
+
+    # Expected order:
+    # 1. Quad A (explicit aspect, a_start=0)
+    # 2. Quad B (explicit aspect, a_start=5)
+    # 3. Quad D (implicit aspect, explicit opinion, o_start=3)
+    # 4. Quad C (fully implicit)
+    assert sorted_quads[0]["category"] == "PUBLIC_SERVICES#HEALTHCARE"
+    assert sorted_quads[1]["category"] == "PUBLIC_SERVICES#COMMUNITY_SUPPORT"
+    assert sorted_quads[2]["category"] == "PUBLIC_SERVICES#UTILITIES"
+    assert sorted_quads[3]["category"] == "GOVERNANCE#TRANSPARENCY"
+
+
+def test_quads_to_target_canonical_flag():
+    tokens = ["ምግብ", "ጥሩ", "ነገር", "ግን", "አገልግሎት", "ደካማ"]
+    quads = [
+        {"a_start": 4, "a_end": 5, "category": "PUBLIC_SERVICES#COMMUNITY_SUPPORT", "sentiment": "NEGATIVE", "o_start": 5, "o_end": 6},
+        {"a_start": 0, "a_end": 1, "category": "PUBLIC_SERVICES#HEALTHCARE", "sentiment": "POSITIVE", "o_start": 1, "o_end": 2},
+    ]
+
+    # With canonical=True (default), quad at index 0 in sentence should come first
+    target_canonical = quads_to_target(quads, tokens, canonical=True)
+    expected_first = "[ ምግብ | PUBLIC_SERVICES#HEALTHCARE | POSITIVE | ጥሩ ]"
+    assert target_canonical.startswith(expected_first)
+
+    # With canonical=False, original order is preserved
+    target_original = quads_to_target(quads, tokens, canonical=False)
+    expected_original_first = "[ አገልግሎት | PUBLIC_SERVICES#COMMUNITY_SUPPORT | NEGATIVE | ደካማ ]"
+    assert target_original.startswith(expected_original_first)
+
+
+def test_label_smoothed_cross_entropy():
+    try:
+        import torch
+        import torch.nn as nn
+        from train import compute_loss
+    except ImportError:
+        return
+
+    loss_fct = nn.CrossEntropyLoss(ignore_index=-100, label_smoothing=0.1)
+
+    class DummyOutput:
+        def __init__(self, logits, loss):
+            self.logits = logits
+            self.loss = loss
+
+    logits = torch.randn(2, 5, 256)
+    labels = torch.randint(0, 256, (2, 5))
+    dummy_out = DummyOutput(logits, torch.tensor(1.0))
+
+    loss_val = compute_loss(dummy_out, labels, loss_fct)
+    assert loss_val is not None
+    assert loss_val.item() > 0.0
+
+    # Without loss_fct, should fall back to outputs.loss
+    loss_fallback = compute_loss(dummy_out, labels, None)
+    assert loss_fallback.item() == 1.0
 
 
 if __name__ == "__main__":
