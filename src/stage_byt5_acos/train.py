@@ -17,8 +17,8 @@ import os
 import sys
 
 import torch
-import torch.nn as nn
 import yaml
+from torch import nn
 from torch.utils.data import DataLoader, Subset
 from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup

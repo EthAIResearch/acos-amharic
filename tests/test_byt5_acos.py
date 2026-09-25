@@ -273,7 +273,7 @@ def test_quads_to_target_canonical_flag():
 def test_label_smoothed_cross_entropy():
     try:
         import torch
-        import torch.nn as nn
+        from torch import nn
         from train import compute_loss
     except ImportError:
         return
