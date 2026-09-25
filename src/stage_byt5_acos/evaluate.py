@@ -222,7 +222,10 @@ def main():
         else:
             precision = "fp32"
     else:
-        precision = args.precision
+        if device.type != "cuda" and args.precision in {"bf16", "fp16"}:
+            precision = "fp32"
+        else:
+            precision = args.precision
 
     print(f"Using device: {device} | Precision: {precision}")
 

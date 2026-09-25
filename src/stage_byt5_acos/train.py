@@ -119,7 +119,10 @@ def main():
         else:
             precision = "fp32"
     else:
-        precision = precision_arg
+        if device.type != "cuda" and precision_arg in {"bf16", "fp16"}:
+            precision = "fp32"
+        else:
+            precision = precision_arg
 
     print(f"Device: {device}")
     print(f"Model backbone: {model_name}")
