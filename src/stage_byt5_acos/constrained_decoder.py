@@ -8,6 +8,8 @@ autoregressive decoding for ByT5 models (vocabulary size 256 + special tokens):
   3. Guarantees valid sentiment polarity (POSITIVE, NEGATIVE, NEUTRAL).
   4. Enforces valid delimiter tokens and transitions between slots.
 """
+from __future__ import annotations
+
 import logging
 
 try:
@@ -220,6 +222,8 @@ class ACOSByteFSM(LogitsProcessor):
         """
         Masks out disallowed token IDs at each generation step across the batch.
         """
+        if torch is None:
+            raise RuntimeError("PyTorch is required to execute ACOSByteFSM.__call__")
         batch_size = input_ids.shape[0]
 
         for b in range(batch_size):
