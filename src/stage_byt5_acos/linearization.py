@@ -38,16 +38,43 @@ CATEGORIES = {
 SENTIMENTS = {"POSITIVE", "NEGATIVE", "NEUTRAL"}
 
 
-def quads_to_target(quads: list[dict], tokens: list[str]) -> str:
+def canonical_sort_quads(quads: list[dict]) -> list[dict]:
+    """
+    Sorts quadruples into a deterministic left-to-right canonical order:
+      1. Explicit aspects sorted ascending by a_start.
+      2. Implicit aspects with explicit opinions sorted ascending by o_start.
+      3. Fully implicit quads placed last, sorted by category then sentiment.
+    """
+    def sort_key(q: dict):
+        a_s = q.get("a_start", -1)
+        o_s = q.get("o_start", -1)
+
+        has_explicit_a = a_s is not None and a_s >= 0
+        has_explicit_o = o_s is not None and o_s >= 0
+
+        if has_explicit_a:
+            return (0, a_s, o_s if has_explicit_o else 9999, q.get("category", ""), q.get("sentiment", ""))
+        elif has_explicit_o:
+            return (1, 9999, o_s, q.get("category", ""), q.get("sentiment", ""))
+        else:
+            return (2, 9999, 9999, q.get("category", ""), q.get("sentiment", ""))
+
+    return sorted(quads, key=sort_key)
+
+
+def quads_to_target(quads: list[dict], tokens: list[str], canonical: bool = True) -> str:
     """
     Serializes a list of quadruple annotations into a standardized target string:
       "[ aspect | category | sentiment | opinion ] ; ..."
+    When canonical=True, sorts quads left-to-right by source sentence appearance.
     """
     if not quads:
         return "None"
 
+    sorted_quads = canonical_sort_quads(quads) if canonical else quads
+
     formatted_quads = []
-    for quad in quads:
+    for quad in sorted_quads:
         a_s = quad.get("a_start", -1)
         a_e = quad.get("a_end", -1)
         o_s = quad.get("o_start", -1)

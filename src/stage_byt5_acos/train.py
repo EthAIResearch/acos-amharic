@@ -9,6 +9,8 @@ Usage:
         --config configs/stage_byt5_acos.yaml \
         --output_dir results/stage_byt5_acos/byt5_base_run1
 """
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -16,6 +18,7 @@ import sys
 
 import torch
 import yaml
+from torch import nn
 from torch.utils.data import DataLoader, Subset
 from tqdm import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
@@ -43,6 +46,8 @@ def parse_args():
                         help="Number of dev samples to evaluate after each epoch (0 or -1 for full dev). Default: 1000.")
     parser.add_argument("--eval_beams", type=int, default=1, help="Beam count for validation generation")
     parser.add_argument("--warmup_ratio", type=float, default=0.05, help="Warmup step ratio (default: 0.05)")
+    parser.add_argument("--label_smoothing", type=float, default=None, help="Label smoothing epsilon (default: 0.1)")
+    parser.add_argument("--no_canonical", action="store_true", help="Disable canonical LTR ordering")
     parser.add_argument("--resume", action="store_true", help="Resume from last_checkpoint.pt or best_model.pt")
     parser.add_argument("--resume_from", default=None, help="Explicit path to checkpoint file to resume from")
     parser.add_argument("--start_epoch", type=int, default=None, help="Explicit start epoch")
@@ -57,7 +62,14 @@ def load_config(config_path: str) -> dict:
     return {}
 
 
-def compute_eval_loss(model, dataloader, device, precision):
+def compute_loss(outputs, labels, loss_fct=None):
+    """Computes cross-entropy loss, applying label smoothing if loss_fct is provided."""
+    if loss_fct is not None:
+        return loss_fct(outputs.logits.view(-1, outputs.logits.size(-1)), labels.view(-1))
+    return outputs.loss
+
+
+def compute_eval_loss(model, dataloader, device, precision, loss_fct=None):
     """Computes fast teacher-forced cross-entropy loss over a DataLoader."""
     model.eval()
     total_loss, count = 0.0, 0
@@ -73,7 +85,8 @@ def compute_eval_loss(model, dataloader, device, precision):
             labels = batch["labels"].to(device)
             with autocast_ctx:
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
-            total_loss += outputs.loss.item()
+                loss = compute_loss(outputs, labels, loss_fct)
+            total_loss += loss.item()
             count += 1
     return total_loss / max(1, count)
 
@@ -124,11 +137,15 @@ def main():
         else:
             precision = precision_arg
 
+    label_smoothing = args.label_smoothing if args.label_smoothing is not None else training_cfg.get("label_smoothing", 0.1)
+    loss_fct = nn.CrossEntropyLoss(ignore_index=-100, label_smoothing=label_smoothing) if label_smoothing > 0.0 else None
+    canonical_ordering = False if args.no_canonical else cfg.get("canonical_ordering", True)
+
     print(f"Device: {device}")
     print(f"Model backbone: {model_name}")
     print(f"Output directory: {output_dir}")
     print(f"Batch size: {batch_size} (Grad Accum: {grad_accum_steps} -> Effective batch: {batch_size * grad_accum_steps})")
-    print(f"Optimizer: {optimizer_type} | LR: {lr} | Precision: {precision}")
+    print(f"Optimizer: {optimizer_type} | LR: {lr} | Precision: {precision} | Label Smoothing: {label_smoothing} | Canonical Ordering: {canonical_ordering}")
     if precision == "fp16":
         print("  [WARNING] ByT5 is prone to float16 numerical overflow (NaN loss). If NaN occurs, switch to bf16 or fp32.")
 
@@ -145,6 +162,8 @@ def main():
         "lr": lr,
         "optimizer": optimizer_type,
         "weight_decay": weight_decay,
+        "label_smoothing": label_smoothing,
+        "canonical_ordering": canonical_ordering,
         "max_source_length": max_source_length,
         "max_target_length": max_target_length,
         "precision": precision,
@@ -159,13 +178,13 @@ def main():
 
     print("Loading datasets...")
     train_dataset = ByT5ACOSDataset(
-        train_path, tokenizer, max_source_length=max_source_length, max_target_length=max_target_length
+        train_path, tokenizer, max_source_length=max_source_length, max_target_length=max_target_length, canonical=canonical_ordering
     )
     dev_dataset = ByT5ACOSDataset(
-        dev_path, tokenizer, max_source_length=max_source_length, max_target_length=max_target_length
+        dev_path, tokenizer, max_source_length=max_source_length, max_target_length=max_target_length, canonical=canonical_ordering
     )
     test_dataset = ByT5ACOSDataset(
-        test_path, tokenizer, max_source_length=max_source_length, max_target_length=max_target_length
+        test_path, tokenizer, max_source_length=max_source_length, max_target_length=max_target_length, canonical=canonical_ordering
     )
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
@@ -261,7 +280,7 @@ def main():
             if precision == "bf16":
                 with torch.amp.autocast('cuda', dtype=torch.bfloat16):
                     outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
-                    raw_loss = outputs.loss
+                    raw_loss = compute_loss(outputs, labels, loss_fct)
                     loss = raw_loss / grad_accum_steps
                 if torch.isnan(raw_loss) or torch.isinf(raw_loss):
                     print(f"\n[WARNING] Non-finite loss ({raw_loss.item()}) at step {step + 1}. Skipping step.")
@@ -271,7 +290,7 @@ def main():
             elif precision == "fp16":
                 with torch.amp.autocast('cuda', dtype=torch.float16):
                     outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
-                    raw_loss = outputs.loss
+                    raw_loss = compute_loss(outputs, labels, loss_fct)
                     loss = raw_loss / grad_accum_steps
                 if torch.isnan(raw_loss) or torch.isinf(raw_loss):
                     print(f"\n[WARNING] Non-finite loss ({raw_loss.item()}) at step {step + 1}. Skipping step.")
@@ -280,7 +299,7 @@ def main():
                 scaler.scale(loss).backward()
             else:  # fp32
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
-                raw_loss = outputs.loss
+                raw_loss = compute_loss(outputs, labels, loss_fct)
                 loss = raw_loss / grad_accum_steps
                 if torch.isnan(raw_loss) or torch.isinf(raw_loss):
                     print(f"\n[WARNING] Non-finite loss ({raw_loss.item()}) at step {step + 1}. Skipping step.")
@@ -311,7 +330,7 @@ def main():
 
         # Compute Fast Teacher-Forced Dev Loss (15-20s across full dev split)
         print("Computing validation loss across full dev set...")
-        val_loss = compute_eval_loss(model, dev_loader, device, precision)
+        val_loss = compute_eval_loss(model, dev_loader, device, precision, loss_fct=loss_fct)
         print(f"  Dev Cross-Entropy Loss: {val_loss:.4f}")
 
         # Generation Evaluation on Dev Set
