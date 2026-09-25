@@ -1,0 +1,25 @@
+# ByT5-Base Configuration for End-to-End Amharic ACOS Quadruple Extraction
+# =======================================================================
+model_name: google/byt5-base
+output_dir: results/stage_byt5_acos/byt5_base_run1
+
+data:
+  train: data/prepared/train.jsonl
+  dev: data/prepared/dev.jsonl
+  test: data/prepared/test.jsonl
+
+model:
+  max_source_length: 768    # Raw UTF-8 bytes for Amharic input sentences (~200-250 characters)
+  max_target_length: 256    # Raw UTF-8 bytes for linearized quadruple targets (>99.8% of targets are <200 bytes)
+
+training:
+  batch_size: 4             # Per-step batch size (suitable for 16GB–24GB VRAM)
+  gradient_accumulation_steps: 4  # Effective batch size = 16
+  epochs: 10
+  lr: 1.0e-4                # Recommended learning rate for ByT5 with Adafactor
+  optimizer: adafactor      # Adafactor uses factorized second moments to conserve GPU VRAM
+  weight_decay: 0.01
+  precision: auto           # 'auto' selects bf16 on Ampere/Ada/Hopper, or fp32 fallback
+  eval_batch_size: 16       # Higher throughput for validation generation
+  eval_samples: 1000        # Fast dev evaluation (~2 min vs 17 min); full dev evaluated on final test run
+  warmup_ratio: 0.05        # 5% linear warmup to prevent gradient spikes
