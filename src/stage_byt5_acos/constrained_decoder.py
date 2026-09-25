@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 class ByteTrieNode:
     def __init__(self):
-        self.children: dict[int, "ByteTrieNode"] = {}
+        self.children: dict[int, ByteTrieNode] = {}
         self.is_terminal: bool = False
 
 
