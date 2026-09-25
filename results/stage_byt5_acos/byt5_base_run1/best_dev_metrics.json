@@ -1,0 +1,165 @@
+{
+  "full_quad": {
+    "precision": 0.182,
+    "recall": 0.17618586640851888,
+    "f1": 0.1790457452041318,
+    "tp": 182,
+    "fp": 818,
+    "fn": 851
+  },
+  "explicit_quad": {
+    "precision": 0.15954415954415954,
+    "recall": 0.18512396694214875,
+    "f1": 0.17138485080336646,
+    "tp": 112,
+    "fp": 590,
+    "fn": 493
+  },
+  "implicit_quad": {
+    "precision": 0.2348993288590604,
+    "recall": 0.16355140186915887,
+    "f1": 0.1928374655647383,
+    "tp": 70,
+    "fp": 228,
+    "fn": 358
+  },
+  "aope": {
+    "precision": 0.3,
+    "recall": 0.2904162633107454,
+    "f1": 0.2951303492375799,
+    "tp": 300,
+    "fp": 700,
+    "fn": 733
+  },
+  "aste": {
+    "precision": 0.274,
+    "recall": 0.26524685382381413,
+    "f1": 0.2695523856369897,
+    "tp": 274,
+    "fp": 726,
+    "fn": 759
+  },
+  "acse": {
+    "precision": 0.303,
+    "recall": 0.2933204259438529,
+    "f1": 0.29808165272995574,
+    "tp": 303,
+    "fp": 697,
+    "fn": 730
+  },
+  "cat_sent": {
+    "precision": 0.495,
+    "recall": 0.4791868344627299,
+    "f1": 0.4869650762420069,
+    "tp": 495,
+    "fp": 505,
+    "fn": 538
+  },
+  "sample_predictions": [
+    {
+      "text": "\u12c8\u1208\u130b \u12cd\u1235\u1325 \u12eb\u1208\u12cd\u1295 \u12e8\u1205\u1265 \u12f5\u121d\u1345 \u12a5\u1293 \u12e8\u1218\u1295\u130d\u1235\u1275 \u1273\u1323\u1245\u12ce\u127d \u1260\u12c8\u1208\u130b \u12a6\u122e\u121e\u12ce\u127d \u120b\u12ed \u12e8\u1273\u12c8\u1300\u12cd\u1295 \u1326\u122a\u1290\u1275 \u1208\u121b\u1348\u1295 \u12a5\u1293 \u12a0\u1245\u1323\u132b \u1208\u121b\u1235\u1240\u12e8\u122d \u12e8\u1270\u1348\u1260\u1228\u12a8\u127d \u12dc\u1293 \u1290\u127d",
+      "pred_string": "[ \u12e8\u1218\u1295\u130d\u1235\u1275 \u1273\u1323\u1245\u12ce\u127d | PUBLIC_SAFETY#CRIME | NEGATIVE | \u1326\u122a\u1290\u1275 \u1208\u121b\u1348\u1295 ]",
+      "gold_string": "[ \u12e8\u1218\u1295\u130d\u1235\u1275 | GOVERNANCE#TRANSPARENCY | NEGATIVE | \u12e8\u1270\u1348\u1260\u1228\u12a8\u127d ]",
+      "pred_quads": [
+        [
+          "\u12e8\u1218\u1295\u130d\u1235\u1275 \u1273\u1323\u1245\u12ce\u127d",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "\u1326\u122a\u1290\u1275 \u1208\u121b\u1348\u1295"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u12e8\u1218\u1295\u130d\u1235\u1275",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "\u12e8\u1270\u1348\u1260\u1228\u12a8\u127d"
+        ]
+      ]
+    },
+    {
+      "text": "\u12a5\u1294 \u12e8\u121a\u1208\u12cd \u130d\u1295 \u1260\u12a0\u1308\u1228 \u12a2\u1275\u12ee\u1335\u12eb  \u1260\u121b\u1293\u1305\u121c\u1295\u1275 \u12e8\u1270\u121b\u1228  \u1260\u12a0\u12ab\u12cb\u1295\u1275\u130d \u12e8\u1270\u121b\u1228  \u12a8\u123a\u1205 \u12a5\u1230\u12a8 \u123a\u1205 \u12e8\u12a2\u1275\u12ee\u1335\u12eb \u1295\u130d\u12f5 \u1263\u1295\u12ad \u12a6\u122e\u121a\u12eb \u1263\u1295\u12ad \u12a0\u12cb\u123d \u1219\u1230\u1293\u12a5\u1295\u12f0\u121a\u1240\u1260\u1209 \u12eb\u12cd\u1243\u1209 \u1225\u122b \u1208\u121b\u130d\u129d\u1275 \u1309\u1266 \u12c8\u12ed\u121d \u12d8\u1218\u12f5 \u12eb\u1230\u1348\u120d\u130b\u120d \u12a5\u1295\u1302 \u12d5\u12cd\u1240\u1275 \u12a0\u12eb\u1230\u1348\u120d\u130d\u121d \u120c\u120b\u12cd  \u1260\u1265\u122d \u12a5\u1295\u12f0\u121a\u1308\u12db\u1230 \u12eb\u12cd\u1243\u1209",
+      "pred_string": "[ \u1225\u122b \u1208\u121b\u130d\u129d\u1275 | ECONOMY#EMPLOYMENT | NEGATIVE | \u1309\u1266 \u12c8\u12ed\u121d \u12d8\u1218\u12f5 \u12eb\u1230\u1348\u120d\u130b\u120d ]",
+      "gold_string": "[ \u1225\u122b | ECONOMY#EMPLOYMENT | NEGATIVE | \u1309\u1266 \u12c8\u12ed\u121d \u12d8\u1218\u12f5 ]",
+      "pred_quads": [
+        [
+          "\u1225\u122b \u1208\u121b\u130d\u129d\u1275",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "\u1309\u1266 \u12c8\u12ed\u121d \u12d8\u1218\u12f5 \u12eb\u1230\u1348\u120d\u130b\u120d"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u1225\u122b",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "\u1309\u1266 \u12c8\u12ed\u121d \u12d8\u1218\u12f5"
+        ]
+      ]
+    },
+    {
+      "text": "\u12f2\u1302\u1273\u120e\u127d \u121d\u1290\u12cd \u1325\u1349\u1265\u129d\u00a0 \u00a0\u12cd\u1205\u12f0\u1271 \u1270\u1235\u134b \u12a0\u1235\u1246\u1228\u1323\u1278\u12cd \u12a5\u1295\u12f4",
+      "pred_string": "[ \u12cd\u1205\u12f0\u1271 | GOVERNANCE#CITIZEN_ENGAGEMENT | NEGATIVE | \u1270\u1235\u134b \u12a0\u1235\u1246\u1228\u1323\u1278\u12cd ]",
+      "gold_string": "[ \u12cd\u1205\u12f0\u1271 | GOVERNANCE#CITIZEN_ENGAGEMENT | NEGATIVE | \u1270\u1235\u134b \u12a0\u1235\u1246\u1228\u1323\u1278\u12cd ]",
+      "pred_quads": [
+        [
+          "\u12cd\u1205\u12f0\u1271",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "\u1270\u1235\u134b \u12a0\u1235\u1246\u1228\u1323\u1278\u12cd"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u12cd\u1205\u12f0\u1271",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "\u1270\u1235\u134b \u12a0\u1235\u1246\u1228\u1323\u1278\u12cd"
+        ]
+      ]
+    },
+    {
+      "text": "\u1260\u1323\u121d \u12e8\u121a\u1308\u122d\u1218\u129d \u1208\u121d\u1295 \u12ed\u1218\u1235\u120b\u127d\u12cb\u120d \u130d\u1265\u1346\u127d\u00a0 \u12a5\u1295\u12f0\u12da \u121a\u1209\u1295\u00a0 \u1218\u1295\u130d\u1235\u1275 \u1241\u122d\u1323\u1278\u12c9\u1295 \u1218\u1295\u1308\u122d \u12a0\u1208\u1260\u1275 \u1263\u1263\u12ed \u12a0\u1295 \u12f0\u122b\u12f0\u122d\u1218",
+      "pred_string": "[ \u1218\u1295\u130d\u1235\u1275 | GOVERNANCE#TRANSPARENCY | NEGATIVE | \u1241\u122d\u1323\u1278\u12c9\u1295 \u1218\u1295\u1308\u122d \u12a0\u1208\u1260\u1275 ]",
+      "gold_string": "[ \u1218\u1295\u130d\u1235\u1275 | GOVERNANCE#TRANSPARENCY | POSITIVE | \u1241\u122d\u1323\u1278\u12c9\u1295 \u1218\u1295\u1308\u122d \u12a0\u1208\u1260\u1275 ]",
+      "pred_quads": [
+        [
+          "\u1218\u1295\u130d\u1235\u1275",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "\u1241\u122d\u1323\u1278\u12c9\u1295 \u1218\u1295\u1308\u122d \u12a0\u1208\u1260\u1275"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u1218\u1295\u130d\u1235\u1275",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "\u1241\u122d\u1323\u1278\u12c9\u1295 \u1218\u1295\u1308\u122d \u12a0\u1208\u1260\u1275"
+        ]
+      ]
+    },
+    {
+      "text": "\u12a5\u12cd\u1290\u1275 \u12a5\u1208\u1200\u1208\u1201 \u127d\u130d\u1229\u1295 \u12a8\u1235\u122d \u1218\u1235\u1228\u1271 \u12a0\u12cd\u1243\u127d\u1201 \u12eb\u1208\u134d\u122b\u127b \u12eb\u1208\u12a0\u12f5\u122d\u1263\u12ed\u1290\u1275 \u12a8\u12a0\u1201\u1291 \u1270\u1290\u130b\u130d\u122b\u127d\u1201 \u1265\u1275\u1240\u122d\u1261 \u12ed\u123b\u120b\u120d \u1260\u12cb\u1293\u1290\u1275 \u12a2\u1275\u12ec\u133d\u12eb \u12a6\u122d\u1276\u1235\u12f6\u12ad\u1235 \u1264\u1270\u12ad\u122d\u1235\u1275\u12eb\u1295 \u12ed\u1245\u122d\u1273 \u1218\u1320\u12e8\u1245 \u12a0\u1208\u1263\u1275 \u1208\u121d\u1295 \u1208\u121a\u1263\u1208\u12cd \u1265\u12d9 \u121d\u12ad\u1295\u12eb\u1275 \u12a0\u1208\u12cd\u1293",
+      "pred_string": "[ \u1264\u1270\u12ad\u122d\u1235\u1275\u12eb\u1295 | SOCIAL#EQUALITY_JUSTICE | NEGATIVE | \u12ed\u1245\u122d\u1273 \u1218\u1320\u12e8\u1245 \u12a0\u1208\u1263\u1275 ]",
+      "gold_string": "[ NULL | SOCIAL#COMMUNITY_SUPPORT | NEGATIVE | \u12ed\u1245\u122d\u1273 \u1218\u1320\u12e8\u1245 \u12a0\u1208\u1263\u1275 ]",
+      "pred_quads": [
+        [
+          "\u1264\u1270\u12ad\u122d\u1235\u1275\u12eb\u1295",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "\u12ed\u1245\u122d\u1273 \u1218\u1320\u12e8\u1245 \u12a0\u1208\u1263\u1275"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "\u12ed\u1245\u122d\u1273 \u1218\u1320\u12e8\u1245 \u12a0\u1208\u1263\u1275"
+        ]
+      ]
+    }
+  ]
+}

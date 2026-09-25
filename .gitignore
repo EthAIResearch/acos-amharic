@@ -30,4 +30,5 @@ node_modules/
 *.tmp
 *.crdownload
 *.pdf
+!docs/*.pdf
 

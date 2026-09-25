@@ -1,0 +1,165 @@
+{
+  "full_quad": {
+    "precision": 0.16520676308820534,
+    "recall": 0.1578435188789412,
+    "f1": 0.16144122623668755,
+    "tp": 811,
+    "fp": 4098,
+    "fn": 4327
+  },
+  "explicit_quad": {
+    "precision": 0.15896980461811722,
+    "recall": 0.18002011397921555,
+    "f1": 0.16884137714195882,
+    "tp": 537,
+    "fp": 2841,
+    "fn": 2446
+  },
+  "implicit_quad": {
+    "precision": 0.17896799477465708,
+    "recall": 0.1271461716937355,
+    "f1": 0.1486706456863809,
+    "tp": 274,
+    "fp": 1257,
+    "fn": 1881
+  },
+  "aope": {
+    "precision": 0.27317172540232226,
+    "recall": 0.2609964966913196,
+    "f1": 0.2669453568229322,
+    "tp": 1341,
+    "fp": 3568,
+    "fn": 3797
+  },
+  "aste": {
+    "precision": 0.24241189651660217,
+    "recall": 0.23160762942779292,
+    "f1": 0.23688663282571912,
+    "tp": 1190,
+    "fp": 3719,
+    "fn": 3948
+  },
+  "acse": {
+    "precision": 0.3063760440008148,
+    "recall": 0.2927209030751265,
+    "f1": 0.2993928535881357,
+    "tp": 1504,
+    "fp": 3405,
+    "fn": 3634
+  },
+  "cat_sent": {
+    "precision": 0.49399062945610106,
+    "recall": 0.4719735305566368,
+    "f1": 0.48273116353140244,
+    "tp": 2425,
+    "fp": 2484,
+    "fn": 2713
+  },
+  "sample_predictions": [
+    {
+      "text": "\u12c8\u1208\u130b \u1295\u1341\u1203\u1295 \u12a5\u12eb\u1208\u1240 \u12a5\u1293\u1295\u1270 \u12a5\u12da\u1205 \u1275\u1240\u120d\u12f1\u1265\u1293\u120b\u127d\u1201 \u12a0\u12ed\u12f0\u120d ? \u12c8\u12eb\u1294\u121d \u1232\u12c8\u12f5\u1245 \u12a5\u1295\u12f5\u1205 \u12a0\u12f5\u122d\u130e\u1275 \u1290\u1260\u122d",
+      "pred_string": "[ \u12c8\u1208\u130b | PUBLIC_SAFETY#CRIME | NEGATIVE | \u1295\u1341\u1203\u1295 \u12a5\u12eb\u1208\u1240 ]",
+      "gold_string": "[ \u1295\u1341\u1203\u1295 | PUBLIC_SAFETY#CRIME | NEGATIVE | \u12a5\u12eb\u1208\u1240 ]",
+      "pred_quads": [
+        [
+          "\u12c8\u1208\u130b",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "\u1295\u1341\u1203\u1295 \u12a5\u12eb\u1208\u1240"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u1295\u1341\u1203\u1295",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "\u12a5\u12eb\u1208\u1240"
+        ]
+      ]
+    },
+    {
+      "text": "\u12e8\u12a0\u121b\u122b \u12a2\u120a\u1275 \u1329\u12a8\u1275 \u1208\u1218\u1270\u12a8\u120d \u12a0\u121b\u122b\u132d \u1265\u127b\u1293 \u1260\u12dd\u1205 \u12a0\u121b\u122b \u1201\u1209\u121d \u12e8\u1325\u1243\u1271 \u1230\u1208\u1263 \u12e8\u1295\u1339\u1200\u1295 \u12ed\u1348\u1233\u120d",
+      "pred_string": "[ \u12e8\u1295\u1339\u1200\u1295 | PUBLIC_SAFETY#CRIME | NEGATIVE | \u12ed\u1348\u1233\u120d ]",
+      "gold_string": "[ \u12e8\u1325\u1243\u1271 | PUBLIC_SAFETY#CRIME | NEGATIVE | \u1230\u1208\u1263 ]",
+      "pred_quads": [
+        [
+          "\u12e8\u1295\u1339\u1200\u1295",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "\u12ed\u1348\u1233\u120d"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u12e8\u1325\u1243\u1271",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "\u1230\u1208\u1263"
+        ]
+      ]
+    },
+    {
+      "text": "\u122b\u1233\u127d\u1201 \u12a5\u1295\u12f3\u1275\u12f0\u1218\u1230\u1231 \u1270\u1320\u1295\u1240\u1241 \u12a0\u1265\u122f\u127d\u1201 \u12a0\u1263\u120d \u12e8\u1206\u1290\u1293 \u12a2\u1275\u12ee\u1335\u12eb \u12eb\u1208 \u1201\u1209 \u1265\u120d\u1345\u130d\u1293 \u1218\u1235\u120f\u127d\u128b\u120d",
+      "pred_string": "[ NULL | GOVERNANCE#TRANSPARENCY | NEGATIVE | \u1270\u1320\u1295\u1240\u1241 ]",
+      "gold_string": "[ \u1265\u120d\u1345\u130d\u1293 | GOVERNANCE#TRANSPARENCY | NEGATIVE | \u1270\u1320\u1295\u1240\u1241 ]",
+      "pred_quads": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "\u1270\u1320\u1295\u1240\u1241"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u1265\u120d\u1345\u130d\u1293",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "\u1270\u1320\u1295\u1240\u1241"
+        ]
+      ]
+    },
+    {
+      "text": "\u12a8\u12c8\u1308\u120d \u1324\u1293 \u130b\u1238\u1293 \u12eb\u1208\u12c9 \u1218\u1290\u1308\u12f5 \u1262\u1230\u122b \u12f0\u1234\u1295 \u12a8\u120b\u120a\u1260\u120b\u00a0 \u1263\u1215\u122d\u12f3\u122d\u1293 \u130e\u1295\u12f0\u122d \u130b\u122d \u1208\u121b\u1308\u1293\u1298\u1275 \u12e8\u1270\u123b\u1208 \u12a0\u121b\u122b\u132d \u1218\u1295\u1308\u12f5 \u1290\u12c9",
+      "pred_string": "[ \u1218\u1290\u1308\u12f5 | INFRASTRUCTURE#TRANSPORTATION | POSITIVE | \u1262\u1230\u122b ]",
+      "gold_string": "[ \u1218\u1290\u1308\u12f5 | INFRASTRUCTURE#TRANSPORTATION | POSITIVE | \u12e8\u1270\u123b\u1208 \u12a0\u121b\u122b\u132d ]",
+      "pred_quads": [
+        [
+          "\u1218\u1290\u1308\u12f5",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "POSITIVE",
+          "\u1262\u1230\u122b"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u1218\u1290\u1308\u12f5",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "POSITIVE",
+          "\u12e8\u1270\u123b\u1208 \u12a0\u121b\u122b\u132d"
+        ]
+      ]
+    },
+    {
+      "text": "\u1200\u1308\u122c \u1293\u134d\u1246\u1274 \u1230\u120b\u121d\u123d \u1265\u12dd\u1275\u12dd\u1275 \u12ed\u1260\u120d",
+      "pred_string": "[ \u1230\u120b\u121d\u123d | PUBLIC_SAFETY#CRIME | POSITIVE | \u1293\u134d\u1246\u1274 ]",
+      "gold_string": "[ \u1230\u120b\u121d\u123d | PUBLIC_SAFETY#CRIME | POSITIVE | \u1265\u12dd\u1275\u12dd\u1275 \u12ed\u1260\u120d ]",
+      "pred_quads": [
+        [
+          "\u1230\u120b\u121d\u123d",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "\u1293\u134d\u1246\u1274"
+        ]
+      ],
+      "gold_quads": [
+        [
+          "\u1230\u120b\u121d\u123d",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "\u1265\u12dd\u1275\u12dd\u1275 \u12ed\u1260\u120d"
+        ]
+      ]
+    }
+  ]
+}
