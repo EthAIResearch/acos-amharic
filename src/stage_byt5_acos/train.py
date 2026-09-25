@@ -9,12 +9,15 @@ Usage:
         --config configs/stage_byt5_acos.yaml \
         --output_dir results/stage_byt5_acos/byt5_base_run1
 """
+from __future__ import annotations
+
 import argparse
 import json
 import os
 import sys
 
 import torch
+import torch.nn as nn
 import yaml
 from torch.utils.data import DataLoader, Subset
 from tqdm import tqdm
