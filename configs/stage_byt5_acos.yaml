@@ -23,3 +23,11 @@ training:
   eval_batch_size: 16       # Higher throughput for validation generation
   eval_samples: 1000        # Fast dev evaluation (~2 min vs 17 min); full dev evaluated on final test run
   warmup_ratio: 0.05        # 5% linear warmup to prevent gradient spikes
+
+evaluation:
+  batch_size: 16            # High-throughput generation batch size
+  num_beams: 4              # Beam search width (explore multi-quad candidates)
+  length_penalty: 1.0       # Neutral length penalty
+  repetition_penalty: 1.2   # Penalty against repeated phrases
+  constrained: true         # Enable byte-level FSM constrained decoding
+

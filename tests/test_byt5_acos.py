@@ -158,6 +158,74 @@ def test_byt5_collate_fn():
     assert collated["labels"][1, 3].item() == 105
 
 
+def test_normalize_amharic_clitics():
+    from linearization import normalize_amharic_clitics
+
+    # Prepositions and definite articles
+    assert normalize_amharic_clitics("በምግቡ") == "ምግብ"
+    assert normalize_amharic_clitics("ለአገልግሎቱ") == "አገልግሎት"
+    assert normalize_amharic_clitics("ከሆቴሉ") == "ሆቴል"
+    assert normalize_amharic_clitics("የክፍሉ") == "ክፍል"
+
+    # Conjunctions
+    assert normalize_amharic_clitics("አገልግሎቱም") == "አገልግሎት"
+    assert normalize_amharic_clitics("ምግቡና") == "ምግብ"
+
+    # NULL and None
+    assert normalize_amharic_clitics("NULL") == "NULL"
+    assert normalize_amharic_clitics("None") == "None"
+
+
+def test_clitic_normalized_evaluation():
+    from linearization import compute_clitic_normalized_set_prf
+
+    gold = [
+        ("ምግብ", "PUBLIC_SERVICES#HEALTHCARE", "POSITIVE", "ጥሩ"),
+        ("አገልግሎት", "PUBLIC_SERVICES#UTILITIES", "NEGATIVE", "ደካማ"),
+    ]
+    # Prediction has surface clitics attached (-ኡ, -ም)
+    pred = [
+        ("ምግቡ", "PUBLIC_SERVICES#HEALTHCARE", "POSITIVE", "ጥሩ"),
+        ("አገልግሎቱም", "PUBLIC_SERVICES#UTILITIES", "NEGATIVE", "ደካማ"),
+    ]
+    # Strict matching fails due to morphological clitics
+    strict_tp, strict_fp, strict_fn = compute_set_prf(pred, gold)
+    assert strict_tp == 0
+    assert strict_fp == 2
+    assert strict_fn == 2
+
+    # Clitic-normalized matching recovers both true positives
+    norm_tp, norm_fp, norm_fn = compute_clitic_normalized_set_prf(pred, gold)
+    assert norm_tp == 2
+    assert norm_fp == 0
+    assert norm_fn == 0
+
+
+def test_byte_trie_prefix_matching():
+    from constrained_decoder import ByteTrie
+
+    trie = ByteTrie()
+    trie.insert([10, 20, 30])
+    trie.insert([10, 20, 40])
+    trie.insert([50])
+
+    next_tokens, is_term = trie.get_valid_continuations([10, 20])
+    assert next_tokens == {30, 40}
+    assert not is_term
+
+    next_tokens, is_term = trie.get_valid_continuations([10, 20, 30])
+    assert next_tokens == set()
+    assert is_term
+
+    next_tokens, is_term = trie.get_valid_continuations([50])
+    assert next_tokens == set()
+    assert is_term
+
+    next_tokens, is_term = trie.get_valid_continuations([99])
+    assert next_tokens == set()
+    assert not is_term
+
+
 if __name__ == "__main__":
     current_module = sys.modules[__name__]
     test_funcs = [
@@ -169,3 +237,4 @@ if __name__ == "__main__":
         fn()
         print(f"  PASSED: {fn.__name__}")
     print("All ByT5 ACOS tests passed successfully!")
+

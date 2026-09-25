@@ -1,0 +1,3 @@
+OpenAlex Terms of Use Notice
+Timestamp: 2026-09-25T15:55:00+03:00
+Users must check the terms of use at https://openalex.org/terms and always check the license of the papers retrieved by this skill for any restrictions.

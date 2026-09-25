@@ -206,3 +206,94 @@ def calculate_metrics(tp: int, fp: int, fn: int) -> dict:
         "fp": fp,
         "fn": fn,
     }
+
+
+ORDER7_TO_ORDER6 = {
+    "\u1209": "\u120d",  # ሉ -> ል
+    "\u1211": "\u1215",  # ሙ -> ም
+    "\u1221": "\u1225",  # ሡ -> ሥ
+    "\u1229": "\u122d",  # ሩ -> ር
+    "\u1239": "\u123d",  # ሱ -> ስ
+    "\u1241": "\u1245",  # ሹ -> ሽ
+    "\u1249": "\u124d",  # ቁ -> ቅ
+    "\u1261": "\u1265",  # ቡ -> ብ
+    "\u1271": "\u1275",  # ቱ -> ት
+    "\u1279": "\u127d",  # ቹ -> ች
+    "\u1289": "\u128d",  # ኁ -> ኅ
+    "\u1291": "\u1295",  # ኑ -> ን
+    "\u1299": "\u129d",  # ኙ -> ኝ
+    "\u12a1": "\u12a5",  # አ -> እ
+    "\u12a9": "\u12ad",  # ኩ -> ክ
+    "\u12b9": "\u12bd",  # ኹ -> ኽ
+    "\u12c9": "\u12cd",  # ዉ -> ው
+    "\u12d9": "\u12dd",  # ዙ -> ዝ
+    "\u12e1": "\u12e5",  # ዡ -> ዥ
+    "\u12e9": "\u12ed",  # ዩ -> ይ
+    "\u12f1": "\u12f5",  # ዱ -> ድ
+    "\u1301": "\u1305",  # ጁ -> ጅ
+    "\u1309": "\u130d",  # ጉ -> ግ
+    "\u1321": "\u1325",  # ጡ -> ጥ
+    "\u1329": "\u132d",  # ጩ -> ጭ
+    "\u1331": "\u1335",  # ጱ -> ጵ
+    "\u1339": "\u133d",  # ጹ -> ጽ
+    "\u1349": "\u134d",  # ፉ -> ፍ
+    "\u1351": "\u1355",  # ፑ -> ፕ
+}
+
+
+def normalize_amharic_clitics(text: str) -> str:
+    """
+    Normalizes common Amharic clitics (prepositional prefixes, conjunctions,
+    and definite article 7th-order consonant-vowel mergers) for clitic-invariant span matching.
+    """
+    if not text or text == "NULL" or text == "None":
+        return text
+
+    words = text.split()
+    normalized_words = []
+
+    for word in words:
+        w = word.strip()
+        if len(w) <= 2:
+            normalized_words.append(w)
+            continue
+
+        # 1. Strip common prepositional prefixes: እንደ, ስለ, ወደ, በ, ለ, ከ, የ
+        for p in ("እንደ", "ስለ", "ወደ", "በ", "ለ", "ከ", "የ"):
+            if len(w) >= len(p) + 2 and w.startswith(p):
+                w = w[len(p):]
+                break
+
+        # 2. Strip conjunction / attachment suffixes: -ም (and/also), -ና (and), -ው, -ዋ
+        for s in ("ም", "ና", "ው", "ዋ"):
+            if len(w) >= len(s) + 2 and w.endswith(s):
+                w = w[:-len(s)]
+                break
+
+        # 3. Definite article merger: 7th order vowel merger -> 6th order base consonant
+        if len(w) >= 3 and w[-1] in ORDER7_TO_ORDER6:
+            w = w[:-1] + ORDER7_TO_ORDER6[w[-1]]
+
+        normalized_words.append(w)
+
+    return " ".join(normalized_words)
+
+
+def compute_clitic_normalized_set_prf(pred_set: list[tuple], gold_set: list[tuple]) -> tuple[int, int, int]:
+    """
+    Computes TP, FP, FN with Amharic clitic normalization applied to aspect and opinion spans.
+    Tuples can be 4-tuple (a, c, s, o) or 2-tuple (a, o) or 3-tuple (a, s, o).
+    """
+    def norm_tuple(t: tuple) -> tuple:
+        if len(t) == 4:
+            return (normalize_amharic_clitics(t[0]), t[1], t[2], normalize_amharic_clitics(t[3]))
+        elif len(t) == 2:
+            return (normalize_amharic_clitics(t[0]), normalize_amharic_clitics(t[1]))
+        elif len(t) == 3:
+            return (normalize_amharic_clitics(t[0]), t[1], normalize_amharic_clitics(t[2]))
+        return t
+
+    norm_preds = [norm_tuple(p) for p in pred_set]
+    norm_golds = [norm_tuple(g) for g in gold_set]
+    return compute_set_prf(norm_preds, norm_golds)
+
