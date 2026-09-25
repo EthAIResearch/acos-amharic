@@ -8,6 +8,8 @@ autoregressive decoding for ByT5 models (vocabulary size 256 + special tokens):
   3. Guarantees valid sentiment polarity (POSITIVE, NEGATIVE, NEUTRAL).
   4. Enforces valid delimiter tokens and transitions between slots.
 """
+import logging
+
 try:
     import torch
     from transformers import LogitsProcessor
@@ -16,6 +18,8 @@ except ImportError:
     LogitsProcessor = object
 
 from linearization import CATEGORIES, SENTIMENTS
+
+logger = logging.getLogger(__name__)
 
 
 class ByteTrieNode:
@@ -137,14 +141,13 @@ class ACOSByteFSM(LogitsProcessor):
             return {self.eos_token_id, semi_first}
 
         # If we are in the middle of semicolon continuation " ; ["
-        if text.endswith(" ;") or text.endswith(" ; "):
-            if text.endswith(" ;"):
-                return set(self.tokenizer.encode(" ", add_special_tokens=False))
+        if text.endswith((" ;", " ; ")):
             if text.endswith(" ; "):
                 return {self.bracket_open_ids[0]}
+            return set(self.tokenizer.encode(" ", add_special_tokens=False))
 
         # If just started a quad "[ "
-        if curr_quad_text == "[" or curr_quad_text == "[ ":
+        if curr_quad_text in ("[", "[ "):
             if curr_quad_text == "[":
                 return set(self.tokenizer.encode(" ", add_special_tokens=False))
             # First char of Aspect (can be any Amharic byte or 'N' for NULL)
@@ -230,9 +233,7 @@ class ACOSByteFSM(LogitsProcessor):
                     if valid_indices:
                         mask[valid_indices] = 0.0
                         scores[b] = scores[b] + mask
-            except Exception:
-                # Defensive fallback: if any unexpected edge case occurs in parsing,
-                # do not crash generation; allow standard logits for this sample.
-                continue
+            except (IndexError, KeyError, ValueError) as err:
+                logger.debug("ACOSByteFSM constraint fallback on sequence: %s", err)
 
         return scores
