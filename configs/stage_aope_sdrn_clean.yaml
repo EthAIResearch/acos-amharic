@@ -1,0 +1,39 @@
+# Joint Aspect-Opinion Pair Extraction (AOPE), SDRN-style
+# Replaces Stage 1 (tagging) + Stage 2 (heuristic pairing) with one
+# synchronized joint model. See docs/stage_aope_sdrn_analysis.md.
+
+model_name: Davlan/afro-xlmr-base
+use_crf: true                 # Linear-Chain CRF for structured BIO sequence decoding
+word_level: true              # Phase 3: Subword-to-word pooling, word-level CRF and relation attention
+num_recurrent_steps: 2       # SDRN paper: best on 3/3 benchmarks, more steps show diminishing returns
+relation_threshold: 0.1      # beta in RSM (Eq. 12)
+pair_accept_threshold: 0.5   # delta-hat in Eq. 17
+
+data:
+  train: data/prepared_clean/train.jsonl
+  dev: data/prepared_clean/dev.jsonl
+  test: data/prepared_clean/test.jsonl
+  max_length: 256
+  max_words: 128
+
+training:
+  epochs: 10
+  batch_size: 8    # smaller than Stage 1's 16 -- the N x N relation matrix
+                    # roughly quadruples memory cost vs. plain tagging
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  weight_decay: 0.01
+  fp16: true
+  bio_class_weights: [1.0, 4.0, 4.0, 8.0, 8.0]  # [O, B-ASP, I-ASP, B-OPN, I-OPN] - asymmetric weights penalize missed opinions 2x
+  span_loss_weight: 2.0                          # prioritizes entity boundary learning relative to relation matrix
+  dice_loss_weight: 1.0                          # auxiliary Multi-Class Dice Loss (Li et al., ACL 2020) to maximize soft token F1
+
+output_dir: results/stage_aope_sdrn/afroxlmr_word_sdrn_run1
+
+notes: >
+  Phase 3 training run on data/prepared_explicit with AfroXLMR-base, Word-Level SDRN architecture,
+  subword-to-word pooling, 5-way BIO word-level Linear-Chain CRF, active Multi-Class Dice Loss (weight=1.0),
+  asymmetric opinion weights [1.0, 4.0, 4.0, 8.0, 8.0], and span loss weight (2.0) to eliminate
+  subword boundary fragmentation and shatter the opinion recall bottleneck.
+
