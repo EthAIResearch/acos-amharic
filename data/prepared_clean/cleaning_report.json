@@ -1,0 +1,28 @@
+{
+  "source": "/home/codeknight/Documents/work/INSA/acos-amharic/data/prepared",
+  "max_train_tokens": 100,
+  "train": {
+    "sentences": 38385,
+    "quads": 40426,
+    "duplicate_rows_merged": 233,
+    "duplicate_quads_dropped": 104,
+    "sentiment_conflicts_resolved": 64,
+    "leaked_rows_removed": 116,
+    "long_rows_dropped": 527
+  },
+  "dev": {
+    "sentences": 4892,
+    "quads": 5110,
+    "duplicate_rows_merged": 5,
+    "duplicate_quads_dropped": 9,
+    "sentiment_conflicts_resolved": 11,
+    "leaked_rows_removed": 10
+  },
+  "test": {
+    "sentences": 4908,
+    "quads": 5133,
+    "duplicate_rows_merged": 1,
+    "sentiment_conflicts_resolved": 10,
+    "duplicate_quads_dropped": 5
+  }
+}
