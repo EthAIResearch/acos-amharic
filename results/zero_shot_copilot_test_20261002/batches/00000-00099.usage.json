@@ -1,0 +1,96 @@
+{
+  "totalPremiumRequestCost": 1,
+  "totalUserRequests": 1,
+  "totalNanoAiu": 43969250000,
+  "tokenDetails": {
+    "input": {
+      "tokenCount": 34397
+    },
+    "cache_read": {
+      "tokenCount": 0
+    },
+    "cache_write": {
+      "tokenCount": 0
+    },
+    "output": {
+      "tokenCount": 23580
+    }
+  },
+  "totalApiDurationMs": 231851,
+  "sessionStartTime": "2026-10-02T10:56:43.644Z",
+  "codeChanges": {
+    "linesAdded": 0,
+    "linesRemoved": 0,
+    "filesModifiedCount": 0,
+    "filesModified": []
+  },
+  "modelMetrics": {
+    "gpt-5.4": {
+      "requests": {
+        "count": 1,
+        "cost": 1
+      },
+      "usage": {
+        "inputTokens": 34397,
+        "outputTokens": 23580,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 16597
+      },
+      "totalNanoAiu": 43969250000,
+      "tokenDetails": {
+        "input": {
+          "tokenCount": 34397
+        },
+        "cache_read": {
+          "tokenCount": 0
+        },
+        "cache_write": {
+          "tokenCount": 0
+        },
+        "output": {
+          "tokenCount": 23580
+        }
+      }
+    }
+  },
+  "agentMetrics": {
+    "main": {
+      "totalApiDurationMs": 231851,
+      "totalNanoAiu": 43969250000,
+      "modelMetrics": {
+        "gpt-5.4": {
+          "requests": {
+            "count": 1,
+            "cost": 1
+          },
+          "usage": {
+            "inputTokens": 34397,
+            "outputTokens": 23580,
+            "cacheReadTokens": 0,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 16597
+          },
+          "totalNanoAiu": 43969250000,
+          "tokenDetails": {
+            "input": {
+              "tokenCount": 34397
+            },
+            "cache_read": {
+              "tokenCount": 0
+            },
+            "cache_write": {
+              "tokenCount": 0
+            },
+            "output": {
+              "tokenCount": 23580
+            }
+          }
+        }
+      }
+    }
+  },
+  "currentModel": "gpt-5.4",
+  "lastCallInputTokens": 34397,
+  "lastCallOutputTokens": 23580
+}

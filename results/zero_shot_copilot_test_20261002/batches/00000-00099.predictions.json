@@ -1,0 +1,955 @@
+{
+  "0": [
+    [
+      "ወለጋ ንፁሃን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "እያለቀ"
+    ],
+    [
+      "እናንተ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ትቀልዱብናላችሁ"
+    ]
+  ],
+  "1": [
+    [
+      "የንጹሀን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ይፈሳል"
+    ]
+  ],
+  "2": [],
+  "3": [
+    [
+      "ከወገል ጤና ጋሸና ያለዉ መነገድ",
+      "INFRASTRUCTURE#TRANSPORTATION",
+      "POSITIVE",
+      "የተሻለ አማራጭ መንገድ ነዉ"
+    ]
+  ],
+  "4": [
+    [
+      "ሰላምሽ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ብዝትዝት ይበል"
+    ]
+  ],
+  "5": [
+    [
+      "NULL",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "መርፌ አስጠቅጥቀከው"
+    ]
+  ],
+  "6": [
+    [
+      "ስልጣን ላይ ያለ ፓርቲ ከተፎካካሪ ፓርቲ ጋር አንድ ላይ ሊሰራ የሚችልበት እድል",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "ትልቅ ለውጥ ነው"
+    ]
+  ],
+  "7": [
+    [
+      "መንግስት",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEUTRAL",
+      "ሊሰጣቸው ይገባል"
+    ]
+  ],
+  "8": [
+    [
+      "ሑሉም",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ሰይጣን አምላኪ ናቸው"
+    ]
+  ],
+  "9": [
+    [
+      "ህዝቡ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "የሚበላው አጥቶ የሚበገር ሆነ"
+    ]
+  ],
+  "10": [
+    [
+      "የገዳ ስርአት",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "የቤተሙከራ እቃወች"
+    ]
+  ],
+  "11": [],
+  "12": [
+    [
+      "ፍትህ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "በግፍ ጉልበቱ እየተበዘበዘ"
+    ],
+    [
+      "የሜቴክ የመንግስት ሰራተኛ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ጭቁን"
+    ]
+  ],
+  "13": [
+    [
+      "እንጊሊዘኛ",
+      "SOCIAL#EDUCATION",
+      "POSITIVE",
+      "ያስተሙሩኝ"
+    ]
+  ],
+  "14": [
+    [
+      "አርቲስቶች",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ህብረታቸው ለቅሶ ላይ ብቻ መሆኑን"
+    ]
+  ],
+  "15": [],
+  "16": [
+    [
+      "ዴዴየብ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ምን ሊያተርፍ"
+    ]
+  ],
+  "17": [],
+  "18": [
+    [
+      "ውጣቶች",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "ድምፆቸውን ያሰሙ"
+    ]
+  ],
+  "19": [
+    [
+      "NULL",
+      "PUBLIC_SERVICES#UTILITIES",
+      "NEUTRAL",
+      "በፍጥነት እንዲስተካከሉልን አድርጉ"
+    ]
+  ],
+  "20": [
+    [
+      "ድሃ ልጅ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ይብላኝ"
+    ]
+  ],
+  "21": [
+    [
+      "NULL",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ዝረፉ ነው"
+    ]
+  ],
+  "22": [],
+  "23": [],
+  "24": [
+    [
+      "ጦርነት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ቀፋፊ ነው"
+    ]
+  ],
+  "25": [
+    [
+      "ኢህኣዲግን",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "ማፍረስ"
+    ],
+    [
+      "ኢትዮጵያ የምትባል ኣገር",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "በማጥፋት"
+    ],
+    [
+      "ኢኮኖሚ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "የኣረቦች ተመፅዋች ማድረግ"
+    ]
+  ],
+  "26": [
+    [
+      "NULL",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "አትዋሹ"
+    ]
+  ],
+  "27": [
+    [
+      "ሰይጣንዋ ኦርቶዶክስ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "እንባ የምታፈሰው"
+    ],
+    [
+      "ኮረና",
+      "HEALTHCARE#GENERAL",
+      "NEGATIVE",
+      "መቼም አይጠፋም ቢብስ እንጂ"
+    ]
+  ],
+  "28": [
+    [
+      "ሱቆች",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ተዘጉ"
+    ]
+  ],
+  "29": [
+    [
+      "የሞተ ድርጅት",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "የሞተ"
+    ]
+  ],
+  "30": [
+    [
+      "ለአባታችን",
+      "HEALTHCARE#GENERAL",
+      "POSITIVE",
+      "እረጅም እድሜ እና ጤና ይስጥልን"
+    ],
+    [
+      "ቤተ ክርስቲያናችንን",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ይጠብቅልን"
+    ]
+  ],
+  "31": [
+    [
+      "NULL",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "የሚያወራውን አያቅም"
+    ]
+  ],
+  "32": [
+    [
+      "የአልጀርሱ ስምምነት",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "የፈረሰው"
+    ],
+    [
+      "ሌላ ሰምምነት",
+      "GOVERNANCE#LEGISLATION",
+      "NEUTRAL",
+      "ያስፈልጋል"
+    ],
+    [
+      "ኤርትራ",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "ሰምምነቱ አስቀድማ ጥሳለችና"
+    ]
+  ],
+  "33": [
+    [
+      "ኦነግ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "መጠነ ጥቃት እያፈጸመ"
+    ]
+  ],
+  "34": [
+    [
+      "አዳሜ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ተቃጠል"
+    ]
+  ],
+  "35": [
+    [
+      "ትግራይ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "የወርቅ  የእምነ በረድ  ብረት  የከበሩ ጌጣጌጦች እንዲሁም የነዳጅ ክምችት መገኛው"
+    ]
+  ],
+  "36": [
+    [
+      "NULL",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "ትልቅ ተምሳሌት  ነህና"
+    ]
+  ],
+  "37": [],
+  "38": [
+    [
+      "ታጣቂዎችህ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ንፁሀንን እየጨፈጨፉ"
+    ],
+    [
+      "ታጣቂዎችህ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ተቋማት ዘርፈው"
+    ],
+    [
+      "ታጣቂዎችህ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሴቶች እየደፈሩ"
+    ],
+    [
+      "ታጣቂዎችህ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ህዝብ እያፈናቀሉ ነው"
+    ]
+  ],
+  "39": [
+    [
+      "ሁሎችም",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ወንጀለኞች ናቸው"
+    ]
+  ],
+  "40": [],
+  "41": [
+    [
+      "ባህርዳር ላይ የምናየው ልማት",
+      "PUBLIC_SERVICES#INFRASTRUCTURE",
+      "POSITIVE",
+      "አበረታች ነው"
+    ],
+    [
+      "የክልሉ ከተሞች",
+      "PUBLIC_SERVICES#INFRASTRUCTURE",
+      "POSITIVE",
+      "ተስፋ ይኖራቸዋል"
+    ]
+  ],
+  "42": [
+    [
+      "አማረቸዎች",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "ተኛችሁ"
+    ]
+  ],
+  "43": [
+    [
+      "ኢህኣዴግ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ልማት ነው፡፡"
+    ]
+  ],
+  "44": [
+    [
+      "NULL",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "ተወቃሾች ናችሁ"
+    ]
+  ],
+  "45": [
+    [
+      "መንግስት",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEGATIVE",
+      "ግጭት መስቆም አቀተዉ"
+    ],
+    [
+      "ሀገራችን",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "በአይማኖት መሪዎች እና  በሀገር ሽማግሌዎች እጅ ወድቀለች"
+    ],
+    [
+      "እነዚህ አከለት",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEUTRAL",
+      "ሀገራዊ  ህዝበዊ አደረ በአግባቡ ሊወጡ ይገባል"
+    ],
+    [
+      "ህዝብም",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEUTRAL",
+      "ከ ጎናቸዉ ሊቆም ይገባል"
+    ]
+  ],
+  "46": [
+    [
+      "መንግስት",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "አለቅ^ላቂ የሆነ"
+    ]
+  ],
+  "47": [
+    [
+      "የፋኖ አደረጃጀት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ስርአት አልበኛ የሆነው"
+    ],
+    [
+      "የተለያዮ የመንግስት መዋቅሮችን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በማን አለብኝነት በጣጥሶ"
+    ]
+  ],
+  "48": [
+    [
+      "የፌደራል ፖሌስ",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEGATIVE",
+      "ያው ነው"
+    ]
+  ],
+  "49": [
+    [
+      "NULL",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ህዝቡን እንደካደው"
+    ]
+  ],
+  "50": [
+    [
+      "ያልከዉ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ደፂ ዳብሎስ"
+    ]
+  ],
+  "51": [
+    [
+      "ተቋም",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "ወርደዋል"
+    ],
+    [
+      "NULL",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "አሸባሪም ሆነዋል"
+    ]
+  ],
+  "52": [
+    [
+      "የወገኖችን ስብእና",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "መጉዳቱ አይጠቅምም"
+    ],
+    [
+      "NULL",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "በመያያዝ ፣ በመደማመጥ ፣በመመካከር ፣በመከባበር"
+    ]
+  ],
+  "53": [
+    [
+      "የኔ ምርጥ ጀነራል",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "ምርጥ"
+    ]
+  ],
+  "54": [
+    [
+      "የሽብር ጥቃት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሰለባ"
+    ]
+  ],
+  "55": [
+    [
+      "ዩኒቨርሲቲዎቻችን",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEGATIVE",
+      "የፖለቲካ ንትርክና የፖለቲካ ማመንጫ ቦታ ከሆኑ"
+    ],
+    [
+      "እድገቱ",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEGATIVE",
+      "ሊሳካ አይችልም"
+    ],
+    [
+      "ዩኒቨርስቲዎቻችን",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEUTRAL",
+      "የምርምር ተቋማት መሆን አለባቸው"
+    ],
+    [
+      "አሁን ባላቸው አቋም",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEGATIVE",
+      "አዳሪ ትቤት እንጂ የዩኒቨርሲቲ አቋም የላቸውም"
+    ],
+    [
+      "የምርምር ፓርኮች",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEUTRAL",
+      "መገንባት ይኖርባችኋል"
+    ]
+  ],
+  "56": [
+    [
+      "ምግብና ቁሳቁስ",
+      "PUBLIC_SERVICES#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "በነጻ ተከፋፍሏል"
+    ]
+  ],
+  "57": [
+    [
+      "የኢትዮጵያ አርቲስቶች",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "እግዚአብሔር ይርዳችሁ"
+    ],
+    [
+      "ይህ ህዝብ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "መቼም አይረዳችሁም"
+    ]
+  ],
+  "58": [
+    [
+      "ምድረ አጨብጫቢ ሁላ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "ምድረ አጨብጫቢ ሁላ"
+    ]
+  ],
+  "59": [
+    [
+      "ሀገራችን ኢትዮጵያ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "በድህነት ኛ ደረጃን ይዛለች"
+    ],
+    [
+      "ነፍጠኞች",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ከአለም የመጨረሻው ደረጃ እንድንይዝ ያደረጉን"
+    ]
+  ],
+  "60": [
+    [
+      "አንድአንድ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "እየተገደልን"
+    ]
+  ],
+  "61": [
+    [
+      "ወያኔ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "እየዞሮሀገርይዘርፍነበር"
+    ],
+    [
+      "ደክተርአቢይ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ሀገርለማረጋጋትእየደከመነው"
+    ]
+  ],
+  "62": [
+    [
+      "ጦርነት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ድድብና"
+    ]
+  ],
+  "63": [
+    [
+      "አመት በደቡብ ትግራይ እንድንኖር መደረጉ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "መከራ በደል በጁንታውና ርዝራዡ ደርሶብናል"
+    ]
+  ],
+  "64": [
+    [
+      "በኢሬቻ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ሰላም ይሰበካል"
+    ],
+    [
+      "ፍቅር፣ህብረት፣መተሳሰብ አንድነት",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ያብባሉ"
+    ],
+    [
+      "ባህላዊ እሴቶቻችን",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ጎልተው ይወጣሉ።"
+    ]
+  ],
+  "65": [
+    [
+      "የፓርቲ ፕሮግራም",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "ሳይኖር"
+    ]
+  ],
+  "66": [
+    [
+      "የኢትዮጵያ ፖሊሶች",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEGATIVE",
+      "አፈር ያስበላቹ"
+    ],
+    [
+      "ወንድሙን በአደባባይ መውገሩ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በጣም ያሳዝናል"
+    ],
+    [
+      "እናት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "እያመነጫጨቀ ይገፈትራል"
+    ],
+    [
+      "ሀገራችን",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ፍርድ የለም"
+    ]
+  ],
+  "67": [],
+  "68": [
+    [
+      "ጋምቤላዎች",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "የኢትዮጵያን አያውቊትም"
+    ],
+    [
+      "የኢትዮጵያን ባንዲራ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "አስወርደው"
+    ]
+  ],
+  "69": [
+    [
+      "ኢዜማ የተባለው ፓርቲ አመራሮች",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ጠበቅ አድርገው ሲያወግዙ ያልታዩ"
+    ],
+    [
+      "ቤተክርስቲያን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሲቃጠል"
+    ]
+  ],
+  "70": [
+    [
+      "ሴቶችዬ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "በወንዶች ህይወቶ ላይ ትጫወታላቹሆ"
+    ]
+  ],
+  "71": [
+    [
+      "ትህነግ",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "መሰሪው"
+    ],
+    [
+      "ኢህአዴግ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "መፍትሔ አናገኝም"
+    ],
+    [
+      "ትህነግ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "መፍትሔ አናገኝም"
+    ]
+  ],
+  "72": [
+    [
+      "የኦሮሞ የመሀይም ጥርቅም",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ለእውነት ቆሞ አያውቅም"
+    ],
+    [
+      "ምኒልክ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "POSITIVE",
+      "አንተን ከባርነት ነጻ ያወጣ ንጉስ ነው"
+    ]
+  ],
+  "73": [
+    [
+      "አብይ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "እንወድህ አለን"
+    ]
+  ],
+  "74": [
+    [
+      "ስንዴው",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "የንፁሀን ደም ነው"
+    ]
+  ],
+  "75": [
+    [
+      "እስላምና ጋላ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "መጤ እንጂ ኢትዮጵያን አይደሉም"
+    ],
+    [
+      "አማራ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "POSITIVE",
+      "የኢትዮጵያ ፈጣሪ ነው"
+    ]
+  ],
+  "76": [
+    [
+      "ዘሪ ማጥፋት ወንጀል",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ሳይከሰስ"
+    ],
+    [
+      "ለምርጫ ይዞ መቅረብ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "የኢትዮጵያ ሕዝብ እንደመናቅ ነው።"
+    ]
+  ],
+  "77": [
+    [
+      "የአማራ ወጣቶች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በኦሮሞ አውሬ ታግተው እየተደረጉ"
+    ]
+  ],
+  "78": [],
+  "79": [
+    [
+      "ተግባር",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "እንደ ሰማይ የራቀን"
+    ]
+  ],
+  "80": [
+    [
+      "ስደት",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "እያሰቃየን ነው"
+    ]
+  ],
+  "81": [
+    [
+      "ጀርመን",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ሀያሏ"
+    ]
+  ],
+  "82": [
+    [
+      "ዋጋ ጭማሪ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEUTRAL",
+      "ይሻላል"
+    ]
+  ],
+  "83": [
+    [
+      "ብልጽግና",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ቀጥሏል"
+    ]
+  ],
+  "84": [
+    [
+      "ኤርሚ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ታንቱአችን"
+    ]
+  ],
+  "85": [
+    [
+      "የተለያዩ ገዳማት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በተደጋጋሚ እየተዘረፉ ነው"
+    ],
+    [
+      "መፅሐፍት",
+      "SOCIAL#EDUCATION",
+      "POSITIVE",
+      "ለሀገር ዘርፈ ብዙ ጥቅም ሊሰጡ የሚችሉ"
+    ]
+  ],
+  "86": [
+    [
+      "በሮሚያ ፓሊሶች",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEGATIVE",
+      "ምንም ዓይነት እምነት አለመኖሩን"
+    ],
+    [
+      "ጠቅላይ ሚኒስትሪያችን",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEUTRAL",
+      "ከመቸውም የበለጠ ክትትል ካላደረጉ"
+    ],
+    [
+      "እነዚህ ሰውን የምበሉ አውሬዎች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "አይታገሱም"
+    ]
+  ],
+  "87": [],
+  "88": [
+    [
+      "ኦሮሞነቴ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "አፈርኩኝ"
+    ],
+    [
+      "የምድረ ሌባ ዘር",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "በፈፀመው ጥላቻ"
+    ]
+  ],
+  "89": [
+    [
+      "የአብይ ወታደሮች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ከመማረክ እና ከመደምሰስ አትወጡም"
+    ],
+    [
+      "የኢትዮጵያ ወታደሮች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ተዋረዱ"
+    ]
+  ],
+  "90": [
+    [
+      "አዛውንቶች ተኮር የዴሞክራሲ ስልጠና",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "በጣም ጥሩ ነው"
+    ]
+  ],
+  "91": [],
+  "92": [],
+  "93": [
+    [
+      "አቢቹ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "በቀላሉ ይቀበለው ነበር"
+    ]
+  ],
+  "94": [
+    [
+      "የጋለ ጉዲፈቻዎች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "አማራን ወግቶ በመርዝ መርዞ እየጨረሰ ያለው"
+    ]
+  ],
+  "95": [
+    [
+      "አማርኛ ቋንቋ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "የነፍጠኛ"
+    ],
+    [
+      "NULL",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ትንሽ አታፍሪም"
+    ]
+  ],
+  "96": [],
+  "97": [],
+  "98": [
+    [
+      "እነዚነብስበለዎች",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEGATIVE",
+      "በአደበበይ ተሰቀይቶ መሞት አለበቸው"
+    ]
+  ],
+  "99": [
+    [
+      "NULL",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ተሸጦ ነው"
+    ]
+  ]
+}

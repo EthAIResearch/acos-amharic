@@ -1,0 +1,8290 @@
+{
+  "samples_evaluated": 500,
+  "strict_metrics": {
+    "precision": 0.06666666666666667,
+    "recall": 0.011494252873563218,
+    "f1": 0.0196078431372549,
+    "tp": 6,
+    "fp": 84,
+    "fn": 516
+  },
+  "clitic_normalized_metrics": {
+    "precision": 0.06666666666666667,
+    "recall": 0.011494252873563218,
+    "f1": 0.0196078431372549,
+    "tp": 6,
+    "fp": 84,
+    "fn": 516
+  },
+  "category_sentiment_metrics": {
+    "precision": 0.4222222222222222,
+    "recall": 0.07279693486590039,
+    "f1": 0.12418300653594772,
+    "tp": 38,
+    "fp": 52,
+    "fn": 484
+  },
+  "aste_metrics": {
+    "precision": 0.15555555555555556,
+    "recall": 0.02681992337164751,
+    "f1": 0.0457516339869281,
+    "tp": 14,
+    "fp": 76,
+    "fn": 508
+  },
+  "details": [
+    {
+      "id": 0,
+      "text": "ወለጋ ንፁሃን እያለቀ እናንተ እዚህ ትቀልዱብናላችሁ አይደል ? ወያኔም ሲወድቅ እንድህ አድርጎት ነበር",
+      "gold": [
+        [
+          "ንፁሃን",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እያለቀ"
+        ]
+      ],
+      "pred": [
+        [
+          "ወለጋ ንፁሃን እያለቀ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ትቀልዱብናላችሁ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 1,
+      "text": "የአማራ ኢሊት ጩከት ለመተከል አማራጭ ብቻና በዝህ አማራ ሁሉም የጥቃቱ ሰለባ የንጹሀን ይፈሳል",
+      "gold": [
+        [
+          "የጥቃቱ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሰለባ"
+        ]
+      ],
+      "pred": [
+        [
+          "የጥቃቱ ሰለባ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "የንጹሀን ይፈሳል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 2,
+      "text": "ራሳችሁ እንዳትደመሰሱ ተጠንቀቁ አብሯችሁ አባል የሆነና ኢትዮጵያ ያለ ሁሉ ብልፅግና መስሏችኋል",
+      "gold": [
+        [
+          "ብልፅግና",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተጠንቀቁ"
+        ]
+      ],
+      "pred": [
+        [
+          "ብልፅግና",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "እንዳትደመሰሱ ተጠንቀቁ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 3,
+      "text": "ከወገል ጤና ጋሸና ያለዉ መነገድ ቢሰራ ደሴን ከላሊበላ  ባሕርዳርና ጎንደር ጋር ለማገናኘት የተሻለ አማራጭ መንገድ ነዉ",
+      "gold": [
+        [
+          "መነገድ",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "POSITIVE",
+          "የተሻለ አማራጭ"
+        ]
+      ],
+      "pred": [
+        [
+          "ከወገል ጤና ጋሸና ያለዉ መነገድ",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "POSITIVE",
+          "የተሻለ አማራጭ መንገድ ነዉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 4,
+      "text": "ሀገሬ ናፍቆቴ ሰላምሽ ብዝትዝት ይበል",
+      "gold": [
+        [
+          "ሰላምሽ",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ብዝትዝት ይበል"
+        ]
+      ],
+      "pred": [
+        [
+          "ሀገሬ",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ሰላምሽ ብዝትዝት ይበል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 5,
+      "text": "መናገር የማይችለው ተጠርጣሪ ጉድክን እዳያወጣ መርፌ አስጠቅጥቀከው ቢሆንስ መናገር ያቃተው እእ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ተጠርጣሪ",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEGATIVE",
+          "መርፌ አስጠቅጥቀከው ቢሆንስ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 6,
+      "text": "ስልጣን ላይ ያለ ፓርቲ ከተፎካካሪ ፓርቲ ጋር አንድ ላይ ሊሰራ የሚችልበት እድል አለ ብለን ማሰባችን ራሱ ትልቅ ለውጥ ነው። በ97 መንግስት ታንክ መሃል…",
+      "gold": [
+        [
+          "አንድ ላይ ሊሰራ የሚችልበት እድል",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ትልቅ ለውጥ"
+        ]
+      ],
+      "pred": [
+        [
+          "ስልጣን ላይ ያለ ፓርቲ ከተፎካካሪ ፓርቲ ጋር አንድ ላይ ሊሰራ የሚችልበት እድል",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ትልቅ ለውጥ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 7,
+      "text": "መንግስት ቃጠሎው ላይ የተሳተፉ ሰወችን ለይቶ ተገቢውን ቅጣት ሊሰጣቸው ይገባል",
+      "gold": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ቅጣት ሊሰጣቸው ይገባል"
+        ]
+      ],
+      "pred": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEUTRAL",
+          "ተገቢውን ቅጣት ሊሰጣቸው ይገባል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 8,
+      "text": "ሑሉም ሰይጣን አምላኪ ናቸው",
+      "gold": [
+        [
+          "ሰይጣን አምላኪ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ሑሉም",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ሰይጣን አምላኪ ናቸው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 9,
+      "text": "ህዝቡ የሚበላው አጥቶ የሚበገር ሆነ እንጂ ...",
+      "gold": [
+        [
+          "ህዝቡ",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "የሚበላው አጥቶ"
+        ]
+      ],
+      "pred": [
+        [
+          "ህዝቡ",
+          "ECONOMY#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "የሚበላው አጥቶ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 10,
+      "text": "የገዳ ስርአት የቤተሙከራ እቃወች",
+      "gold": [
+        [
+          "የገዳ ስርአት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የቤተሙከራ እቃወች"
+        ]
+      ],
+      "pred": [
+        [
+          "የገዳ ስርአት",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "የቤተሙከራ እቃወች"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 11,
+      "text": "በመቀሌ ከተማ የመሳሪያ ማከማቻ ተገኘ ባህር ሀዳር አብመድ ከትህነግ ጁንታ በወጣችው የትግራይ ክልል ከተማ መቀሌ በተደረገ ብርበራ የመሳሪያ ማከማቻ ተገኝቷል የልዩ ዘመቻ ብርጌድ ሬጅመንት አዛዥ ሌተናል ጀነራል ሳዲቅ አህመድ እንደተናገሩት መቀሌ ከተማ የመሳሪያ ማከማቻ ተገኝቷል የጁንታው ቡድን ውጊያውን መቋቋም ሲሳነው ትጥቁን እያራገፈ መሸሹን የተናገሩት ሌተናል ጄነራል ሳዲቅ በከተማዋ መሳሪያዎች የተከማቹበት ተገኝቷል በቀጣይም በሚኖር ፍተሻ ተመሳሳይ የመሳሪያ ማከማቻዎችም ሊገኙ እንደሚችሉ ጠቁመዋል ዘጋቢ ታዘብ አራጋው ከመቀሌ",
+      "gold": [
+        [
+          "መሳሪያዎች",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ተገኝቷል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 12,
+      "text": "ፍትህ በግፍ ጉልበቱ እየተበዘበዘ ላለው ጭቁን የሜቴክ የመንግስት ሰራተኛ",
+      "gold": [
+        [
+          "የመንግስት ሰራተኛ",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "ጉልበቱ እየተበዘበዘ"
+        ]
+      ],
+      "pred": [
+        [
+          "የሜቴክ የመንግስት ሰራተኛ",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "በግፍ ጉልበቱ እየተበዘበዘ ላለው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 13,
+      "text": "ጣልነኝ እንካን እችላልሁ ይልቁን እንጊሊዘኛ ያስተሙሩኝ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEUTRAL",
+          "ያስተሙሩኝ"
+        ]
+      ],
+      "pred": [
+        [
+          "እንጊሊዘኛ",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEUTRAL",
+          "ያስተሙሩኝ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 14,
+      "text": "አርቲስቶች ግን ህብረታቸው ለቅሶ ላይ ብቻ መሆኑን ታዝቤያለው ሁሉም ታስሯል ነጭ ጋዙም ሰውም",
+      "gold": [
+        [
+          "አርቲስቶች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ህብረታቸው ለቅሶ ላይ ብቻ"
+        ]
+      ],
+      "pred": [
+        [
+          "አርቲስቶች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ህብረታቸው ለቅሶ ላይ ብቻ መሆኑን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 15,
+      "text": "ከፍተኛ የክልልና የፌዴራል የሥራ ኃላፊዎች በሰሜን ሸዋ ዞን ደብረ ብርሃን ከተማ ከክልሉ ባለሀብቶች ጋር የንቅናቄ ...",
+      "gold": [
+        [
+          "የንቅናቄ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 16,
+      "text": "ዴዴየብ ለዴዴየብ ቢቦተረፍ ምን ሊያተርፍ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ዴዴየብ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ምን ሊያተርፍ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 17,
+      "text": "የለማ አለመዋሀድ እኛ ሰምተናል እናንተ ግን አልሰማችሁም",
+      "gold": [
+        [
+          "የለማ አለመዋሀድ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "የለማ አለመዋሀድ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "እናንተ ግን አልሰማችሁም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 18,
+      "text": "በሚልንየም አደራሽ የሻደይን ብአል በማክበር ላይ ድምፆቸውን ያሰሙ ውጣቶች መላው የኢትዮጵያ ህዝብ ከጎናቸው ሊሆን ይገባል",
+      "gold": [
+        [
+          "ውጣቶች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሊሆን ይገባል"
+        ]
+      ],
+      "pred": [
+        [
+          "ድምፆቸውን ያሰሙ ውጣቶች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ከጎናቸው ሊሆን ይገባል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 19,
+      "text": "እባካችሁ የመስመር መቆራረጥ ሲያጋጥም ብቁ የሆኑ ባለሙያዎችን በመላክ በፍጥነት እንዲስተካከሉልን አድርጉ",
+      "gold": [
+        [
+          "የመስመር መቆራረጥ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "እንዲስተካከሉልን"
+        ]
+      ],
+      "pred": [
+        [
+          "የመስመር መቆራረጥ",
+          "PUBLIC_SERVICES#UTILITIES",
+          "NEGATIVE",
+          "ብቁ የሆኑ ባለሙያዎችን በመላክ በፍጥነት እንዲስተካከሉልን አድርጉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 20,
+      "text": "ይብላኝ ለድሃ ልጅ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ይብላኝ"
+        ]
+      ],
+      "pred": [
+        [
+          "ድሃ ልጅ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ይብላኝ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 21,
+      "text": "ጠብቁና መንገድ ዘግታቹ ዝረፉ ነው",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዝረፉ"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መንገድ ዘግታቹ ዝረፉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 22,
+      "text": "የገንዘብ ባሪያወች በቅድሚያ ራሳቸውን ያጣሉ በተግባርም እያየንነው",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "የገንዘብ ባሪያወች"
+        ]
+      ],
+      "pred": [
+        [
+          "የገንዘብ ባሪያወች",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "በቅድሚያ ራሳቸውን ያጣሉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 23,
+      "text": "ዘመዶችህ ትጥቅ ፈተዋል ወይ በለው?",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 24,
+      "text": "ምንም ይባል ምንም በጦርነቱ ማሸነፍ ብቻ ቢሆን መግደል እንጂ መሞት እንኳ ባይኖር ትርፍ እንጂ ኪሳራም ባይኖር ጦርነት ቀፋፊ ነው",
+      "gold": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ቀፋፊ"
+        ]
+      ],
+      "pred": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ቀፋፊ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 25,
+      "text": "የኣብይ ዋነኛው  ተልእኮ ኢህኣዲግን ማፍረስ መሆኑ የተገመተ ነውቀጥሎ ያለው ደሞ ኢትዮጵያ የምትባል ኣገር በማጥፋት የውሃ ግድቦችን ጨምሮ በኢኮኖሚ የኣረቦች ተመፅዋች ማድረግ ነው",
+      "gold": [
+        [
+          "ግድቦችን",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "በኢኮኖሚ የኣረቦች ተመፅዋች ማድረግ"
+        ]
+      ],
+      "pred": [
+        [
+          "የኣብይ ዋነኛው  ተልእኮ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ኢትዮጵያ የምትባል ኣገር በማጥፋት የውሃ ግድቦችን ጨምሮ በኢኮኖሚ የኣረቦች ተመፅዋች ማድረግ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 26,
+      "text": "አትዋሹ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አትዋሹ"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አትዋሹ"
+        ]
+      ],
+      "strict_tp": 1,
+      "norm_tp": 1
+    },
+    {
+      "id": 27,
+      "text": "በአክሱም እና የላሊበላ ሙስሊም እንባ የምታፈሰው ሰይጣንዋ ኦርቶዶክስ ካላቆመች ኮረና መቼም አይጠፋም ቢብስ እንጂ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "NEGATIVE",
+          "ኮረና"
+        ]
+      ],
+      "pred": [
+        [
+          "ኦርቶዶክስ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ሰይጣንዋ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 28,
+      "text": "እውነት ከሆነ እንኳን ሱቆች ተዘጉ",
+      "gold": [
+        [
+          "NULL",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ሱቆች",
+          "HEALTHCARE#GENERAL",
+          "POSITIVE",
+          "እንኳን ሱቆች ተዘጉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 29,
+      "text": "መጀመርያ የሞተ ድርጅት እንዴት ብሎ ነው ስለዚ ጉዳይ ማስተባበል እሚችሎው።",
+      "gold": [
+        [
+          "ድርጅት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የሞተ"
+        ]
+      ],
+      "pred": [
+        [
+          "ድርጅት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የሞተ"
+        ]
+      ],
+      "strict_tp": 1,
+      "norm_tp": 1
+    },
+    {
+      "id": 30,
+      "text": "እሺ አሜን አሜን አሜን እግዚአብሔር ለአባታችን እረጅም እድሜ እና ጤና ይስጥልን እግዚአብሔር ቤተ ክርስቲያናችንን ይጠብቅልን የመሳብንን መቅሰፍት ያርቅልይ",
+      "gold": [
+        [
+          "ቤተ ክርስቲያናችንን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ይጠብቅልን"
+        ]
+      ],
+      "pred": [
+        [
+          "ለአባታችን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "እረጅም እድሜ እና ጤና ይስጥልን"
+        ],
+        [
+          "ቤተ ክርስቲያናችንን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ይጠብቅልን"
+        ]
+      ],
+      "strict_tp": 1,
+      "norm_tp": 1
+    },
+    {
+      "id": 31,
+      "text": "እራሱ identity crises ስላለበት የሚያወራውን አያቅም!እስልምና ሀይማኖት እንጂ ዘር ወይ ሀገር ሆነ እንዴ ደሞ? የማይሉት የለም መቼም!ሰው ሊምት ሲል የሚናገረውን አያቅም ይላሉ",
+      "gold": [
+        [
+          "ሀይማኖት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "identity crises"
+        ]
+      ],
+      "pred": [
+        [
+          "እራሱ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "identity crises ስላለበት የሚያወራውን አያቅም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 32,
+      "text": "የአልጀርሱ ስምምነት እኮ የፈረሰው በኤርትራ ነው አቃቢ ሰላም  ከአገሯ ስታባርር ግዜ   ስለዚህ ሌላ ሰምምነት ያስፈልጋል ምክንያቱ ኣቃቢ ሰላም ማስፈር የስምምነቱ አካል ነበረ ኤርትራ  ሰምምነቱ አስቀድማ ጥሳለችና",
+      "gold": [
+        [
+          "የአልጀርሱ ስምምነት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የፈረሰው"
+        ]
+      ],
+      "pred": [
+        [
+          "የአልጀርሱ ስምምነት",
+          "GOVERNANCE#LEGISLATION",
+          "NEGATIVE",
+          "የፈረሰው በኤርትራ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 33,
+      "text": "ለመረጃ ኦነግ የሰሞኑ የሰሜኑን ውጥረት ወለጋዎች ከመሸገበት በመውጣት መጠነ ጥቃት እያፈጸመ ከነገ እያንዳንዷን የኦነግ እንቅስቃሴዎች ወለጋዎች እየተከታተልን እናደርሳችኋለን ጥቅምት አማርኛ",
+      "gold": [
+        [
+          "ኦነግ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ጥቃት እያፈጸመ"
+        ]
+      ],
+      "pred": [
+        [
+          "ኦነግ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መጠነ ጥቃት እያፈጸመ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 34,
+      "text": "አዳሜ ተቃጠል እንግዲህ ትክክለኛ ኢትዮጵያዊ ማን እንደሆነ ገባችሁ አይደል",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ትክክለኛ ኢትዮጵያዊ"
+        ]
+      ],
+      "pred": [
+        [
+          "ትክክለኛ ኢትዮጵያዊ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ትክክለኛ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 35,
+      "text": "የወርቅ   የእምነ በረድ   ብረት   የከበሩ ጌጣጌጦች እንዲሁም የነዳጅ ክምችት መገኛው ትግራይ ነው ማነህ ድንጋይ ነው ምድራቹህ እያልክ የምትዘላብደው ይሰማል  በቆሎ አመረትኩ ብለህ የኢትዮጵያን የውጭ ምንዛሪ ፍላጎት ሸፍኛለው ብለህ አትደንፋ",
+      "gold": [
+        [
+          "የወርቅ",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ትግራይ",
+          "ECONOMY#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "የወርቅ   የእምነ በረድ   ብረት   የከበሩ ጌጣጌጦች እንዲሁም የነዳጅ ክምችት መገኛው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 36,
+      "text": "ለአገራችን ትልቅ ተምሳሌት  ነህና  እግዜአብሄር እድሜህን ያርዝምልህ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ትልቅ ተምሳሌት"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ትልቅ ተምሳሌት  ነህና  እግዜአብሄር እድሜህን ያርዝምልህ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 37,
+      "text": "Drug የሚለው በምርጫ ለማለት ነው።",
+      "gold": [
+        [
+          "በምርጫ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 38,
+      "text": "ታጣቂዎችህ ያሉት አማራ ክልል ውስጥ ነው።ንፁሀንን እየጨፈጨፉ፣ተቋማት ዘርፈው ወደትግራይ እየጫኑ፣ ሴቶች እየደፈሩ እና ህዝብ እያፈናቀሉ ነው።እና ይህን እያረጋ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ታጣቂዎችህ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ንፁሀንን እየጨፈጨፉ፣ተቋማት ዘርፈው ወደትግራይ እየጫኑ፣ ሴቶች እየደፈሩ እና ህዝብ እያፈናቀሉ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 39,
+      "text": "በትክክል ትርጉም ለለው ጦርነት ሁሎችም ወንጀለኞች ናቸው",
+      "gold": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ወንጀለኞች"
+        ]
+      ],
+      "pred": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ትርጉም ለለው ጦርነት ሁሎችም ወንጀለኞች ናቸው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 40,
+      "text": "አቢይ አህመድ ቴሌቪዥን መቀሌ መግለጫ እየሰጡ አየሁ የመጨረሻ",
+      "gold": [
+        [
+          "አቢይ አህመድ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "መግለጫ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 41,
+      "text": "በርቱልን  አሁን ባህርዳር ላይ የምናየው ልማት አበረታች ነው  በእርግጥ እነቢያዝን እንኳሆነ ካሉ የክልሉ ከተሞች ተስፋ ይኖራቸዋል ብዬ አስባለሁ",
+      "gold": [
+        [
+          "ልማት",
+          "ECONOMY#EMPLOYMENT",
+          "POSITIVE",
+          "አበረታች"
+        ]
+      ],
+      "pred": [
+        [
+          "ልማት",
+          "PUBLIC_SERVICES#INFRASTRUCTURE",
+          "POSITIVE",
+          "አበረታች ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 42,
+      "text": "አማረቸዎች ምነዉ ተኛችሁ? ጀዋር ሊመራሽ ደፋ ቀና እያለ ነዉ።  ምርጫችሁን እና ፀሎታችሁን ለአቢቹ",
+      "gold": [
+        [
+          "ምርጫችሁን",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "አቢቹ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ምርጫችሁን እና ፀሎታችሁን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 43,
+      "text": "ኢህኣዴግ ልማት ነው፡፡",
+      "gold": [
+        [
+          "ኢህኣዴግ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ልማት"
+        ]
+      ],
+      "pred": [
+        [
+          "ኢህኣዴግ",
+          "PUBLIC_SERVICES#INFRASTRUCTURE",
+          "POSITIVE",
+          "ልማት ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 44,
+      "text": "በታሪክ ተወቃሾች ናችሁ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተወቃሾች ናችሁ"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "በታሪክ ተወቃሾች ናችሁ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 45,
+      "text": "በቃ መንግስት ግጭት መስቆም አቀተዉ መለት ነዉ ሀገራችን በአይማኖት መሪዎች እና  በሀገር ሽማግሌዎች እጅ ወድቀለች መለት ነዉ  ስለዚህ እነዚህ አከለት የሚጠበቅበቸዉን ሀገራዊ  ህዝበዊ አደረ በአግባቡ ሊወጡ ይገባል ህዝብም ከ ጎናቸዉ ሊቆም ይገባል",
+      "gold": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ግጭት መስቆም አቀተዉ"
+        ]
+      ],
+      "pred": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEGATIVE",
+          "ግጭት መስቆም አቀተዉ"
+        ],
+        [
+          "የአይማኖት መሪዎች እና በሀገር ሽማግሌዎች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በአግባቡ ሊወጡ ይገባል ህዝብም ከ ጎናቸዉ ሊቆም ይገባል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 46,
+      "text": "አለቅ^ላቂ የሆነ መንግስት",
+      "gold": [
+        [
+          "መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አለቅ^ላቂ"
+        ]
+      ],
+      "pred": [
+        [
+          "መንግስት",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አለቅ^ላቂ የሆነ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 47,
+      "text": "አንተሰው ሰሞኑን ለኮሮና መድሀኒትነው ብለህ ኢሄን የሀበሻ አረቄ ግፈህ ግፈህ የምትለጥፈውን አታውቅም ልበል አሊያም ፊደል የቆጠርከው ጠላቤት ነው እንጂ ስርአት አልበኛ የሆነው የፋኖ አደረጃጀት የተለያዮ የመንግስት መዋቅሮችን በማን አለብኝነት በጣጥሶ በጎበዝ አለቃ ሲመራ ትንፍሽ ያላልክ ሰውዬ ዛሬ እርምጃ ሲወሰድበት ጎጃምአዘነህን ተከናንበህ አዬዬ ብትል ማን ይሰማሀል መንግስት ለአንዱ እናት ለሌላው",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "ስርአት አልበኛ"
+        ]
+      ],
+      "pred": [
+        [
+          "የፋኖ አደረጃጀት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ስርአት አልበኛ የሆነው"
+        ],
+        [
+          "መንግስት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ለአንዱ እናት ለሌላው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 48,
+      "text": "ፌደራል ፖሌስ ነው ወይስ መከላከያ ነው የፌደራል ፖሌስ ከሆነ ያው ነው",
+      "gold": [
+        [
+          "ፌደራል ፖሌስ",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "ያው ነው"
+        ]
+      ],
+      "pred": [
+        [
+          "የፌደራል ፖሌስ",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEGATIVE",
+          "ያው ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 49,
+      "text": "ህዝቡን ማን እንደካደው ዓለም ምሉ ያቃል",
+      "gold": [
+        [
+          "ህዝቡን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ማን እንደካደው"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ህዝቡን ማን እንደካደው ዓለም ምሉ ያቃል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 50,
+      "text": "ጦርነት ባህላዊ ጨዎታችን ነዉ ያልከዉሳ ደፂ ዳብሎስ",
+      "gold": [
+        [
+          "ደፂ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዳብሎስ"
+        ]
+      ],
+      "pred": [
+        [
+          "ደፂ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዳብሎስ"
+        ]
+      ],
+      "strict_tp": 1,
+      "norm_tp": 1
+    },
+    {
+      "id": 51,
+      "text": "እንደ ተቋም ወርደዋል ፣አሸባሪም ሆነዋል",
+      "gold": [
+        [
+          "ተቋም",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ተቋም",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ወርደዋል ፣አሸባሪም ሆነዋል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 52,
+      "text": "አሁን ባለፈ ነገር የወገኖችን ስብእና መጉዳቱ አይጠቅምም ።ነገር ግን በቀረዉ አጭር ጊዜ በበለጠ ተጋት እንዲያገለግሉ በምናገኘዉ አጋጣሚ ሁሉ ልናግዛቸዉ ይገባል፤ ሀገራችንኮ የሁላችንም ናት። ፈጣሪያችን ሆይ በመያያዝ ፣ በመደማመጥ ፣በመመካከር ፣በመከባበር ባርከን !!አንዳችን ለሌላችን መድሃኒት እንጂ መርዝ እንዳንሆን አእምሯችንን ፈዉስ!!አሜን !!",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በመደማመጥ ፣በመመካከር ፣በመከባበር ባርከን"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በምናገኘዉ አጋጣሚ ሁሉ ልናግዛቸዉ ይገባል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 53,
+      "text": "ለመሬት አንዋጋም የኔ ምርጥ ጀነራል",
+      "gold": [
+        [
+          "ጀነራል",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ምርጥ"
+        ]
+      ],
+      "pred": [
+        [
+          "ጀነራል",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "POSITIVE",
+          "ምርጥ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 54,
+      "text": "የሽብር ጥቃት ሰለባ",
+      "gold": [
+        [
+          "የሽብር ጥቃት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሰለባ"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "የሽብር ጥቃት ሰለባ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 55,
+      "text": "ዩኒቨርሲቲዎቻችን አሁን ካላቸው የፖለቲካ ንትርክና የፖለቲካ ማመንጫ ቦታ ከሆኑ እድገቱ ሊሳካ አይችልምእድገቱን የምያሳኩ አክላ ለመሆንና መሆን ስላለባቸው ዩኒቨርስቲዎቻችን የምርምር ተቋማት መሆን አለባቸውአሁን ባላቸው አቋም አዳሪ ትቤት እንጂ የዩኒቨርሲቲ አቋም የላቸውምስለዚህ የምርምር ማዕከል እንዲሆኑ የምርምር ፓርኮች በየዩኒቨርሲቲዎቻችን ውስጥ መገንባት ይኖርባችኋል",
+      "gold": [
+        [
+          "ዩኒቨርሲቲዎቻችን",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "የዩኒቨርሲቲ አቋም የላቸውምስለዚህ"
+        ]
+      ],
+      "pred": [
+        [
+          "ዩኒቨርሲቲዎቻችን",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "አዳሪ ትቤት እንጂ የዩኒቨርሲቲ አቋም የላቸውም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 56,
+      "text": "ሰበር በትግራይ ክልል በሚባል ደረጃ ምግብና ቁሳቁስ የተከፋፈለ ተገለጸ አብይ ሳምንት ኩንታል ስንዴ በሬዎችና የህወሀትን መደምሰስ እያከበረ ላለው የትግራይ ሳጥን በነጻ ተከፋፍሏል",
+      "gold": [
+        [
+          "ምግብና ቁሳቁስ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በነጻ ተከፋፍሏል"
+        ]
+      ],
+      "pred": [
+        [
+          "ምግብና ቁሳቁስ",
+          "ECONOMY#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በነጻ ተከፋፍሏል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 57,
+      "text": "የኢትዮጵያ አርቲስቶች እግዚአብሔር ይርዳችሁ እንጂ ይህ ህዝብ እንደ ሆና መቼም አይረዳችሁም",
+      "gold": [
+        [
+          "አርቲስቶች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ህዝብ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "መቼም አይረዳችሁም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 58,
+      "text": "ቀልዱ መቸ ሰላም ሆኖ አይታችሁ ነዉ ሰላም ሰላም የምትሉት ምድረ አጨብጫቢ ሁላ",
+      "gold": [
+        [
+          "ሰላም",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ቀልዱ"
+        ]
+      ],
+      "pred": [
+        [
+          "ሰላም",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ቀልዱ መቸ ሰላም ሆኖ አይታችሁ ነዉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 59,
+      "text": "ሀገራችን ኢትዮጵያ ከ የአለም ሀገሮች ውስጥ በድህነት ኛ ደረጃን ይዛለች ከአለም የመጨረሻው ደረጃ እንድንይዝ ያደረጉን በየወቅቱና በየዘመኑ እንደ ግመል ሽንት ወደሀላ እንሽናና ወደሀላ እንመለስ የሚሉን ነፍጠኞች ናቸው",
+      "gold": [
+        [
+          "በድህነት",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "የመጨረሻው ደረጃ"
+        ]
+      ],
+      "pred": [
+        [
+          "ነፍጠኞች",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ከአለም የመጨረሻው ደረጃ እንድንይዝ ያደረጉን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 60,
+      "text": "አላህ ለግፈኛ ይሁን ምነው ምን ባረግን ነው አንድአንድ እየተገደልን አለቅኝ",
+      "gold": [
+        [
+          "ለግፈኛ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አላህ ለግፈኛ ይሁን ምነው ምን ባረግን ነው አንድአንድ እየተገደልን አለቅኝ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 61,
+      "text": "ወያኔእየዞሮሀገርይዘርፍነበርደክተርአቢይወያኔየዘረፋትንእንእርቃኗንያስቀራትንሀገርለማረጋጋትእየደከመነው",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "NULL"
+        ],
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ወያኔ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እየዞሮሀገርይዘርፍነበር"
+        ],
+        [
+          "ደክተርአቢይ",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሀገርለማረጋጋትእየደከመነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 62,
+      "text": "በዚህ ዘመን ውጊያ በዚህ ዘመን ጦርነት ድድብና ካልሆነ በስተቀር ምን ሊባል ነው",
+      "gold": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ድድብና"
+        ]
+      ],
+      "pred": [
+        [
+          "ውጊያ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ድድብና"
+        ],
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ድድብና"
+        ]
+      ],
+      "strict_tp": 1,
+      "norm_tp": 1
+    },
+    {
+      "id": 63,
+      "text": "አመት በግድ በደቡብ ትግራይ እንድንቆይ ተደርገን በወንድሞቻችን ወጥተናል የራያ አላማጣ አማሮች በራያ አላማጣ ቀበሌዎች በተፈጠሩ የህዝብ መድረኮች ለስብሰባ የተገኘው የወሎ አማራ አካል በግድ አመት በደቡብ ትግራይ እንድንኖር መደረጉ መከራ በደል በጁንታውና ርዝራዡ ደርሶብናል በወድሞቻችን ወጥተናል ከአሁን እድል የሚቀማ እስመመጨረሻው እንፋለማለን በማለት ቀበሌዎች ቀበሌውን ሊመሩ ጊዜያዊ አስተባባሪ ኮሚቴ አዋቅረዋል አማራ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "መከራ በደል"
+        ]
+      ],
+      "pred": [
+        [
+          "ጁንታውና ርዝራዡ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መከራ በደል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 64,
+      "text": "በኢሬቻ ሰላም ይሰበካል! ፍቅር፣ህብረት፣መተሳሰብ አንድነት ያብባሉ! ባህላዊ እሴቶቻችን ጎልተው ይወጣሉ።#Ethiopia #Irreechaa",
+      "gold": [
+        [
+          "በኢሬቻ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሰላም ይሰበካል!"
+        ]
+      ],
+      "pred": [
+        [
+          "ኢሬቻ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሰላም ይሰበካል! ፍቅር፣ህብረት፣መተሳሰብ አንድነት ያብባሉ! ባህላዊ እሴቶቻችን ጎልተው ይወጣሉ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 65,
+      "text": "ምነው ከፈረሱ ጋሪው ቀደመ ታድያ የፓርቲ ፕሮግራም ሳይኖር በምን ጉዳይ ተነጋግራችሁ   ተዋደናል ተዋህደናል   አላችሁ",
+      "gold": [
+        [
+          "የፓርቲ ፕሮግራም",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ሳይኖር"
+        ]
+      ],
+      "pred": [
+        [
+          "የፓርቲ ፕሮግራም",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ከፈረሱ ጋሪው ቀደመ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 66,
+      "text": "በጣም  ያሳዝናል  አይይይ  የኢትዮጵያ  ፖሊሶች  አፈር  ያስበላቹ   ወንድሙን  በአደባባይ  መውገሩ  ሳያንስ  ጭራሽ  አያቱ  የምትሆነውን  እናት  እያመነጫጨቀ  ይገፈትራል   የዘቀጠ  ትውልድ     መቸም  ሀገራችን   ፍርድ  የለም  ፈጣሪ  ፍርዱን  ይስጣቹ",
+      "gold": [
+        [
+          "ፖሊሶች",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ያሳዝናል"
+        ]
+      ],
+      "pred": [
+        [
+          "የኢትዮጵያ  ፖሊሶች",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEGATIVE",
+          "በጣም  ያሳዝናል"
+        ],
+        [
+          "ሀገራችን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ፍርድ  የለም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 67,
+      "text": "ስለ ጽዮን ዝም አልልም   ስለ ኢየሩሳሌምም ጸጥ አልልም   ጽድቋ እንደ ጸዳል መዳኗም እንደሚበራ ፋና እስኪወጣ ድረስ   ትንቢተ ኢሳይያስ 62 1",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ዝም አልልም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 68,
+      "text": "ጋምቤላዎች እኮ የኢትዮጵያን አያውቊትም ይህን ማን ያውቃል አሁን እኔ ሽንኩርት ጭጭኘ ጋምቤላ ስገባ የኢትዮጵያን ባንዲራ አስወርደው የጋምቤላን ባንዲራ ያደርጋሉ በግድ እንግዲህ ሌላ አገር እየገባሁ ነው ብዬ እገረማለሁ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ጋምቤላዎች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "የኢትዮጵያን አያውቊትም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 69,
+      "text": "አመት ሙሉ ቤተክርስቲያን ሲቃጠል አንዱም ጋር ሲሄዱ ቀርቶ ጠበቅ አድርገው ሲያወግዙ ያልታዩ ኢዜማ የተባለው ፓርቲ አመራሮች ሞጣ ድረስ ገስግሰው ለጉብኝት ሲገኙ በአማራ ክልል ላይ የተ…",
+      "gold": [
+        [
+          "ቤተክርስቲያን ሲቃጠል",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሲያወግዙ ያልታዩ"
+        ]
+      ],
+      "pred": [
+        [
+          "ኢዜማ የተባለው ፓርቲ አመራሮች",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ጠበቅ አድርገው ሲያወግዙ ያልታዩ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 70,
+      "text": "ሴቶችዬ ምነው ከ18 25 አመታቹህ ትዛላላቹህ ትጨፍራላቹህ ታተራምሳላቹህ በወንዶች ህይወቶ ላይ ትጫወታላቹሆ ልክ 25 ላይ ሀይማኖተኛ ትመስላላቹህ 28 አግቡኝ በሞቴ ልመና",
+      "gold": [
+        [
+          "ሴቶችዬ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ትጨፍራላቹህ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 71,
+      "text": "ህዝብ በደሙ እንጅ ከኢህአዴግ እና ከመሰሪው ትህነግ መፍትሔ አናገኝም አንጠብቅም",
+      "gold": [
+        [
+          "ከኢህአዴግ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ከመሰሪው"
+        ]
+      ],
+      "pred": [
+        [
+          "ኢህአዴግ",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "መፍትሔ አናገኝም"
+        ],
+        [
+          "ትህነግ",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "መሰሪው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 72,
+      "text": "የመንጋው ጥርቅም ጋላ ሁልጊዜም ቢሆን ለእውሸት ታሪክ እንጅ ለእውነት ቆሞ አያውቅም ስንል በምክንያት ነው የኦሮሞ የመሀይም ጥርቅም እምየ ሚኒልክን አይደለም ለመሳደብ ስሙን ለመጥራት ዎራልም አቅምም የላቸውም አንጀትህን መድሀኒአለም ያፍርሰው አንተን ብሎ ታሪክ አዋቂ ምኒልክ አይደለም ፈረስ ቀርቶ መኪና ያስገባ እንዲሁም አንተን ከባርነት ነጻ ያወጣ ንጉስ ነው በእምየ ዘመን እንደሆነ ማን በነገርህ ማንም ልሀጫም እየተሳ ታሪክን ይተነትነው ጀመርኮ ምድር ሸክም",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የመሀይም ጥርቅም"
+        ]
+      ],
+      "pred": [
+        [
+          "ጋላ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ለእውሸት ታሪክ እንጅ ለእውነት ቆሞ አያውቅም"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 73,
+      "text": "እኛ ጎንደሮቾ እንወድህ አለን አብይ",
+      "gold": [
+        [
+          "አብይ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "እንወድህ አለን"
+        ]
+      ],
+      "pred": [
+        [
+          "አብይ",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "እንወድህ አለን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 74,
+      "text": "እርግጠኛ ነኝ ስንዴው ከመስኖ የምፈስለት የንፁሀን ደም ነው",
+      "gold": [
+        [
+          "ስንዴው",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "የንፁሀን ደም"
+        ]
+      ],
+      "pred": [
+        [
+          "ስንዴው",
+          "ECONOMY#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "የንፁሀን ደም ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 75,
+      "text": "እስላምና ጋላ መጤ እንጂ ኢትዮጵያን አይደሉም አማራ የኢትዮጵያ ፈጣሪ ነው የቀድሞ ገናናነቱን በደሙ ማስመለስ አለበት",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "መጤ"
+        ]
+      ],
+      "pred": [
+        [
+          "እስላምና ጋላ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "መጤ እንጂ ኢትዮጵያን አይደሉም"
+        ],
+        [
+          "አማራ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "የኢትዮጵያ ፈጣሪ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 76,
+      "text": "ዘሪ ማጥፋት ወንጀል  ሳይከሰስ እንዲሁም የኢትዮጵያ ሕዝብ ይበሳጭ ብሎ  ለምርጫ ይዞ መቅረብ  እንደነ ጃዋሪ አይነቱ ማቅፍ የኢትዮጵያ  ሕዝብ እንደመናቅ ነው።",
+      "gold": [
+        [
+          "ለምርጫ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "NULL"
+        ],
+        [
+          "ጃዋሪ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "እንደነ ጃዋሪ አይነቱ ማቅፍ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "የኢትዮጵያ ሕዝብ እንደመናቅ ነው።"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 77,
+      "text": "የአማራ ወጣቶች በኦሮሞ አውሬ ታግተው እየተደረጉ ይቺ ቆማጣ የእንጭቅ ልጅ ለባሏ አህያ ዘመዶች ትምህርት ቤት ትከፍታለች ሸርሙጣ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ቆማጣ"
+        ]
+      ],
+      "pred": [
+        [
+          "የአማራ ወጣቶች",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "በኦሮሞ አውሬ ታግተው እየተደረጉ"
+        ],
+        [
+          "ትምህርት ቤት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "ሸርሙጣ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 78,
+      "text": "ቀልድማ እንደጉድድድ ይቀለዳል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቀልድማ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 79,
+      "text": "ተግባር ከተማችን ውስጥ እንደ ሰማይ የራቀን ለምን ይሆን",
+      "gold": [
+        [
+          "ተግባር",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "እንደ ሰማይ የራቀን"
+        ]
+      ],
+      "pred": [
+        [
+          "ተግባር",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ከተማችን ውስጥ እንደ ሰማይ የራቀን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 80,
+      "text": "እስኪ ከእድገቱ ቁንጥሪ አሪጋቹ ስጡን  ስደት እያሰቃየን ነው",
+      "gold": [
+        [
+          "ስደት",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "እያሰቃየን ነው"
+        ]
+      ],
+      "pred": [
+        [
+          "ስደት",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "እያሰቃየን ነው"
+        ]
+      ],
+      "strict_tp": 1,
+      "norm_tp": 1
+    },
+    {
+      "id": 81,
+      "text": "ሀያሏ ጀርመን እናመሰግናለን",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "እናመሰግናለን"
+        ]
+      ],
+      "pred": [
+        [
+          "ጀርመን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "እናመሰግናለን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 82,
+      "text": "ዋጋ ጭማሪ ተብሎ ብነገር ይሻላል እኮ!",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ዋጋ ጭማሪ",
+          "ECONOMY#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ተብሎ ብነገር ይሻላል እኮ!"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 83,
+      "text": "ብልጽግና ቀጥሏል",
+      "gold": [
+        [
+          "ብልጽግና",
+          "ECONOMY#EMPLOYMENT",
+          "POSITIVE",
+          "ቀጥሏል"
+        ]
+      ],
+      "pred": [
+        [
+          "ብልጽግና",
+          "GOVERNANCE#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ቀጥሏል"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 84,
+      "text": "ኤርሚ ታንቱአችን",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "ኤርሚ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ታንቱአችን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 85,
+      "text": "በጣና ሀይቅ ውስጥ የሚገኙ የተለያዩ ገዳማት በጀልባ በታገዙ ሌቦች በተደጋጋሚ እየተዘረፉ ነው! ለሀገር ዘርፈ ብዙ ጥቅም ሊሰጡ የሚችሉ የአባቶች ጥበብን የያዙ መፅሐፍት…",
+      "gold": [
+        [
+          "ሌቦች",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [
+        [
+          "በጣና ሀይቅ ውስጥ የሚገኙ የተለያዩ ገዳማት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "በጀልባ በታገዙ ሌቦች በተደጋጋሚ እየተዘረፉ ነው"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 86,
+      "text": "በእርግጥ በሮሚያ ፓሊሶች ምንም ዓይነት እምነት አለመኖሩን በገሀድ ያሳየበት ሁኔታ ታይተዋል ስለዚህ የኢትዮጵያ መሪያችን አድሱ ጠቅላይ ሚኒስትሪያችን ከመቸውም የበለጠ ክትትል ካላደረጉ እነዚህ ሰውን የምበሉ አውሬዎች አይታገሱም እርምጃዎች ስጠነክር አርፎ ይቀመጣሉ  የሚል ሀሳብ አለኝ",
+      "gold": [
+        [
+          "ፓሊሶች",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እምነት አለመኖሩን"
+        ]
+      ],
+      "pred": [
+        [
+          "በሮሚያ ፓሊሶች",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEGATIVE",
+          "ምንም ዓይነት እምነት አለመኖሩን"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 87,
+      "text": "ሜዳ ምናምን ሳይሆን በጥሩ ያጨዋወት ስልት ዳግም እዳይጫወቱ ማድረግ ተገቢ ብዬ አምናለሁ ቡድናችን በወኔ ፔናሊቲዉን መምታት አለበት ምክኒያቱም እዛ ያለዉ ሜዳ የኛ ስለሆነ  ገብተን ማደር ያስፈልጋል እነሱ ከፈለጉ ግብፅ  ምዕራቢያዊያን ሜዳ ይለማመዱ በሜዳዬ ቀልድ የለም",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 88,
+      "text": "አፈርኩኝ በኦሮሞነቴ የምድረ ሌባ ዘር ማንዘሩን በንፅሁ ኢትዮጵያዊ ላይ በፈፀመው ጥላቻ ዋዋዋዋ ምን አለበት  ባታሰድቡን የምድረ ሌባ ጥርቅም",
+      "gold": [
+        [
+          "ሌባ ዘር",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ጥላቻ"
+        ]
+      ],
+      "pred": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "አፈርኩኝ በኦሮሞነቴ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 89,
+      "text": "በአድ ዙር ተማርከው ነው መቀሌ የተነዱት እደ ከብት ቀርበው ነበር ያስገቧቸው ንጉስ በሰራዊቱ ብዛት በመሳሪያ ጋጋታ ማሸነፍ አይችልም ዋናው ፈጣሪ ሲያግዝና ልብ ሲኖር ነው የአብይ ወታደሮች ሰከን በሉ ከመማረክ እና ከመደምሰስ አትወጡም ሁሌም በአብይ ስልጣን ዘመን የኢትዮጵያ ወታደሮች ተዋረዱ የኦነግ ስብስብ ድሮስ",
+      "gold": [
+        [
+          "የኢትዮጵያ ወታደሮች",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "ተዋረዱ"
+        ]
+      ],
+      "pred": [
+        [
+          "የኢትዮጵያ ወታደሮች",
+          "PUBLIC_SAFETY#CRIME_SERVICES",
+          "NEGATIVE",
+          "ተዋረዱ"
+        ]
+      ],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 90,
+      "text": "በጣም ጥሩ ነው አዛውንቶች ተኮር የዴሞክራሲ ስልጠና ቢጀመር ደግሞ መቀሌ የመሸጉትን አዛውንቶች ከውስኪ መለኪያ መጨበጥ በትንሹም ቢሆን ይገላግላቸው ነበር",
+      "gold": [
+        [
+          "የዴሞክራሲ ስልጠና",
+          "PUBLIC_SERVICES#EDUCATION",
+          "POSITIVE",
+          "በጣም ጥሩ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 91,
+      "text": "ሱሌማን አንድ ነገር ቢሆን ከመንግስት ራስ አንወርድም።",
+      "gold": [
+        [
+          "ከመንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 92,
+      "text": "ቻይና ከሣምንት በፊት አንድ ካናዳዊ የቻይና ቴክኖሎጂ ከፍተኛ አመራር ማሠሯን ተከትሎ ሌላ ሁለተኛ የካናዳ ዜግነት ያላቸው ሰው በቁጥጥር ሥር አውላለች",
+      "gold": [
+        [
+          "ማሠሯን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 93,
+      "text": "ለ አቢቹ ቢጽፍ አቢቹ በቀላሉ ይቀበለው ነበር አሁንማ ነክተሀል ማንም አያተርፍሽምግን ግን ቀዳዳው ጌቾ አብይን ኤርዶጋን አያድነውም ሳዳም ሁሴን አያድነው ፑቲን አያድነውም ብሎ ሲቀደድ ሰማሁት ልበል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 94,
+      "text": "አማራን ወግቶ በመርዝ መርዞ እየጨረሰ ያለው ጋላ ሳይሆን የጋለ ጉዲፈቻዎች ናቸው",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "NEGATIVE",
+          "መርዞ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 95,
+      "text": "የጃዋር ሽንት ጨርቅ አማርኛ ቋንቋ የነፍጠኛ ስትል ከርማ የቅርሻቷ ውጤት መጽሀፏን በአማርኛ ቋንቋችን አንብቡልኝ ስትል ትንሽ አታፍሪም ዲቃላ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "አታፍሪም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 96,
+      "text": "ይህ እኮ የሀገር ሚስጥር ነው አታቅም እንዴ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "የሀገር ሚስጥር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 97,
+      "text": "የ1923ቱ የኢትዮጵያ የንጉሰ ነገስት መንግስቱ ህገመንገስት መግቢያው ላይ ኢትዮጵያ በታሪኳ በአረመኔዎችና በእስላሞች ስትጨነቅ እንደኖረች እያለ ነው…",
+      "gold": [
+        [
+          "ህገመንገስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ስትጨነቅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 98,
+      "text": "እነዚነብስበለዎች በአደበበይ ተሰቀይቶ መሞት አለበቸው አሰቀይቶእንደገደሉት",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ],
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 99,
+      "text": "ለካ ተሸጦ ነው እንዴ እኝያ ስፍር አልበራ ያለው !! ወይ ምዓልት",
+      "gold": [
+        [
+          "NULL",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ተሸጦ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 100,
+      "text": "ኣልተደመረም እንዴ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 101,
+      "text": "ጀዋርና ለማ መገርሳ ቀኒሶ ምንም መምጠት አይችልም",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ምንም መምጠት አይችልም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 102,
+      "text": "ሰራተኞቼ ታሰሩብኝ ይለቀቁ ሲል መጠየቁን ባየሁ ግዜ ተስፋ ቆረጥኩ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተስፋ ቆረጥኩ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 103,
+      "text": "የአማራ ኦርቶዶክስ ደብተራ ሰው መሳይ እንስሳ አውሬዎች መስጂድና የቤንጤዎች አቃጥለው ጨፍረው ራሳቸውን እንደ ጀግና ሲቆጥሩ ሳይ ይገርመኛል",
+      "gold": [
+        [
+          "መስጂድና",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አቃጥለው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 104,
+      "text": "ስንት ኩንታል በቆሎ ማለት ነውለነ አካኪ ዘራፍና ደንፌዎችማ ንገሩሊን",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#EMPLOYMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 105,
+      "text": "ኢትዮጵያን በውጭ የሚወክሉ አምባሳደሮች  ቆንስል ጄነራሎች  የውጭ ጉዳይ ሚኒስቴር ዳይሬክተር ጄኔራሎችና ዳይሬክተሮች የሚሳተፉበትና ለአንድ ሳምንት የሚቆየው ዓመታዊ ኮንፍረንስ ዛሬ ተጀምሯል",
+      "gold": [
+        [
+          "ኮንፍረንስ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "ተጀምሯል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 106,
+      "text": "ከቤቱን ስወጣ ሲገባ በባእድ አገር ወራሪዎች ጦሮች በኤርትራ ወታደሮች ይገደል ይዘረፍ ከሆነ ምኑላይ ነው ሰላሙን ያገኘው",
+      "gold": [
+        [
+          "ሰላሙን",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ይገደል ይዘረፍ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 107,
+      "text": "እና ካሳስ የት ደረሰ ?",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 108,
+      "text": "ይሄን አሁን ማሳየት ለምን አስፈለገ ለማን ነው የምታሳዩትስ ለህወሀት ነው",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 109,
+      "text": "እስቲ መጀመሪያመንግሥት ነኝ   ባዩ አካል ራሱ ከልመና ይላቀቅ እስቲ ቅድሚያየልመና መክሊት ተሰጥቶኛል   ባዩ አብይ አህመድ አገሪቱን ከልመናና ዝርፊያ ያላቃትና የኔቢጤዎችን ልመና በህግ ስለማገድ በኃላ እናስብበታለን ቲሽሽሽ ምድረ ደናቁርት ዘረኛ ጭንቅላታቹህ በዘረኝነት ስለገለማ ስለ ሞራል እንኳን ቅንጣት ታክል የምታውቁት የለም በልመና  በጄቱን የሚሞላ ዘረኛው መንግሥት ልመናን በህግ አግዳለሁ ሲል አመት ያስቃል  የሰጭን ኪስ ካልጎረበጠው ሰው ልመናን ስራ ቢያደርግ እናንተ ምን ቤት ናቹህ በሰው ኪስ ልታዝዙ ነውንታከለ ኡማ ግን ትምህርት ቤት ገብቶ ተምሯል ባለፈው የ የመኖሪያ ቤት ቆጣቢ ዜጎችን ውልህግ በቄሮአዊ ድንቁርና ቀዶ ጥሎ በፖለቲካዊ ውሳኔ የቤት እጣ አከፋፈለ ንግድ ባንክንም ማለቂያ በሌለው ጣጣ ውስጥ ዘፈቀ ምድረ መንጋ ደንቆሮም ዝም ብሎ ተመለከተው ዛሬ ደግሞ ልማናን በህግ አግዳለሁ ሲል በምን ህገ መንግስታዊ መሰረት ላይ ቆሞ ነው ነው ወይስ እንደለመደው ድንቁርናውን ጋሻ አድርጎ ነው",
+      "gold": [
+        [
+          "መንግሥት",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "ዘረኛው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 110,
+      "text": "በእኛ ሰፈር ዶሮ ሌሊት ሌባ ሲመጣ ቆቆቆ የሚልድምጽ ያሰማል",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሌባ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 111,
+      "text": "አቤት የኢትዮጵያ ፕሮፌሰሮች  ምን ይሆን የሰራችሁ",
+      "gold": [
+        [
+          "ፕሮፌሰሮች",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 112,
+      "text": "መቼ ተጀመረ ገና ነው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 113,
+      "text": "አወ ሊስትሮ የሚሰሩ ዜጎች ስራ አቁሙ ተብለዋል ሌላ ምን ዝግጅት ያስፈልጋል",
+      "gold": [
+        [
+          "ሊስትሮ",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "ስራ አቁሙ"
+        ],
+        [
+          "ሊስትሮ የሚሰሩ ዜጎች",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "ስራ አቁሙ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 114,
+      "text": "3- ቢሊሱማ አባቱ ኦነግ ነህ ተብሎ ከስራ እንደተባረሩና ታስረው እንደወጡ: እናቱ በዚህ የኑሮ ጫና ምክንያት ጥላው እንደጠፋች ከዚያም አዲስ አበባ መሆኗን ሰምተን ቅዳሜና እሁድ በጋራ ስንፈልጋት ከርመናል::",
+      "gold": [
+        [
+          "ከስራ እንደተባረሩና",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 115,
+      "text": "አስመሳይ በዚ አታመልጥም",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አስመሳይ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 116,
+      "text": "ማሸነፍ ነበረባቸዉያልዞሩት ያልዞሩበት ሀገር ማን አለእዉነት ጎበዝ ቱሪስት ናቸዉ አለ ገና ይቀጥላል ሽልማቱ ቅኔ ያለዉ ሽልማት ይልሀል ይኸ ነወ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ጎበዝ ቱሪስት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 117,
+      "text": "ከድሃ የተዘረፈ የድሃ ኢትዮጵያዊ ሃብት",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "የተዘረፈ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 118,
+      "text": "ከአብይ ጋር አንድ ላይ ተደፋ የኖራቹት በተዋህዶ እና በሙስሊም ፀሎት ነዉ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 119,
+      "text": "በተግባር የማይሰራ ወሬ ባይወራ ይሻላል ሲጀመር የኑሮ ግሸፈት እንዲባባሰ የሚያደርገው ማን ሆነና ግን  ኑሮን ለማሸነፍ ሰንቱ ይለፋል ኧረ ሰንቱ",
+      "gold": [
+        [
+          "የኑሮ ግሸፈት",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "እንዲባባሰ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 120,
+      "text": "በአመታት ውስጥ አገራችን ላይ ከሚሊየን ስደተኛ ና በመቶ ሺዎች ሙትና ቁሥለኛ እንዳሉ ደምር በ",
+      "gold": [
+        [
+          "ስደተኛ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 121,
+      "text": "ትግሬው ትህነግ የአማራን ሲያጠፋ ብአዴንን ተጠቅሞ ኦሮሞው ብልጽግናም የአማራን ሲያጠፋ ብአዴንን ተጠቅሞ አንዳርጋቸው ጽጌም በአማራ ቀርበው አማራ በብአዴን ተጋብዘው የአማራ ጠላት ማነው ለአማራ ድምጽ እንታገላለን እናነቃለን የምትሉ መልስ አላችሁ መታገል ያለብን ለብአዴን ጥብቅና የቆሙትንና ብአዴንን ሌሎች በራሳቸው ይጠፋሉ ይሄን ለመረዳት ምሁር ነብይ መሆንን አይጠይቅም የተፈጸመብንን መገንዘብ አማራነት ያሸንፋል",
+      "gold": [
+        [
+          "ትህነግ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የአማራ ጠላት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 122,
+      "text": "የህዝብ ጥያቄ መመለስ ማለት እንድ ነው  የኛ ግን",
+      "gold": [
+        [
+          "የህዝብ ጥያቄ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 123,
+      "text": "ባህላችን እኮ ነዉ ለምን ይቀራል እንዲያዉም በዩኒስኮ ለማስመዝገብ ከዚህ በበለጠ በትኩረት መሰራት አለበት",
+      "gold": [
+        [
+          "ባህላችን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በትኩረት መሰራት አለበት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 124,
+      "text": "የክርምት ወቅት እንደመሆኑ መጠን ገበሬው ግብረናው እንዳይሰራ ምቹ ሁኔታ መከልከል",
+      "gold": [
+        [
+          "ገበሬው",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "መከልከል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 125,
+      "text": "ሙባረክ ወክሏም ወአንቱም በሂር ንመላእ አመንቲ እስልምና ሙባረክ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሙባረክ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 126,
+      "text": "ባህሉን እና ሀይማኖቱን በሰው ላይ እያጫነ ያለው ጎንደሬ እና ጎጃሜ ነው በግድ ልሙጡን ተቀበሉ ኢትዮጰያ የሙስሊምም የጴንጤም የወቄ ፋናም የኦርቶዶክስም መሆኗን የማይቀበል ቡድን ያለው እዝህ አካባቢ ነው የጎንደሬ እና ጎጃሜ አንድ ሀይማኖት አንድ ሀገር ልሙጥ ባንድራ እና የኢትዮጰያ የክርስቲያን ደሴት ናት የሚል የፍላሻ አስተሳሰብ ያበቃበት ወቅት ነው በ ክፍለ ዘመን የ አስነዋሪ ፐ አስተሳሰብ ያበቃበት ዘመን ነው ወይ አምናችሁ ትቀበላላችሁ ወይ ስታለቅሱ ትኖራላችሁ እናንተ የሙስሊሙም የጴንጤውም ጥላት ናችሁ ለዝህ ማሳያው የባህር ዳሩ ከንቲባ ነው አማራነት ስንል እኔን ያካተተ እንጅ ፍላሻውይ አስተሳሰብ አይደለም ወይ አማራ ኢትዮጰያውይ ሁኑ ወይ መንገዳችንን እንለይ",
+      "gold": [
+        [
+          "ጎንደሬ እና ጎጃሜ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "በሰው ላይ እያጫነ ያለው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 127,
+      "text": "የአውስትራሊያ ትግራይ ማህበር በአውስትራሊያ የትግራይ ተወላጆች በአብይና ኢሳያስ ቡድን በትግራይ የተከፈተውን ጦርነት ለአለም ማህበረሰብ ለማሳወቅ ሰልፍ አካሄዱ",
+      "gold": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 128,
+      "text": "ይሄንን መረጃ መንግስት እንደቀላል ባያየው እላለሁ ፍጥነት ከተሰራበት የብዙ ንጹሀንን ሂወት መታደግ ቤንሻንጉል ክልል አሶሳ ባምባሲ ወረዳ የሚጠጋ ቀበሌዎች ቀበሌዎች የወሎ ተወላጆች የሚኖሩበት የትግራይ ተወላጆች የኦሮሞ ተወላጆች ይኖሩበታል ሌሎቹ ቀበሌዎች በርታ የሚባሉ ብሄሮች የሚኖሩበት ወረዳዋ የምትመራውም በኒሁ በርታ የሚባሉ ብሄሮች ከላይ እንዳስቀምጥኩት ቀበሌዎች የወሎ ተወላጆች የሚኖሩበት በርታ የሚባሉት ብሄሮች የአሁኑ የቤንሻንጉል ክልል ፕሬዚዳንት አሻዲሊ ሀሰን ዘሮች አሻድሊ የበርታ ብሄር ተወላጅ የባምባሲ ወረዳ አስታደር እንደነገርኳችሁ በርታዎች ከታች በቁም በምስል የምታዩት የወረዳው አስተዳዳሪ አብዱላሂ መሀመድ ይባላል ከወያኔው ተላላኪ የክልሉ አሻድሊ ሀሰን በመቀበል የወሎ ልጆችን ያሳድዳል ያስገድላል አሻድሊ ሀሰን አደገኛ ወያኔ ታማኝ የትግራይ ተላላኪወች ሰሞኑን ትግራይ አሻግሯል ሰአት የወሎ ተወላጆች የበርታ ብሄሮች ተፋጠዋል የክልሉ ሀይል ባምባሲ ወረዳ በባስ እየተጫነ ገብቷል ሀይሉ እንደሚጨፈጭፍ በተደረጉ ጥቃቶች ታውቋል የሚመለከተው አካል ባባሲ ወረዳ የጥፋት እንቅስቃሴ ከወዲሁ ማስቆም አለበት",
+      "gold": [
+        [
+          "መንግስት",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "እንደቀላል ባያየው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 129,
+      "text": "ቱሪዝም ድርጅት በዋና ዳይሬክተርነት እንዲመሩ በቅርቡ የተሾሙት ወት ሌንሳ መኮንን ከአብዛኛው የድርጅቱ ባለሙያዎች ጋር ተግባብተው ለመስራት ካለመቻላቸው ጋር ተያይዞ በድርጅቱ ውስጥ የባለሙያዎች ፍልሰት መጨመሩን የጠቀሱት ምንጮቻችን አቶ ኃማርያም ይህን ችግር በመቅረፍ ረገድ ተስፋ ተጥሎባቸዋል",
+      "gold": [
+        [
+          "ወት ሌንሳ መኮንን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ለመስራት ካለመቻላቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 130,
+      "text": "ትላንት ሌሊት   የተወዱት ጎረቤቶቼ  የሸኔን መዳከም የሚያሳይ ነው ብዬአልቀበልምእንዲያውም እየተጠናከረ ነው  ነው ያስብላል",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እየተጠናከረ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 131,
+      "text": "ከሀይማኖት ጋ ባይነካኩ የተሻለ ነበር",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የተሻለ ነበር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 132,
+      "text": "በኢትዮዽያ እየተፈጸመ የሰብእዊ መብት ጥሰት የፖለቲካ እስር ያሳሰባቸው የአሜሪካን ኮንግረስ አባለት ማይክ ፓምፒዎ መስሪያ ቤታቸው የተቻለውን እንዲያደርግ ደብዳቤ",
+      "gold": [
+        [
+          "የሰብእዊ መብት ጥሰት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ያሳሰባቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 133,
+      "text": "የአዋሳ ከተማ ነዋሪ እያንዳንዱን መግለጫ በፅንቃቄ መመልከት ይኖርበታል   ከዚህ መግለጫ ቦሐላ ደግሞ ኮማንድ ፖስቱ ያለኔ እዉቅና ነዉ እኔ አልፈቀድኩም ብሉአል   ነዋሪዉን ከሚወደዉ ሰራዊት ሊያጋጩ ይሁን እንጃ",
+      "gold": [
+        [
+          "መግለጫ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 134,
+      "text": "ሌላዉ ዘር ሲታረድ ዝም አለ በኦሮሞያ ክልል እንደድመት ገና ይበላላሉ አንገቱን የታረደዉ ህፃን ነፈሰ ይጮሀል",
+      "gold": [
+        [
+          "ዘር ሲታረድ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዝም አለ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 135,
+      "text": "ሜቴክ አንድ የስራ ልምድ ላለው እንጂነር ደሞዝ ሚከፍለው  ብር ነው ይሄ መንግስት ያውቅልናል ወይ",
+      "gold": [
+        [
+          "ደሞዝ",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 136,
+      "text": "ቁርአን የሽብርና የጥላቻ መጽሀፍ በአለም ላይ ካሉ ሀይማኖቶች በሙሉ የእስልምና መጽሀፍ ቁርአን በውስጡ ሌሎችን ሀይማኖቶችን የሚያጥላሉ በተለይም አይሁድንና ክርስትናን በማጥላላትና በጠላትነት በመፈረጅ በርካታ ጥቅሶችን የያዘ ነው",
+      "gold": [
+        [
+          "ቁርአን",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "የሽብርና የጥላቻ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 137,
+      "text": "ይህንን ፓርት አነ በበኩሌ የእሳፓኣኮ ፓርት ነው በኣድስ ስሙን ቀይሮ የመጣብን",
+      "gold": [
+        [
+          "ፓርት",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 138,
+      "text": "ወያኔ ዘርፎ ለመፈርጠጥ አስቦ እንጂ ማምሻም ዕድሜ እደሌለው ልቦናው ያውቃልልልል  ሞት ለቅማላም አበጣ ቆርጣሚ ወያኔ",
+      "gold": [
+        [
+          "ወያኔ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ዘርፎ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 139,
+      "text": "የምን ዉይየት ነው ትግራይን እዲት እናዳክማት ነው እጂ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "እናዳክማት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 140,
+      "text": "የሱዳን ጦር  ብቻ አይመስለኝም የወያኔ እና ግብፅ ጦር ጭምር ነው ይህን አምባሳደር ስዩም መስፍን ነግረውናል የእኔ ጥያቄ መንግስት ግን ቢያንስ ለአካባቢው ሚሊሻ መከላከል እንዲረዳው ሰተት ብለው በአደባባይ ሲመጡ በአየር ሀይል ድብደባ ለምን አልተደረገም በድንበር ላይ መከላከያ ባይኖር እንኳን",
+      "gold": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ለምን አልተደረገም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 141,
+      "text": "የፓርቲው ሊቀመንበር ነው የድጅቱ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 142,
+      "text": "ፍትሕ ለማስጅድ ለሙስልሙ ኡመ",
+      "gold": [
+        [
+          "ለማስጅድ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ፍትሕ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 143,
+      "text": "አሜሪካ ከኢትዮጵያዊያን የተሰረቀ ሀብት ማግኘት ይቅርና የነሱ ሀብት ለኢትዮጵያውያን ት/ቤት እየገነባ መሆኑን አልሰሙም ??",
+      "gold": [
+        [
+          "ት/ቤት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "POSITIVE",
+          "እየገነባ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 144,
+      "text": "እቃ ወደ ቀበሌ ፂላ ወደ መቀሌ፡ ይላል አዲሱ አዋጅ",
+      "gold": [
+        [
+          "አዋጅ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 145,
+      "text": "ደም እና ምርት ለማለት ፈልጋችሁ ነው",
+      "gold": [
+        [
+          "ምርት",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 146,
+      "text": "ሰላም ፍጠሩ የትግራይ ህዝብ አትጨፈጭፉ ከባእድ ሀገር ሁናቹ ስላሉ! ምድረ ድንዝዝ",
+      "gold": [
+        [
+          "ሰላም",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ድንዝዝ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 147,
+      "text": "በማህበረ ቅዱሳን በዳንኤል ክብረት የተገነባው የሚኒሊክ የአራት ቤተመንግስት መታሰቢያ ሀውልት በአማራ ኦርቶዶክሳዊያን ምእምናን ለሀውልቱ አምልኮት ይፈጽማሉ ይሰግዱለታል መልእክቱ ግልጽ የአቢይ አህመድ መንግስት መጪዋ ኢትዩጽያ ሀይማኖት ብሄር የማድረግ ስትራቴጂ ግልጽ ብሄር ሀይማኖት በሲሚንቶ ተቦክቶ የተቀበረው የሚኒሊክ ስትራቴጂ በአቢይ አህመድ ተላላኪነት መቃብር ፈንቅሎ ይነሳል",
+      "gold": [
+        [
+          "መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ስትራቴጂ ግልጽ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 148,
+      "text": "ኢትዮ ውሥጥ በጣም ብዙ  የታረክ በታ እያለን የሚሠሩት ፊልሞች ሁሁ መጠጥ ቤት  ጭፈራ ቤት ሺሻ ቤት ቁማር  ሢጋራ  ከተማ ለከተማ እንደ እብድ ውሻ እየሄዱ ከከተማ ሣይወጡ ይበጫበጫሉ",
+      "gold": [
+        [
+          "ከተማ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ይበጫበጫሉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 149,
+      "text": "ፈሪ ቢያስር ባይስር የስራው ስራ  ምስክር ነው ጀግና በሃገሩ አይከበርም",
+      "gold": [
+        [
+          "ጀግና",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አይከበርም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 150,
+      "text": "አሁን ዳግም ስለመጣ ደስ ብሎኛል",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#EDUCATION",
+          "POSITIVE",
+          "ደስ ብሎኛል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 151,
+      "text": "አፍራሹ አንተ የምትመራው ማፍያ ቡድን ነው  ለመወደድ ደግሞ ፎቶ ተነስህ እኔ ሰራሁ ተላለህ ማን ነው ግን ከተማውን የሚመራው",
+      "gold": [
+        [
+          "ቡድን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ማፍያ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 152,
+      "text": "ኢንተርፖል በኦሮሚያ የሚፈፀመው ጭፍጨፋ አይታየውም ?",
+      "gold": [
+        [
+          "ኢንተርፖል",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ጭፍጨፋ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 153,
+      "text": "አህያው ጎንደሬ የጎጃሜን ስነ ልቦና ጥንካሬን በሚገባ አያቀውም",
+      "gold": [
+        [
+          "ጎንደሬ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አህያው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 154,
+      "text": "ፕሬዝዳንት ሳህለወርቅ ዘውዴ አንድነት ፓርክን ጎበኙ *********************************** ኢትዮጵያ ያሏትን ታሪካዊ፣ ባህላዊ እና ተፈጥሯዊ እሴቶች ለዓለም በማስተዋወቅ ከዘርፉ ተጠቃሚ መሆን እንደሚገባት ፕሬዝዳንት ሳህለወርቅ ዘውዴ ገልጸዋል፡፡",
+      "gold": [
+        [
+          "እሴቶች",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 155,
+      "text": "የዚህ መንግስት ቁጥር እንደፈለገ መናገር እንጅ አይደለም ይህን ቁጥር ሊተክለው ቀርቶ ከ ጀምረህ እስከ  ሚሊዩን ፃፈው ብትለው  ቀን አይፅፈውም",
+      "gold": [
+        [
+          "መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቁጥር እንደፈለገ መናገር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 156,
+      "text": "የወሎ ኦፓልና የአለም ባንክ ሪፖርት በአማራ ምድር በወገልጠና ደላንታ አካባቢ ስለሚገኘው የኦፓል ምርትና የህወሀት ደላሎች ዘረፋ አንስተን ኦፓል በመሄድ የአለም ባንክ ያጠናቀረውን ጥናትና የከበረ ማእድን ሚሊየኖችን የሚቀይር ሀብት ህገወጥ መንገድ ስለሚደረገው የንግድ እንቅስቃሴና የአካባቢው ሰወች እንዳልተጠቀሙ ያትታል ኦፓል መጀመሪያ የተገኘው በሽዋ አካባቢ አካባቢ የተገኘው ኦፓል ኳሊቲ ያለው አልተገኘም እንደገና በፈረንጆች አቆጣጠር አካባቢ በሰሜን ደላንታ አካባቢ የኦፓል ክምችት ተገኘ በጥራት የሚታወቀው የአውስትራሊያ ኦፓል የተገኘው ኦፓል ከአውስትራሊያው የላቀ ስለተገኘ ገቢያ ተቀባይነቱ የኢትዮጵያ ኦፓል በስፋት ከሚላክባቸው አገሮች አሜሪካ ቻይናና ህንድ ይገኙበታል የአለም ባንክ ሪፖርት እንደሚያሳየው በደላንታ አካባቢ ወጣቶች ተደራጅተው ሲቆፍሩ ይውላሉ ይሄም በመሳሪያና በቴክኒክ ያልታገዘ አካባቢ የሚቆፍሩት ጉድጓድ ቢይነስ ያስወጣቸዋል ቆፍረው ካላገኙ ይከስራሉ ለነዚህ ወጣቶች ብድር እንደማይመቻች ሙያዊ ድጋፍ እንደማይደረግላቸውና በተለያየ ወጣቶቹ ከስራው እንዲወጡ ስራውን ለመጀመርም ወጣቶቹ ለማግኘት የሚቸገሩ ስራውን ጀምረው ያገኙትን ኦፓል ደላሎች የህወሀት ኮንትሮባንዲስት በግራም ይገዟቸዋል ደላሎቹ አዲስ አበባ በግራም አስከ ይሸጡታል ሪፖርቱ ሪፖርቱ ኢትዮጵያ ሁለተኛ የኦፓል አምራችና ሀገር እንደሆነች ያትታል ከአውስትራሊያ በመቀጠል ለምሳሌ የአሜሪካ ጂኦሎጂካል ሰርቬይ መስሪያ እንዳመለከተው ኢትዮጵያ ግራም ኪሎግራም ልካለች ከአሜሪካን ኤምባሲ በተገኘው መረጃ ግራም ግራም ኦፓል ከኢትዪጵያ ወቷል ያምናል የአለም ባንክና የአሜሪካ ጂኦሎጊካል ሰርቨይ የሚያሳየው ይሄን ችግሩ ታዲያ የኢትዮጵያ መንግስት በማእድን ሚኒስቴር አማክኝነት ያቀረበው ሪፖርት በፈረንጆች ኢትዮጵያ ኪሎግራም ኦፓል ልካለች የአለም ባንክ ሪፓርት ይኮንነዋል የኢትዮጵያ መንግስት ተኛውን የኦፓል ምርትን ያላግባብ መንገድ ካገር እንዲወጣ ቁጥጥር አላደረገም ቢያን ግራም የሚሆነው በህገወጥ መንገድ በህወሀት ነጋዴዎች ተልኳል ከታች የተያያዘው ሰንጠረዥ ከአለም ባንክ ሪፓርት የወሰድኩት ለምሳሌ ተቆርጦ የተዘጋጀ ግራም ሚሊየን የአሜሪካ ዶላር ተሽጧል ኦፓል ሚሊየን ባንኩ እንዳሰፈረው ኪሎገራም ኦፓል ተሽጣል ዋጋውን ማባዛት ሚሊየን ግራም ቢሊየን የተላከው ግራሙ ያልተቆረጠና ያልተዘጋጀ ምናልባትም በተወሰነ መንገድ ከተቆረጠውና ከተዘጋጀው ኦፓል በተወሰነ መልኩ ዋጋው ሊቀንስ ጥያቄው ይሄን ቢሊየን እየተገኘበት የወሎ አማራ ተጠቅሟል ህብረተሰቡ አስፓልት መንገድ ተሰርቶለታል ሆስፒታል ተገንብቶለታል ትምህርት በጭራሽ አልሆነም የህወሀት ቱጃሮች ህብት እያጋበሱበት ያለብን ወጣቱ ምርቱና ገቢያው መረጃ የለውም ለዛም ለግራም የሚሸጠው ለአካባቢው ወጣት የምናስተምርበትና የሚሆኑበትን መንገድ መፈለግ ይሄም ወጣቱን በማንቃት የህወሀት ደላሎችን አስወግዶ የአካባቢው አምራች ቀጥታ ከገቢያ ትስስር የሚፈጥርበትን መንገድ እንዲፈለግ ጎበዝ ቢሊየን ገንዘብ ከመነታረክ ይህችን ብናደርግ ያለውን ወጣት ልንጠቅመው እንችላለን የአለም ባንክ ሪፖርቱን ሊንክ እዚሁ አለላችሁ ሁሉም በገባው መጠን እየጻፈ የአካባቢውን ወጣት በማንቃት ከነዚህ ቀማኞች በመንጠቅ ህዝባችን እናድርግ ሳናውቅ ተደብቀው የሸጡት ይበቃል",
+      "gold": [
+        [
+          "ትምህርት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "በጭራሽ አልሆነም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 157,
+      "text": "አንድ እውነት እነግራቹሃለው ☞ ብልጥግና የሚባል የአብይ plc ከምርጫው ቀን በፊት ይፈርሳል። ሀቅ እዩ??",
+      "gold": [
+        [
+          "ብልጥግና",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ይፈርሳል።"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 158,
+      "text": "እነዴት ርእሰ ብሔር የጠቅላይ ሚኒስቴር ልዩ ልዑክ ይሆናል አረ አስተካክሉ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አረ አስተካክሉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 159,
+      "text": "የንግድንንረት ለማምጣትና ዋጋን ለመጨመር የተለያዩ መጋዘን በመከራየት  በማስቀመጥ ያደራ ንብረት ነው  በማለት የሚያታልሉ እዳሉ ተጠቆመ...",
+      "gold": [
+        [
+          "የንግድንንረት",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "የሚያታልሉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 160,
+      "text": "የስላም ስው ስላምን ብቻ አንተስ የአምላክ ስጦታችን ነህ ከእጃችን የውጣህ ለት አበቃልን ዶር  መቶ አመት የማይገኝ በዚህ መሪ መመራት በራሱ መታድል ነው እንቁችን ነህ",
+      "gold": [
+        [
+          "ዶር",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "መታድል ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 161,
+      "text": "አልተኛም እኮ ብልጽግና እያለመ ነው እንጂ",
+      "gold": [
+        [
+          "ብልጽግና",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "እያለመ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 162,
+      "text": "ፍትህ ለንፁሃን ሞት ደማቸው በራ ማይሰማ ልእያንዳንዱ ዋጋውን ይቀበላል",
+      "gold": [
+        [
+          "ፍትህ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "NULL"
+        ],
+        [
+          "ፍትህ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ለንፁሃን ሞት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 163,
+      "text": "ላቀረባችሁት አገልግሎት አመሰግናችኋለሁ",
+      "gold": [
+        [
+          "አገልግሎት",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 164,
+      "text": "በህገ ወጥ የሰው አዘዋሪነት ተይዞ ለጣሊያን ተላልፎ የተሰጠው ኤርትራዊ በፖሊስ ሲፈለግ የነበረው ግለሰብ አለመሆኑ እየተነገረ ነው",
+      "gold": [
+        [
+          "የሰው አዘዋሪነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 165,
+      "text": "እንልካለን ኢንሻ አላህ ግድ ይለናል",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ግድ ይለናል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 166,
+      "text": "ለሆዱ ያደረ ባንዳ ለነገሩ ትግራይ ውስጥ ከደርግ ወታደር ተወለደ እንጂ ትግራዊ አይደለም",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ባንዳ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 167,
+      "text": "ኤች አር ስልጣናቸውን እንደሚያሳጣቸውና እንደሚጎዳቸው የተረዱት መንግስት ለመግለጫ ተሽቀዳድመዋል",
+      "gold": [
+        [
+          "መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ለመግለጫ ተሽቀዳድመዋል"
+        ],
+        [
+          "መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተሽቀዳድመዋል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 168,
+      "text": "ፈጣሪ ጨርሶ ይማርክ ይማርክ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "POSITIVE",
+          "ይማርክ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 169,
+      "text": "ማን ነው ያስገባቸው ግንቦት  መሆን አለባቸው መቼም እንዲህ አይነት ቆሻሻ ተግባር ሚፈፅሙት እነሱ ናቸው ባለጌዎች",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቆሻሻ ተግባር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 170,
+      "text": "ያው የፖሎቲካ ነገር እራሱን ለማስወደድ ተቀባይነት እንዲያገኝ ያደረጋት ድራማ ናት",
+      "gold": [
+        [
+          "የፖሎቲካ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ድራማ ናት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 171,
+      "text": "አንተ የሰፈር ወሬ ትለቃቅማለህ ትፖስታለህ እርሱ ደሞ በእውቀት በሰነድ በምክንያት ይሞግትሀልአልተገናኝቶም",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የሰፈር ወሬ"
+        ],
+        [
+          "በእውቀት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 172,
+      "text": "አማርኛ ጸሎት የጸለሁት ነበር ግን አልተሳካልኛም በቋንቋየ ሲጸልግ ግን ተሳካልኛ ከዛ ሰአት ጾሎት ያሚያረገው በትግርኛ ነው በራስህ ቋንቋ ጾሎት መጸለይ የተሳካ ይሆናል",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "የተሳካ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 173,
+      "text": "ቁጥር አንድ  ሌባ ማን ሆኖ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ሌባ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 174,
+      "text": "የ ስማ በለው ዘመን ላይመለስ ተቀብሯል እውነት ለመናገር እናንተ ለዝች ቤተክርስቲያን አስባችሁ ብሆን ኖሮ በዝህ ሃሳብ በጣም ትደሰቱ ነበር እናንተን የምያሳስበው በተለይ ኦሮሚያ ውስጥ የቤተክርስቲያንዋ ህሉውና አደጋ ላይ መውደቋ ሳይሆን እንዴት ኦሮሚኛ ከ አማረኛ እኩል ቤተክርስቲያንዋ ውስጥ ስራ ለይ ይውላል ነው አስመሳይዎች ሁላ😏",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "አስመሳይዎች"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 175,
+      "text": "ቅማንት እና አገው ማቀፏ ያልቻለ ክልል አትዮጵያውነት ልያፈረስ እንጅ ልያሰጠብቅ አይችልም የአሁኑ ችግር ሁሉ ደግሞ ከአማራ የመነጨ ነው",
+      "gold": [
+        [
+          "ክልል",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ማቀፏ ያልቻለ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 176,
+      "text": "ኢትዮጸያ ለመጀመርያ ግዜ የተከሰሰ መሪ አሳፈር ግንቦት ወር ደሞ ጠቅልሎ ከሰልጣን ይወርዳል",
+      "gold": [
+        [
+          "መሪ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "አሳፈር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 177,
+      "text": "አሁን በዚህ ዜና ፋና እና ይህ ሰው አያፍሩም ለነገሩ ህሊና ሲኖር ነው",
+      "gold": [
+        [
+          "ዜና",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አያፍሩም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 178,
+      "text": "ትእግስታችን እያለቀ ነው ቅማንትን ድራሹን ማጥፋት አያቅተንም የአማራ ትእግስት ብዙ ያስከፍለዋል",
+      "gold": [
+        [
+          "ቅማንትን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ድራሹን ማጥፋት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 179,
+      "text": "ነፍሥ ይማር የምትሉ  ሁሉ አማራ መሆን አለባችሁ  ።",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 180,
+      "text": "የሲፈን ቀን እያከበራቹ ነው እነዴ",
+      "gold": [
+        [
+          "የሲፈን ቀን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 181,
+      "text": "ትላንት ኦሮሞን ለመጨፍጨፍ ሆሮጉዲሩ ወለጋ ሲጓዙ የፌደራል ፖሊሶች ፊንጫ አካባቢ ሲደርሱ ቦምብ ተጥሎባቸው ሁሉም ተሸኝተዋል ሬሳቸው አዲስ አበባ ተወስዷል",
+      "gold": [
+        [
+          "የፌደራል ፖሊሶች",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ቦምብ ተጥሎባቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 182,
+      "text": "የተነገረን ሁሉበተግባር ያልዋለ በየትኛውም የኢትዬጺያ ክፍል ዉሰጥ የመኖር ሰርቶ የማደር የማይቻልበት የጉዞ ሰጋት መዝናናት የማይቻልበት ሆቴሎቾ አለጋ ሲያዝመታወቂያ አይተው ባልተረጋጋንበት ጊዜ እያሳለፍን ባለንበት አንደሰጋ ቅርጫ በተከፍፈልንበት ከባለፈው መንግሰት በምን እንደተለየን አይገባኘም",
+      "gold": [
+        [
+          "መንግሰት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "አይገባኘም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 183,
+      "text": "ንጹሀን አማራን ሽመልስ አብዲሳ ያስጨርሳል",
+      "gold": [
+        [
+          "ንጹሀን አማራን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ያስጨርሳል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 184,
+      "text": "ጀዋሀር ሙሀመድ መንግስት አጥቶ ነው እንጅ ኢትዮጵያን ለማጥፋት እሚቀሳቀሰው ከቤተ መንግስት እስከ ቤተ ክህነት ያሉ ወሮ በሎችን አደራጅቶ ነው ይህ ሰው የዘመናችን ይሁዳ ነው",
+      "gold": [
+        [
+          "ጀዋሀር ሙሀመድ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ይሁዳ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 185,
+      "text": "አብቹ የኔ ጀግና ኑርልኝ ክበርልኝ ፈጣሪ አምላክ  የመረጠውን ማንም ሊጥለው አይችልም ፈጣሪ ከፍ ያደረገውን ማንም ዝቅ ሊያደርገው አይችልም አሁንም አምላኬ ከፍ ከፍ ያድርግህ ዝቅ ያ…",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ጀግና"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 186,
+      "text": "አሁንስ መቼ ተግባቡ ለወሬ አትቸኩሉ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አትቸኩሉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 187,
+      "text": "ውሸት  ቅጥፈት መረጃ አይደላቹም እናንተ ፀረ ኢትዮጵያ ሽብርተኝነትን መርጃ እንጂ",
+      "gold": [
+        [
+          "መረጃ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ውሸት ቅጥፈት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 188,
+      "text": "አብይ አሁንም ቢሆን አብይ ምርጫችን ጥንቃቄ በደረግበት መልካም ነው  ይቅርታ  ነው ሰላም",
+      "gold": [
+        [
+          "አብይ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ሰላም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 189,
+      "text": "እንዴ እነሱ በውሀው እየተጠቀሙ አደል እነዴ ኢትዮጵያም ውሀውን እየሞላች ነው መደራደር ያለባት እንጂ",
+      "gold": [
+        [
+          "ውሀውን እየሞላች ነው",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "መደራደር ያለባት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 190,
+      "text": "እኮ አለቆቻችሁን ጠይቋ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "ጠይቋ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 191,
+      "text": "መቀሌ ከተማ በከባድ መሳሪያዎች ድምጽ ድብልቅልቅ እያለች የመከላከያ ሰራዊት መቐለ ተባለ የመከላከያ ሰራዊት መቐለ መግባቱን ዲፕሎማቶችና ደብረጺዮን አስታወቁ ዶክተር ደብረጺዮን ለሮይተርስ ባደረሱት የጽሁፍ መቐለ ከተማ ከባድ ፍንዳታ እንደሚሰማ ከከተማው ነዋሪዎች ቀጥተኛ ግኑኝነት የተባሉ ዲፕሎማቶችም አረጋግጠዋኛል ሮይተርስ ዲፕሎማቶቹ በከተማዋ ሰሜናዊ ክፍል ሀምዳይ በሚባል አካባቢ ፍንዳታው ተሰምቷል በአፋር በውቅሮ አቅጣጫ መከላከያ ሰራዊት ከተማዋ ለመግባት ከባድ ውጊያ እያደረገ የኢፌዴሪ አየር ሀይል አንቶኖቭ አውሮፕላን ማለዳ ለመቀሌ ከተማ ነዋሪዎች የማስጠንቀቂያ ወረቀት ከበተነ ደቂቃ በተመረጡ የወንበዴው ኢላማዎች በድሮን የታጋዘ ከባድ ድብደባ እያካሄደ አንዳንድ የመረጃ ምንጮች እንደገለጹት በቦሌ ኢንተርናሽናል ኤርፖርት ጥቃት ለመፈጸም እየተዘጋጁ ሰምተናል የሚመለከተው አካል ጥብቅ ቁጥጥር እንዲያደርግ እንመክራለን",
+      "gold": [
+        [
+          "መከላከያ ሰራዊት",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "POSITIVE",
+          "ከተማዋ ለመግባት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 192,
+      "text": "ቤተሰቦቻቸዉ  ቢመጡና አብረዋቸዉ  ደስታዉን ቢያጣጥሙ  ደስ ይለኛል ሌላዉን  ግን  የመንግስት ጉዳይ ነዉ  አሁንም እኔም ሆንኩ የማቃቸዉ ሰዎች ከትግራይ  ህዝብ ጋር  ችግር የለኝም  ኢትዬጲያዊ ናቸዉ  እስፓርትን  ወደ ፓለቲካ  ለመቀየር  አስባችሁ ነዉ   ይህን ሀሳብ  ያነሴችሁት   አመስግናለዉ   ጀግናዋን  እናት መልክት  ስላስተላለፍችሁ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ኢትዬጲያዊ ናቸዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 193,
+      "text": "የለም! የፓርቲው አቋምማ አቋማቸው ነው።በፓርቲው ውስጥ አንድ ሰው አንድ ድምጽ አይደል? ሌላው ነገር በፓርቲው በኩል ያለው አላፊነትና አገር አቀፍ በሆነ የስራ ምድብ ላይ ያለው ችግር ነው። አቶ ለማ መከላከያ ሚኒስትርነታቸው የኢትዮጵያ በመላ ነው።",
+      "gold": [
+        [
+          "አቶ ለማ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 194,
+      "text": "የኢያ ህዝብ ስለ ወያኔ ብቻ ስለሚያስብ ኣብይ ምን እያደረገ መሆኑ ኣይታየውም የሚታየው ዶክሜንታሪ ፊልም ነው",
+      "gold": [
+        [
+          "ኣብይ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ኣይታየውም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 195,
+      "text": "ቢበሉ የማይጠግቡ ግፈኞች ወያነ",
+      "gold": [
+        [
+          "ወያነ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ግፈኞች"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 196,
+      "text": "ሱዳን እየወሰደች የህግ ማስከበር እርምጃ እደግፋለሁ",
+      "gold": [
+        [
+          "ሱዳን",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "POSITIVE",
+          "እደግፋለሁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 197,
+      "text": "በዚህ ኑሮ ውድነት ቴክኖሎጅ በላይ በላይ ፋይዳው አይታየኝም",
+      "gold": [
+        [
+          "ቴክኖሎጅ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ፋይዳው አይታየኝም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 198,
+      "text": "የሞሮኮ ድል የብልፅግናችን አንዱ ማሳያ ነው ክላስተር ስንዴ ነው የበለጠ መረጃ ለማግኘት እዚሁ እዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝዝ በሉ",
+      "gold": [
+        [
+          "ስንዴ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "የብልፅግናችን አንዱ ማሳያ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 199,
+      "text": "በሃገር ክሕደት ወንጀል ነበር መከሰስ የነበረባቸው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "መከሰስ የነበረባቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 200,
+      "text": "የሰው ልጅን በቁም እያነደዱ ለሚቃጠል እቃ የእሳት አደጋ መቆጣጠሪያ መስራት የቁልቁለት ጉዞ",
+      "gold": [
+        [
+          "የእሳት አደጋ መቆጣጠሪያ",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "የቁልቁለት ጉዞ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 201,
+      "text": "መግደል ለ መሪ ለአል ባግዳዲም አልበጀም ልክ እንደሱ እየጮክ ትሞታለህ",
+      "gold": [
+        [
+          "መሪ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መግደል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 202,
+      "text": "አማራ ክልል ላይ ፈተናውን የሰሩት በሙሉ በመኮራረጅ እንደበረ ተፅፎ ነበረ ይሃው ማረጋገጫው መጥቷል ፈተናው መሰረዝ አለበት",
+      "gold": [
+        [
+          "ፈተናው",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "በመኮራረጅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 203,
+      "text": "የዲሲ ሀበሻ ወንድ ሴታሴት ነው እህቶቻችን አሜሪካን ሀገር ለመጀመፘ ጊዜ ሲገቡ በተቀባዮቻቸው የሚመከሯቸው ምክሮችን ተመልከቱ",
+      "gold": [
+        [
+          "ወንድ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ሴታሴት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 204,
+      "text": "ውሸታም ናቹህ እንደመላካችህ ስራቹህ በጣም ነው የሚይስጠላው ውሸታም ውሸታም ናቹህ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ውሸታም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 205,
+      "text": "የኢትዮጵያ ብሄሮች ብሄረሰቦችና ህዝቦች መለያ የሆኑት ባህሪያትና እሴቶችም እኩል የህግ እውቅናና ጥበቃ ሊኖራቸው ይገባል",
+      "gold": [
+        [
+          "እሴቶችም",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "እኩል"
+        ],
+        [
+          "እኩል የህግ እውቅናና ጥበቃ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "ሊኖራቸው ይገባል"
+        ],
+        [
+          "እኩል የህግ እውቅናና",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "ሊኖራቸው ይገባል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 206,
+      "text": "መድረኮች ሀሳባቸው የመግለጽ መብት አላቸው ዋናው ነገር ግን የመደመጥ እንጂ የመወስን መብት የላቸውም ምክንያቱ የብዝኋኑን ድምጽ ማን ጋ እንዳለ ይታወቃል እና",
+      "gold": [
+        [
+          "መድረኮች",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "መብት አላቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 207,
+      "text": "ነብይ ነዉ ያል ነዉ መንግስታችን ለቤተ ክርስቲያን እና ለዜጎቹ ግድ የሌለዉ የቤተመንግስት ሲንቦል ሆኖ ቁጭ አል",
+      "gold": [
+        [
+          "መንግስታችን",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ግድ የሌለዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 208,
+      "text": "ባለፉት ጥቂት ጊዜያት አመርቂ የሆነ ስራ ተሰርቷል የነበሩ ክፍተቶች ካሉ ደግሞ ገምግሞ ማሻሻል የበለጠ ለዉጥ ያመጣል",
+      "gold": [
+        [
+          "ስራ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "አመርቂ የሆነ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 209,
+      "text": "ህግ በሌለበት ሀገር ህግ አስከባሪ ነኝ ማለት አይደብር",
+      "gold": [
+        [
+          "ህግ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "አይደብር"
+        ],
+        [
+          "ህግ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አይደብር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 210,
+      "text": "ብዙ ሰው ሰጋ ለመብላት የዳሀው ሰው ሽሮ ይነጥቃል  ያሳዝናል",
+      "gold": [
+        [
+          "የዳሀው ሰው",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ሽሮ ይነጥቃል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 211,
+      "text": "እሱ ያለው ለራሱ ነው ይህ ደሞ መብቱ ነው ምን እሱ እኮ አልተጻፈም አላለም አማርኛ ለመናገር ግን ህዝቡ ለመን ጫና ውሰጥ እንዲገባ ተደረገ የአፍ መፍጫ ቋንቋው በደንብ ሳያገባው ከኛ ክፍል ጀምሮ በደርግ ጊዜ እንድንማር በግድ ካሪክለም ተቀርጾ ተደርገናል ለምን በሰልጣኔ እድሜ ጠገብ ወዘተ ከሆነ ግእዝ መሰጠት ነበረበት በህዝብ ብዛት ከሆነ ኦሮምኛ መማር ነበረብን ሰለዚ ይህ የፓለቲካ ገ",
+      "gold": [
+        [
+          "ካሪክለም",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "በግድ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 212,
+      "text": "በሁሉም አከባቢ ይህን የተቀደሰ ስራ እናስቀጥላለን ደስ የሚል ተግባር ነው",
+      "gold": [
+        [
+          "ስራ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "የተቀደሰ ስራ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 213,
+      "text": "አብይ አህመድ አሰልጥኖ ስብሰባ ከዘር ማጥፋት ግድያው ስብሰባው እንዲሳተፍ የተደረገው ግለሰብ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ግድያው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 214,
+      "text": "መልካም የስራመንገድ መልካምነዉ ነፍስህ በአፀደ ገነት ያኑራት",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#EMPLOYMENT",
+          "POSITIVE",
+          "መልካምነዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 215,
+      "text": "ቅናሹ 50% ሊሆን ይገባል ። በነፃ የሰጠናቸው ውሃን ጨምሮ ብዙ ነው 。",
+      "gold": [
+        [
+          "ውሃን",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "ቅናሹ 50% ሊሆን ይገባል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 216,
+      "text": "ፍትህ እንዳደረጓት ናት",
+      "gold": [
+        [
+          "ፍትህ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 217,
+      "text": "የአዲስአበባ ድሆችና መብላት በማይችልበት በቤትኪራይ ይሰቃያል  መምህራን በሺ ብር ደሞዝ የቤት ድጎማውን ጨምሮ ከሺብር በላይ የቤት ኪራይ ይገፈፋል እናንተ ግን በምላሳቾሁ ብቻ እየደለላችሁ አሰቃያችሁት እግዚአብሔር ለሁሉም ፍርድ ይስጥ",
+      "gold": [
+        [
+          "በቤትኪራይ",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "ይሰቃያል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 218,
+      "text": "ዎናዉ ጥገና እሚያስፈልግህ ነህ",
+      "gold": [
+        [
+          "ጥገና",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "እሚያስፈልግህ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 219,
+      "text": "የዜና አዘጋገባችሁ  ዘገባችሁ  ጥሩ አይደለም ለ ግብፅ የሚያደላ ይመስላል መስማማት ላይ ደረሱ ይልና ወዲያውኑ እንዲያም ሆኖብሎ ያፈርሰዋል የእኔ ግድብ ነው የሚሉ ኢትዮጵያውያን  ኢትዮጵያ በጀመረችውብሎ  ኢትዮጵያውያንን በስውር ይከፋፍላል ከላይ ዜናውን ያንብቡጀርመኖች ሆይ ግድቡ የእኔ አይደለም  ሚሉ ኢትዮጵያዊያኖች አሉ ወይ በአባይ የዜና ዘገባ ላይ በእጅጉ ጥንቃቄ ብታደርጉ የተሻለ ነው",
+      "gold": [
+        [
+          "ዘገባችሁ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ጥሩ አይደለም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 220,
+      "text": "የአማራ ህዝብ ከእንቅልፋችን ነቅተን የምንነጋገርበት  የምንመካከርበትና የምንደራጅበት ወሳኝ የታሪክ ወቅት ነው እነዚህ የእፉኝት ልጆች ለጥፋት ቀንና ሌሊት ይሰራሉ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ነቅተን የምንነጋገርበት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 221,
+      "text": "ሕግ ሲከበር እኮ ነው",
+      "gold": [
+        [
+          "ሕግ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ሲከበር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 222,
+      "text": "ስራፈት ሴታሴት ሩቅ ሆነህ ያልተከናወነ የፈጠራ ወሬህን ከምትሰልቅ እንደ ወንዶቹ ገብተህ አትዋጋም ነበር ደደብ ሽንታም",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "ስራፈት ሴታሴት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 223,
+      "text": "የኦሮሞ ፖለቲከኞች ጤናቸው ቢመረመርን ምን ይመስሎታል",
+      "gold": [
+        [
+          "የኦሮሞ ፖለቲከኞች",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ጤናቸው ቢመረመርን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 224,
+      "text": "#ግድ-የለሽ የሆኑ #የመዳፈር እርምጃዎች #በእርግጥም አጥፊና አደገኛ ናቸው፡፡ #ጥበብ ማለት #ድፍረት እና #ጠንቃቃነት #ሚዛናዊ ሲሆኑ ነው!",
+      "gold": [
+        [
+          "እርምጃዎች",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "#ግድ-የለሽ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 225,
+      "text": "አወ የተሻለ ስራ እየሠራችሁ ነው አማራን ከምድር በማፅዳት ኢትዮጵያን እየገነባችሁ ነው",
+      "gold": [
+        [
+          "ስራ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "አማራን ከምድር በማፅዳት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 226,
+      "text": "ግሪክ፣ እስራኤልና ቆጵሮስ በትናንትናው እለት ባወጡት የጋር መግለጫ የቱርክ ወታደር ወደ ሊቢያ  የመላክ እቅድ  በሊቢያ ያለውን የእርስበእርስ ጦርነት የሚያባብስ አደገኛ አዝማሚ እንደ…",
+      "gold": [
+        [
+          "የቱርክ ወታደር ወደ ሊቢያ የመላክ እቅድ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አደገኛ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 227,
+      "text": "ሌላው ኦህዴድንና ብአዴንን ከጉያቸው ወሽቀው ህወሓት እንድትጠፋላቸው ይፈልጋሉ  ሆኖም ህወሓትን የማጥፋትና ያለማጥፋት ጉዳይ እነሱን አይመለከትም  ትግራይ ክልል ውስጥ ያለው መንግስት ሴጣንም ሆነ መልአክ የሚመለከተው የትግራይ ህዝብ ነው  እነሱን አይመለከትም ህውሃት ጀግና ነው ልማት ላይ ነውእኛ ትግራዋይ አንበረከክም ከህወሃት ጎን ነን ምንም አውሩ አንሰማም ልማት ላይ ነን",
+      "gold": [
+        [
+          "ህወሓት",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ጀግና ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 228,
+      "text": "በጣም ደስ የሚል አንጀት አርስ ፊልም ነው እስቲ ከዚህ ፊልም ተማሩና አሳምራችሁ ስሩ እንደ ዛሬ የኢትዮ ፊልም አስደስቶኝ አያውቅም",
+      "gold": [
+        [
+          "ፊልም",
+          "PUBLIC_SERVICES#EDUCATION",
+          "POSITIVE",
+          "ተማሩና"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 229,
+      "text": "በየትኛው ወጣት አዋቂ አመራሮች ነው የሚፈታው",
+      "gold": [
+        [
+          "አመራሮች",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 230,
+      "text": "ፊልም ላይ ምን አሰጠላሸ ብትሉኝ መጠጥ ሲጋራ ጫት እነዚህ የሌሉበት ፊልም እንዴት እደናፈቀኝ ።ወጣቱ ወዴት እየሄደ እንደሆን የሚያወቅ ያሰረዳኝ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "አሰጠላሸ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 231,
+      "text": "የአማራ ብሄራዊ ንቅናቄ አብን አስፈጻሚዎች አዲስ አበባ በሚገኘው ቤታቸው በስብሰባ በጸጥታ ሀይሎች መከበባቸው ታውቋል",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መከበባቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 232,
+      "text": "የሰው ነፍስ ለማጥፋት ቀን ከሌት ለሚደክሙት እነሱ እያደረጉ ያሉት ተምሳሌትነው",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ተምሳሌትነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 233,
+      "text": "የታላቁ የህዳሴ ግድብን ኢትዮጵያ ሱዳን ግብጽ በበይነ መረብ የሚያደርጉት የሶስትዮሽ ውይይት በዛሬው እለትም ቀጥሏል",
+      "gold": [
+        [
+          "ውይይት",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "ቀጥሏል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 234,
+      "text": "አሁን ከበቂ በላይ የወለጋ ቄሮ በኮንደሚኒየም እጣ ውስጥ በደንብ ስለተካተቱ የኦነጋውያኖቹ እቅድ ተሳክቷል።",
+      "gold": [
+        [
+          "በኮንደሚኒየም እጣ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "እቅድ ተሳክቷል።"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 235,
+      "text": "የአልባሳት ሾ ተጧጥፎዋል በቀን ሁለት ወረዳ ከገባ ሁለት ሱፍ ይለብሳል ታዳሚውም ይለባበሳል",
+      "gold": [
+        [
+          "የአልባሳት ሾ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "ተጧጥፎዋል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 236,
+      "text": "ምስራቅ ኦሮምያን በቅጡ ማስተዳደር ሳትችል ዘለህ መደመር ለምስራቅ ኣፍሪካ ይጠቅማል ያልክ ልጅ ደህና ነህ እንዴት ነህ !🤪🤪🏃‍♂️🏃‍♂️",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "በቅጡ ማስተዳደር ሳትችል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 237,
+      "text": "በመተከል ለተደረገው የዘር ማጥፋት ወንጀል ሁሉም የብልጽግና አመራሮች አቀፍ ወንጀል እንዲጠየቁ አድርጉ",
+      "gold": [
+        [
+          "የብልጽግና አመራሮች",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ወንጀል እንዲጠየቁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 238,
+      "text": "ምሁር ማን ነው ስንቶቻችን ነን በወሬ ሳይሆን ምሁርነታችንን በተግባር ወይም ከተላላኪነት ወጥተ ንለህዝባችን በእውነት እና በተከበረው ሙያችን እያገለገልን ያለነው",
+      "gold": [
+        [
+          "ምሁር",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 239,
+      "text": "ቂቂቂቂ ህውሃት ከባዴ መሳርያ ያመርታል እንዴ ደግሞ ነገ ጠዋት ሳይነጋ አታለሉን እኮ እንዋጋ በሉን ደግሞ",
+      "gold": [
+        [
+          "ህውሃት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አታለሉን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 240,
+      "text": "ስልጤዎች መስጅድ የሚመጡት ጫማ ለመስረቅ እንጂ ለመስገድ አይደለም",
+      "gold": [
+        [
+          "ስልጤዎች",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ጫማ ለመስረቅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 241,
+      "text": "ንስሮች በርቱልኝ እንዲህ በከፍታ ስትበሩ ታኮሩናላችሁ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ታኮሩናላችሁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 242,
+      "text": "አይ ሰላም ሰላም ካንተስ ወያኔ ይሻለናል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ወያኔ ይሻለናል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 243,
+      "text": "ጥሩ ጥቆማ 1 . አባላት ከሚከፍሉት አነስተኛ አመታዊ መዋጮ አንፃር የጥቅም ማዕቀፍ ውስጥ ማካተት አዳጋች በመሆኑ ሲሆን 2 . 3 . 4 . ግን ጤና",
+      "gold": [
+        [
+          "መዋጮ",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "አዳጋች"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 244,
+      "text": "ደብረብርሀን በደብረብርሀን ከተማ የፌደራል ፖሊስ አድማ ብተናና አማራ ሀይል አባላት የአቅመደካሞችን ሰብል ሰበሰቡ የጸጥታ አካላቱ ከላለምና ጸጥታ ማስጠበቅ የአቅመ ደካሞችን ሰብል በመሰብሰብ ተሳትፈዋል የሰብል ስብሰባው በከተማው ዛንጂራና ውለጮ ንኡስ ቀበሌዎች የዘገበው የከተማው ኮሙዩኒኬሽን የፌደራል ፖሊስ አድማ በታኝ የአማራ ሀይል ላደረጋችሁት ትብብረ እናመሰግናለን",
+      "gold": [
+        [
+          "የፌደራል ፖሊስ",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "POSITIVE",
+          "ሰብል ሰበሰቡ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 245,
+      "text": "ኧረባካችሁ ከአዲሰ ዘመን እብናት በለሳ እና ሌሎች መላያ ልተባሉትን ቅድሚያ ስጡልን ሁሌም በወሬ ጋጋታ ጊዜውን ጨረስነው",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "በወሬ ጋጋታ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 246,
+      "text": "ወሬና ተግባር ተለያዩ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተለያዩ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 247,
+      "text": "ሌባ ሁላ ፤ ምሁር ትክክለኛውን ጥያቄ የምጠይቅ ነው ስለማይሰርቅ",
+      "gold": [
+        [
+          "ምሁር",
+          "PUBLIC_SERVICES#EDUCATION",
+          "POSITIVE",
+          "ትክክለኛውን ጥያቄ የምጠይቅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 248,
+      "text": "እስኪገብ ነብሳችን ማረፊያ እንዳይኖራት ሲገድለንየኖረን ትህነግ በቁም ትተን እረፍት የለም.#Nomore",
+      "gold": [
+        [
+          "ትህነግ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሲገድለንየኖረን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 249,
+      "text": "ርጎ ለአባዱላ  ዲቦራ ፋውንዴሽን  አይከብድም",
+      "gold": [
+        [
+          "ዲቦራ ፋውንዴሽን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 250,
+      "text": "ጌታቸው እረዳ በአብዬታዊ ዴሞክራሲ ሃያ ሰባት አመት ህዝብን ዘረፋችሁ አገሪቷን ለቢሊዬን ዶላር እዳ አስገባቸኋት",
+      "gold": [
+        [
+          "በአብዬታዊ ዴሞክራሲ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ዘረፋችሁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 251,
+      "text": "ይህን ስትዘግቡ ትንሽ አታፍሩም ትግራይ ኮ ኢትዮጵያ ናት ለዛውም ክልል ከአንድ ክልል ጋር ጦርነት ለመግጠም ኤርተራን መገባዝ ምን ማለት ነው ችግሩን ተነጋግረው መፍታት እየተቻለ",
+      "gold": [
+        [
+          "ትግራይ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ኢትዮጵያ ናት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 252,
+      "text": "ለማን አቤት ይባላል መንግስት እራሱ አሸባሪን እያገዘ እግዛብሔር ይድረስላቸው",
+      "gold": [
+        [
+          "መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አሸባሪን እያገዘ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 253,
+      "text": "በርቱና ሁሉንም ግልፅ በሆነ መንገድና ሌላው በሚማርበት መልኩ ለሕግ አቅርቧቸው",
+      "gold": [
+        [
+          "ለሕግ",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "በርቱና"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 254,
+      "text": "ተጠያቂነት ከሌለ ህግና የህግ የበላይነት የለም",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የበላይነት የለም"
+        ],
+        [
+          "ህግና የህግ የበላይነት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የለም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 255,
+      "text": "የትህነግ አመራሮች በአካል ተገኝተውም መግለጫ መስጠት አልቻሉም የትህነግን ወታደራዊ አቀባይ በስልክ ሰበር ደመሰስን ምናምን ያሰኙት ስልኩ ይቆራረጣል ከመቀሌ በደንብ ጥልቅ ጉድጓድ ገብተዋል የትግራይ ሰበር በተደጋጋሚ ከሚያስተላልፈው የእለታዊ አልሰራም ትህነግ ወታደራዊ ልብሶችን አዘጋጅቶ ኤርትራዊያን ስደተኞችን የኤርትራና የኢትዮጵያ ወታደሮች ለማለት እንደሚዘጋጅ ግልጽ የማይካድራውን አይነት ጭፍጨፋ ሲያደርግም መስራት ያቆሙትን ሚዲያዎች ቀርጸው እንደምንም ጭፍጨፋ ተፈጸመ መልቀቃቸው አይቀርም የሀውዜኑን ጭፍጨፋ በሴራ ያስፈጸሙት የሚቀርጹ ሰዎችን ሱዳን ሄደው እንዲሰለጥኑ አድረገው የካሜራ ባለሙያዎች ደርግ እንዲደበድብ በሴራ ያስቀመጡት ተራራዎቹ ካሜራቸውን አስተካክለው እየጠበቁ ድብደባው ከተፈጸመ ወዲያውኑ ቪዲዮዎችን ወደሱዳን ወስደው በቴሌቪዥን አስተላልፈዋል ካርቱም የሚሄዱበት የላቸውም ደርግ መጥቶ እንዲደበድብ እንደሰሩት አይጠቀምባቸውም ራሳቸው ፈጽመው ራሳቸው ቀርጸው በራሳቸው ሚዲያዎች ያስተላልፉታል ገደቡ ሲያልቅ ቦታቸውን ሳይቀይሩ አልቀሩም ከመዋጋት ለፕሮፖጋንዳ የሚጠቅም ሰርተው ትንፋሽ እናገኛለን ሊሰሩ እንደሚችሉ መገመት አያዳግትም",
+      "gold": [
+        [
+          "የትህነግ አመራሮች",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "መግለጫ መስጠት አልቻሉም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 256,
+      "text": "ከመሬት ተነስቶ ላግባሺ ስላለ ለምን ያምናሉ ረቂቁን ውድቅ አድርገነዋል",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 257,
+      "text": "እራሱ መንግስት ሊመታሲል ወይንም የኦሮሞ ጽፈኛ ቄሮወች አደጋ እንደሚያደርሱ ስለሚያቅ ቀድሞ ለመከላከልና ሽፍን ለመስጠት እየሞከረ ነው",
+      "gold": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 258,
+      "text": "ብላችሁ ብላችሁ ጫካ ማቃጠል ጀመራችሁ ህሊና የላችሁም ደሞ ማን ይባል ይሆን",
+      "gold": [
+        [
+          "NULL",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ህሊና የላችሁም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 259,
+      "text": "እኛ መስማት የፈለግነዉ እንደዚ አይነት ልማት ነዉ",
+      "gold": [
+        [
+          "ልማት",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "የፈለግነዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 260,
+      "text": "ፈንዳ በሉት ከአውን ወድያ ሰላማዊ ትግል የሚባል ነገር የለም ለኢትዬጵያን የሚያስብ ከሆነ እንደ አባላቶቹ ግንቦት  ይቀላቀል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 261,
+      "text": "ዘራፊ ሁላ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዘራፊ ሁላ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 262,
+      "text": "ሲጀምር  የኦሮሞው ቡድን ቄሮ  ቡራይ ህፃናትና አዛውንት በገጀራ ሲቆራርጥ አዲስ አበባ ወጣቶች የሚያፍስ መንግሥት ምን ህግ አለው",
+      "gold": [
+        [
+          "ህግ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ምን ህግ አለው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 263,
+      "text": "እሽ ጥሩ ጅምር ነው ሀሳብን በነፃነት መግለፅ ግን ሰብዓዊ ምብት ነው በስራቸው ምክንያት የታሰሩ የፖለቲካ ፓርቲ አመራሮችና ጋዜጠኞችን መንግስት ያለቅድመ ሁኔታ ሊፈታ ይገባል",
+      "gold": [
+        [
+          "ሀሳብን በነፃነት መግለፅ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ጥሩ ጅምር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 264,
+      "text": "እንደምንክረምሽ ኢትዮጵያ ወላጆች ልጆቻቸውን ይማሩልኝ ብለው ሰደው አስከሬናቸውን የሚረከቡበት አገር በእኛ ጊዜ ይደረግ የነበረው የቡድንጠብ ከጡጫናእርግጫ ያለፈ…",
+      "gold": [
+        [
+          "አገር",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አስከሬናቸውን የሚረከቡበት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 265,
+      "text": "የእኔ ጥያቄ እዚ ሰፈር ቀኑን ሙሉ ሲፖስቱና ሪፕላይ ሲያረጉ የሚዉሉ ሰዎች የገቢ ምንጭ ምንድነዉ ?",
+      "gold": [
+        [
+          "የገቢ ምንጭ",
+          "ECONOMY#EMPLOYMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 266,
+      "text": "ከአዲስ አበባ ከተማ በቅርብ ርቀት ያሉ የቱሪዝም መስህቦቻችን አልሚ አጥተው የሚኖሩበት ዘመን ይበቃል",
+      "gold": [
+        [
+          "መስህቦቻችን",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ይበቃል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 267,
+      "text": "ብልፅግና አቅም ካለው እነዚ የሰው ደም ጠጥተው የማይረኩ ከትግራይ መሬት ያስወጣ",
+      "gold": [
+        [
+          "ብልፅግና",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 268,
+      "text": "ተቃዋሚ የምኖር እኮ እጋዊ መንግሥት ስኖር ነው ከትግሬ ውጭ ያለውን ሕዝብ  ኦነግ የድሮ ስራአት ናፋቂ እየተባለ ሰው የምገደልበት አገር የምታሰርበት አገር የምሰደድበት አገር ሰው እንደየት ስለ ሰላማዊ ተቃዋሚ ያወራል ቀልድ ነው ወያኔ በሰላማዊ መንገድ አይወርድም በአመጽ በትጥቅ ትግርል በጉልበት ነው አለቀ",
+      "gold": [
+        [
+          "መንግሥት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቀልድ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 269,
+      "text": "የRainbow ነገር ምን ማለት እንደሆነ ትርጉሙ ያልገባው ማህበረሰብ ሳያስተውል ለማድነቅ ይሮጣል!!! አሳፋሪ መሪና አሳፋሪ ተመሪ!!!",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "አሳፋሪ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 270,
+      "text": "መንግሥት ቆሻሻ እጁን ከሰበሰበ ሁሉ ሰላም ይሆናል",
+      "gold": [
+        [
+          "መንግሥት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቆሻሻ እጁን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 271,
+      "text": "ግን እኮ አሁንም በድሮን እስከዚች ቀን ድረስ እየደበደባችሁ ነው ሰላም ታዲያ የት አለች",
+      "gold": [
+        [
+          "ሰላም",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 272,
+      "text": "ትግራይ ሰልፍ ላይ አንዲት ሴት የተናገረችው እኛ ከአማራ  ከኦሮሞ ከሁሉም ጋር አላማችን ሰላም ነው ግን የፓለቲካ ትርፍ እሚፈልጉ ናቸው እሚለዩን እሚቦድኑን እውነት ሐሰት",
+      "gold": [
+        [
+          "ሰላም",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "አላማችን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 273,
+      "text": "እናተን ብሎ መረማረ ውሸታምች ይሄ በጭራሽ አሳማኝ መልስ ሊሆን አይገባም የሱን ቀን አይሳህ አፍር ብሉ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ውሸታምች"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 274,
+      "text": "ጀግናው የኢትዮዽያ መከላያ ሰራዊት ጠላት ወረዳ ድረስ ዘልቆ በመግባት ባደረሰው ጥቃት አንፀባራቂ ድሎችን ተጎናፀፈ",
+      "gold": [
+        [
+          "መከላያ ሰራዊት",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "POSITIVE",
+          "አንፀባራቂ ድሎችን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 275,
+      "text": "ሰበር የጉምዝ ነፍሰ ገዳይ ቡድን ትህነግ ክህደት መከላከያን መክበቡ ተሰማ ተስፋዬ ስላሴ በመተከል ማንዱራ ወረዳ አዝባጉና መከላከያ ሰራዊት በነፍሰ ገዳዩ ቡድን ተከበበ ከትናንት ውጊያ ሲደረግ የነፍሰ ገዳዩ ከመከላከያው የሚበልጥ የህዝቡም የመከላከያም ህይወት አደጋ ገብቷል ቤንሻንጉል ክልል ሌላኛው የሀገር ማፍረስ የሚሰራበት ክልል ምስክር አያስፈልገውም በቤንሻንጉል ክፍተት ለትህነጎች ለኦነጎች ለጉምዝ አማጺዎች ሁኔታን በመፍጠሩ ቀጠናን ቀጠና እንዲያስቡ አስችሏቸዋል ነፍሰ ገዳዩ ቡድን ከትህነግ መከላከያን ከበበው ምክትል ጠቅላይ ሚኒስትሩ ቤንሻንጉል ጉምዝ ክልል ካቀኑ ክልሉ ከሰሜኑ ክፍል ባልተናነሰ ሀገር የማፍረስ የሚሰራበት አስረግጠው ሳያድር በስፍራው የመከላከያ ሀይል በአማጺ ቡድን ተከበበ ሰማን የአብይ አስተዳደር ወላጅ አባቱ ትህነግ መጨከን አቅቶት ጁንታው የሀገሪቱ ክፍሎች ግልገል ጁንታወች ተገቢውን አቅርቦት እያቀረበ የሽብር አድማሱ እንዲሰፋ እያደረገው በቀላሉ በቁጥጥር ሊውል የሚችለውን የትህነግ ሽብር እድሜው እንዲረዝም ላበረከተው አስተዋጽኦ ሀላፊነቱን የአብይ አስተዳደር መውሰድ አለበት ለመሆኑ ቤንሻንጉል ጉምዝ ክልል ከትግራይ ክልል ባልተናነሰ ሀገር የማፍረስ የሚሰራበት ክልል ለምንድን ትህነግ እንደሚወሰደው እርምጃ ቤንሻንጉል የማይወሰደው አማጺያን በየስፍራው እየፈሉ ባሉበት ለጁንታው መስጠት መሬት ካለመረዳት የመጣ አብይ ትግሉን ግልጽና የሚገመት አይፈልግም አሰራሩ አመራሩ ሊደርስበት የማይችል ጥልቅ ሚስጥር የማይፈነቅለው ድንጋይ ከዚህም የተነሳ ሀገሪቱን ለማረጋጋት ቀጥተኛና ቀላል መንገድ መምረጥ ውስብስብ አሰራር በመፈለግ አላስፈላጊ መጓተቶች እንዲፈጠሩ እያደረገ እየሆነ አብይ ተገዶ ድርድር እንዲመጣ የሚፈልገው ሀይል ለምሳሌ የጃዋር ደጋፊወች የትግራይ የጃዋር አድናቂ የኦሮምያ ባለስልጣናት የሲዳማ የወላይታ ወዘተ ድርድር እንዲደረግ ፍላጎት ከዚህም አለም አቀፉ ማህበረሰብ እያደረገ ለእነዚህ ሀይሎች እድል ቆጥረውታል የአብይ የተጓተተ እርምጃ የእነዚህ ሀይሎችን ፈጣሪነት እያጎላው ይሏል ለምሳሌ በትግራይ ክልል እንደሚወሰደው",
+      "gold": [
+        [
+          "መከላከያ ሰራዊት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "በነፍሰ ገዳዩ ቡድን ተከበበ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 276,
+      "text": "አሸባሪ ፓርቲ",
+      "gold": [
+        [
+          "ፓርቲ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አሸባሪ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 277,
+      "text": "የእምዬ ነኝ እንኳን ጣይቱዬን የምድሪቷን አፈር የማላስነካ የአሉላ መንፈስ የሰረጸኝ ዘራፍ የምል ለሀገሬ ልጅ የገብርዬ ነኝ",
+      "gold": [
+        [
+          "ለሀገሬ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 278,
+      "text": "በአፍደር ማዳበሪያ አደንዛዥ ተያዘ በሶማሌ አፍደር ቆራሄይ ዞኖች ትናንት ታህሳስ ከቀኑ ገደማ በተደረገ ፍተሻ ማዳበሪያ አደንዛዥ ተያዘ በገልባጭ መኪና ተጭኖ የተገኘው አደንዛዥ ከላይ ሽንኩርት ለብሶ የአፈደር ወንጀል መከላከል የስራ ሂደት አስተባባሪ ሳጅን አብዱሰላም አህመድ ለአዲሰ ዜይቤ ተናገሯል የተያዘው አደንዛዥ አሽከርካሪውም በቁጥጥር ምርመራ እየተደረገበት አክሏል እዮሀ ሚድያ የእዮሀ ሚድያ ዝግጅቶችን ለመከታተል የዩትዩብ ቻናላችንን ሊንክ ይቀላቀሉ መረጃዎች በፍጥነት እንዲደርሶ የቴሌግራም ቻናላችንን ሊንክ ይቀላቀሉ",
+      "gold": [
+        [
+          "አደንዛዥ",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ተያዘ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 279,
+      "text": "ይህ ለተጎዱ የማህበረሰብ ክፍሎች እና ለተጎዱ የመንግስት ተቋማቶች በቀጥታ እንዲደርሳቸው መደረግ አለበት። ራሱን ችሎም ልዩ አስፈፃሚውን የሚከታተል ከተወካዮች ምክር ቤት መዋቀር አለበት።",
+      "gold": [
+        [
+          "የመንግስት ተቋማቶች",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "መደረግ አለበት።"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 280,
+      "text": "የስንዴው ልማት ብቻ ሳይሆን እየሞተ ያለው ሰውም ህዝብን ለመቀነስ ተስፋ ሰጭ ነው",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እየሞተ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 281,
+      "text": "የምን ሰልፊ ነው የሱዳን ከሆነ ቁርጡን ይናገሩ ምድረ ዶንቆሮ ሁላ አላሪፊ ከሉ ከጁንታ ጋር መደመር ነው",
+      "gold": [
+        [
+          "ሰልፊ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ዶንቆሮ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 282,
+      "text": "ክልሉ በዮኒ ማኛ ነው የሚተዳደር ስልህ ቀልድ መስሎህ ይኾናል! ዛሬስ አልተገለጠልህም ወይ?",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቀልድ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 283,
+      "text": "የከፍተኛ ሊግ አራተኛ ሳምንት ውጤቶች  ምድብ ሀ  እሁድ ታኅሳስ 26 ቀን 2012  ለገጣፎ ለገዳዲ 3-0 ወልዲያ ደሴ ከተማ 1-0 ኤሌክትሪክ ሰ/ሸ/ደ/ብርሀን 0-1 ደደቢት አክሱም…",
+      "gold": [
+        [
+          "ሊግ",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 284,
+      "text": "መልካም አፈፃፀም  ግን ን አገልግሎት መጠቀም አለመቻላችን በጣም ትልቅ ቅሬታ ፈጥሮብናል ምክንያቱም  ስለምታበዙ ተቸግረናል",
+      "gold": [
+        [
+          "አገልግሎት",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "መጠቀም አለመቻላችን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 285,
+      "text": "አብይ የክልል መስተዳድሮች ይወርዳሉ ብሎየለማንያውርደው ከአብይ ውጭ",
+      "gold": [
+        [
+          "አብይ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 286,
+      "text": "ችግሩ ያለው ከኢትዮጵያዊ ቦኩሃራም ሳይሆን ከራሱ ከመንግስት ነው። እንዴት በሀገራቸው ምድር ይህን ያክል ቀን ሲታገቱ መንግስት ዝምም ይላል?",
+      "gold": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዝምም ይላል?"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 287,
+      "text": "ብዓዴን የሚባል የጠላት ፍጥረት \"የዐማራ\" የተባሉ \"ተቋማትን\" እና \"ድርጅቶችን\" ለመጥለፍ እና ለማዳከም የሚያጠፋውን ጉልበት በሌሎች ተቃራኒ ተሰላፊዎች ላይ ቢያውል የት በደረሰ ነበር!!…",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ለመጥለፍ እና ለማዳከም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 288,
+      "text": "ምንም የማያውቁ ንፁሀን ሲገደሉ ባላየ ባልሰማ ዝም ማለቱን እስመልክቶ ነው????💔",
+      "gold": [
+        [
+          "ንፁሀን",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ዝም ማለቱን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 289,
+      "text": "አብይ ነው እንዴ ኤርትራን የሚያስተዳድረው",
+      "gold": [
+        [
+          "አብይ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 290,
+      "text": "ብልጥግናውን ኢዜማ አላችሁት",
+      "gold": [
+        [
+          "ብልጥግናውን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 291,
+      "text": "በሱማሌ ክልል በምርጫው ያሸነፈው የብልፅግና ፓርቲ የክልሉን አዲሱን መንግስት ናጌ ይመሰርታል ። በዚህ በክልሉ አዲስ የመንግስት ምስረታም የለውጡ ሐዋሪያ የሆነው ሙስጠፌ ሙሐመድ ኡመ",
+      "gold": [
+        [
+          "የመንግስት ምስረታም",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 292,
+      "text": "ልድገመው  ምርጫው ተራዘመም አልተራዘመ በበጋም ተደረገ በክረምት በኢትዮጵያ እውነተኛ እርቅ እስካልተደረገና ብሔራዊ መግባባት እስካልመጣ ድረስ አዙሪቱ መቀጠሉ አይቀርም",
+      "gold": [
+        [
+          "ምርጫው",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "አዙሪቱ መቀጠሉ አይቀርም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 293,
+      "text": "አንተ እራሱ ጁንታ ነህ ለገንዘብ ብለህ ሀገርን ሸጥክ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ሀገርን ሸጥክ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 294,
+      "text": "ብዙ ሰው እየተገደለ እየተሰቃየ  ክልሎች የየራሳቸወ አቃም እየወሰዱ አንዲት ኩሽታ እንካን ያልዘገባቸሁ  ቀን ኣለቀ መሰለኝኣሁን መቸ የነበረ ጦርነት ነው የቆመው ኣየ ፋና ታዘብናቸሁ ለግል ሰው ስትዘምሩ ከርማቹ  አዲስ ፍቅርና መደመር  እየተዘመረ ተኩስ ማቆም ከመቼው ወይስ",
+      "gold": [
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እየተገደለ እየተሰቃየ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 295,
+      "text": "ዘመነ ይፈታ",
+      "gold": [
+        [
+          "ዘመነ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ይፈታ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 296,
+      "text": "አንተ ተቀምጠህ ቀና የሚያደርጋት መሪ ከየት ይምጣ ቅቤው መምራት አልቻልኩም ደግሞም አለመቻለህን አለምአውቆ",
+      "gold": [
+        [
+          "መሪ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "መምራት አልቻልኩም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 297,
+      "text": "ጠ/ሚ እጅግ በጣም ሊመሰገኑ ይገባል ምክንያቱም ኢትዮጵያ ስትበታተን የምንሰደድበት ጎረቤት ሀገር እያዘጋጁልን ስለሆነ",
+      "gold": [
+        [
+          "ጠ/ሚ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ሊመሰገኑ ይገባል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 298,
+      "text": "አሸባሪ ተብሎ ለተፈረጀ ፓርቲ ኳሥ በእጅ መሥጠት ለምን አሥፈለገ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 299,
+      "text": "ውይይት ውይይት ውይይት ኡፍፍፍፍፍ",
+      "gold": [
+        [
+          "ውይይት",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ኡፍፍፍፍፍ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 300,
+      "text": "ይኽ የኛ ችግር ነው ራሳችን እንወጠዋለን የኣዞ እምባ ባታነቡ ምን ኣለበት ኣለቆቻችህ ሻዕብያ ኣገርኮ ከ ሶስት ሺ በላይ ሙስሊሞች ዋህቢ ናችሁ ተብለው ግማሾቹ ተገለዋል ግማሾቹ ጉድጓድ ስር ታስረዋል  እናንተ ግን ሲያነጥሱ እኔን እያላችሁ እንደ ኣላህ ታመልኩዋቹዋላችሁ",
+      "gold": [
+        [
+          "ሙስሊሞች",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ጉድጓድ ስር ታስረዋል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 301,
+      "text": "ኢትዮጵያን ከሚጠሏት ሁሉ ከግብፅም ይሁን ከሌሎች ጠላቶቿ በላይ የሀገሬ ጠላት አብይ አህመድ ነው፡፡",
+      "gold": [
+        [
+          "አብይ አህመድ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ጠላት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 302,
+      "text": "አዘን ለህዠብ ተርዳን ተርዳን አደራ ሥለ እምላክ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አዘን ለህዠብ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 303,
+      "text": "ለመሆኑ እኝ ክኤርትራ ህዝብ ችግር የለብንም እኝ አገረን ክከዳ ባንዳ ህዝብ እንጅ ለመሆኑ እናንተና መርያችሁ የምታረጉትን የምታቁ አይመለኝም",
+      "gold": [
+        [
+          "መርያችሁ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ባንዳ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 304,
+      "text": "አቶ ጌታቸው ዝም ብለህ አትቀደድ ባይሆን እጅህን ስጥ አሊያ በቅርቡ ወደ እነ ስዩም መስፍን ትሄዳለህ እሺ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እጅህን ስጥ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 305,
+      "text": "ያስጠላል መደመር መደመር",
+      "gold": [
+        [
+          "መደመር",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ያስጠላል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 306,
+      "text": "ወዳጀ የአማራ ልዩ ኃይል ትግራይ አልገባም የትግራይን ወራሪ ተክልሉ አባረረ እጅ ትግራይ አልገባም",
+      "gold": [
+        [
+          "የአማራ ልዩ ኃይል",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 307,
+      "text": "አሁንም እንዲሁ እያባበሉ ህዝቡን ለተጨማሪ ጭፍጨፋ እንዳይዳርጉት",
+      "gold": [
+        [
+          "ህዝቡን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ጭፍጨፋ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 308,
+      "text": "አመራሩን የበረከትና የህወሀት ስርዓት ናፋቂ ሞልቶት ለአማራ የሚታገል እንዲህ ከስራ ይታገዳል",
+      "gold": [
+        [
+          "አመራሩን",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "ከስራ ይታገዳል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 309,
+      "text": "የህወሀት የጥፋት ቡድን በማይካድራ የፈጸመውን አይነት እኩይ ተግባር በመቐለ ለመድገም እየተንቀሳቀሰ ኮሚሽኑ ገለጸ የፌዴራል ፖሊስ ኮሚሽን ከአንድ ሰአት ለቋል ካሁን ሰአት በአብይ አህመድ መቀሌ ለሚገደሉት ህወሀቶች ተጠያቂ ለማለት አስቀድሞ የወጣ ማስተባበያ ስታስብ የማይካድራው ጭፍጨፋም ትክክለኛነቱን ልትጠራጠር ትገደዳለህ በመቀሌ ለምትጠፋው እያንዳንዷ ነብስ መንግስት ተጠያቂ የግድ ማንም ላይጠይቀው ይችል ጠያቂ አካል ትክክለኛ ሲመጣ አብይና ግብረ አበሮቹ ከተጠያቂነት አይድኑም",
+      "gold": [
+        [
+          "መቀሌ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እኩይ ተግባር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 310,
+      "text": "“በቀን እንደምንሆን በአገባብ እንመላለስ፤ በዘፈንና በስካር አይሁን፥ በዝሙትና በመዳራት አይሁን፥ በክርክርና በቅናት አይሁን፤”",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 311,
+      "text": "ከመቶ ለሚበልጡ አመታት ያለምንም ጠባቂ በሰላም ተከብሯል   ምኑ ነው የሚያስደንቀው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 312,
+      "text": "የአዕምሮ ሆስፒታል ቢሆን ይመረጥ ነበር ለነጅዋር መታከሚያ ለነገሩ ፊንፊኔ ነው የሚለው የት ነው ...",
+      "gold": [
+        [
+          "የአዕምሮ ሆስፒታል",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "POSITIVE",
+          "ይመረጥ ነበር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 313,
+      "text": "የክብር ዶክተር ደሳለኝ አንተም በቅርቡ ገቢ ትሆናለህ በልልኝ ጌትሽ",
+      "gold": [
+        [
+          "ደሳለኝ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ገቢ ትሆናለህ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 314,
+      "text": "እዚህ ኮሜት የሠጠው ሁሉ በዘረኝነት በሽታ የተለከፈ እና እደሠው ተፈጥሮ እደሠው ማሠብ ያቃተውነው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "በዘረኝነት በሽታ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 315,
+      "text": "እንኳን ሰማይ ላይ ባንዲራሽን አይቶ ስምሽ ሲጠራ ማን ዝም ይላል ሰምቶ  እንኳን ሰማይ ላይ ባንዲራሽን አይቶ ኢትዮጵያ ሲባል ማን ዝም ይላል ሰምቶ   ???? ኢትዮጵያ ለዘላለም ትኑር????",
+      "gold": [
+        [
+          "ኢትዮጵያ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ለዘላለም ትኑር????"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 316,
+      "text": "ጨወታው ደራ ይልሀል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 317,
+      "text": "ይቺ ቀፍሎ አዳሪ የስልጣን ጥመኛ በመጨረሻ ዕድሜዋ ስልጣን ልታገኝ ነው አሉ ። መስቀል ክፍሏ አይደል? ሃሃ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የስልጣን ጥመኛ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 318,
+      "text": "እስክንድር ወደ አማኑኤል ሆስፒታል ነው መሄድ ያለበት",
+      "gold": [
+        [
+          "እስክንድር",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 319,
+      "text": "ላስኪት(Laskit) ከሚል የመንግሥት ባለስልጣንና ደክስ (Deks) ከሚል ናይጀሪያዊ በላይ የሚያበሳጨኝ ምንም የለም። Lastic and desk",
+      "gold": [
+        [
+          "የመንግሥት ባለስልጣንና",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የሚያበሳጨኝ"
+        ],
+        [
+          "የመንግሥት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የሚያበሳጨኝ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 320,
+      "text": "የአማራን ጅምላ በመተከል ለማስቀጠል ከአብይ ተልኮ የወሰዱ የኦሮሞ ባለስልጣናት",
+      "gold": [
+        [
+          "ጅምላ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ለማስቀጠል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 321,
+      "text": "እነ ሀይለማርያም በአስራ አንደኛውም ሰአት ነቅታችሁ ህወሀትን አጋልጣችሁ የቀረውን ህዝብ ብታድኑ ጀግንነት ነው ብዬ አምናለሁ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ጀግንነት"
+        ],
+        [
+          "ህወሀትን አጋልጣችሁ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ጀግንነት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 322,
+      "text": "ይህ ሁሉ ሊሳካ የሚችለዉ የህዝብ ጥያቄ ሲመለስ ብቻ ነዉ ማለም መጀመር ማነሳሳትና ማሻሻል ፓርቲ ብቻዉን አይችልም ይህ ደሞ አሁን ባለዉ ሁኔታ ከትግራይ ወደ ደቡብ መከላከያ መጫን አቁመን የህዝብ ጥያቄ አዉንታዊ ምላሽ ሲሰጥ ነዉ የክልል አደረጃጀት ፅቤት ይፈተሽ ይስተካከል በይደር የሚቀመጥ የህዝብ ጥያቄ መጨረሻው እልቂት ነዉ መንግሥት ከዚህ ምን ያተርፋል ዜሮ ድምር ዉጤትየቀቤና ልዩ ወረዳ ጥያቄ ከክልል አደረጃጀት እኩል ይመለስቀቤና ልዩ ወረዳ ነዉ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 323,
+      "text": "ሀረሪ ክልል ባለፉት ሰአት ከተደረገው የላቦራቶሪ ምርመራ በኮሮና ቫይረስ መያዛቸው የተረጋገጠው በአጠቃላይ በክልሉ ቫይረሱ በምርመራ የተገኘባቸው ደርሷል የእለቱ ታማሚዎች ተጋላጭነት ከታወቀ ታማሚ ግንኙነት የሌላቸው የውጪ ጉዞም የሌላቸው ተረጋግጧል የታማሚዎች ዝርዝር ታማሚ አመት ወንድ የውጭ ሀገር የጉዞ ታሪክና በበሽታው ከተያዘ የታወቀ ግንኙነት ታማሚ አመት ወንድ የውጭ ሀገር የጉዞ ታሪክና በበሽታው ከተያዘ የታወቀ ግንኙነት ታማሚ አመት የውጭ ሀገር የጉዞ ታሪክና በበሽታው ከተያዘ የታወቀ ግንኙነት የሌላት የላቦራቶሪ ምርመራው የተደረገው በሀረማያ ዩኒቨርሲቲና በሀረሪ ክልል ላቦራቶሪ ሁሉም ኢትዮጵያውያን የሀረሪ ክልል ነዋሪዎች",
+      "gold": [
+        [
+          "በኮሮና ቫይረስ",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "NEGATIVE",
+          "መያዛቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 324,
+      "text": "ፈጣሪና ህዝቧ ሃገሪትነ ኢትዮጵያን ሰላም ያድርግበዚህች ሃገር በየትኛውም አካባቢ በመተላለቅ የመጣ ጥሩ ነገር የለም እልቂት የሚደግሱ መሪዎችንም ሆነ ግለሰቦችን ጣልቃ ገቦችን  ከሐገር ውጭም ሆነ በሃገር ውስጥ ያሉ የክፉ ሰዎችን ልሳን ባለመቀበል ፍቅር  ሰላም  አንድነትን እንደገና እንዲያብብ እናድርግ የእግዚአብሔር ፍጡር የሆነ ሰው ይህን ለማድረግ የሚሳነው ነገር ስለሌለ",
+      "gold": [
+        [
+          "ሰላም",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ፍቅር ሰላም አንድነትን እንደገና እንዲያብብ እናድርግ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 325,
+      "text": "ሰጠመች ኣልገባኝም ያልተማረ ህዝብ",
+      "gold": [
+        [
+          "ህዝብ",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "ያልተማረ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 326,
+      "text": "እያንዳንድሽ አቢቹ ትግስቱን ጨርሷል በሚሳዬል አጥፍቶን አዲስ ህዝብ ሊገነባነው መሰል ወንድ ልጅ ቆረጠ በቃ",
+      "gold": [
+        [
+          "በሚሳዬል",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አጥፍቶን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 327,
+      "text": "ኢትዮጵያ በሶስት አካባቢዎች የፀሃይ ኃይል ማመንጫ ፕሮጀክት ለሚያከናውኑ የውጭ ኩባንያዎች ጨረታ አውጥታ እያወዳደረች መሆኑን ገለፀች",
+      "gold": [
+        [
+          "የፀሃይ ኃይል ማመንጫ ፕሮጀክት",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "እያወዳደረች መሆኑን"
+        ],
+        [
+          "የፀሃይ ኃይል",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "ጨረታ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 328,
+      "text": "የአማራ ክልል ወያኔ ከመግባቱ  በፊት እንደነበረ ሆኖ ከተመለሰ በጋራ አብሮ  መኖር  ይፈጠር እና       እርቁንም እውነተኛ ያደርገዋል አለበለዚያ ግን  በከንቱ መድከም ነው የሚሆነው﻿",
+      "gold": [
+        [
+          "እርቁንም",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "እውነተኛ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 329,
+      "text": "አቢይ ጃዋርን ካላሠረ አቅም የለውም ለዚህ ሁሉ ጉዳይ ተጠያቂ እሱ ነው",
+      "gold": [
+        [
+          "አቢይ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አቅም የለውም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 330,
+      "text": "ኦሮሞ የማንም ጥገኛ ሆነዉ የምአሽቃበጥበት ሰዐት ሳይሆን እራሱን ችለዉ የኦሮሞ ህዝብ ጥቅምና የኦሮሚያ ድንበር ለማስከበር ብቻና ብቻነዉ መስራት የለበት",
+      "gold": [
+        [
+          "የኦሮሚያ ድንበር",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "ለማስከበር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 331,
+      "text": "ሁሉም የፖለቲካ ፓርቲዎች አፍራሽ ሚናበመጫወት ብልፅግናን ከወራጅ ቀጠና ማስተረፍ እንዳለባቸዉ አምናለሁ",
+      "gold": [
+        [
+          "የፖለቲካ ፓርቲዎች",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 332,
+      "text": "በሞጣ ከተማ በመስጊዶች፣ በቤተክርስቲያንና በንግድ ተቋማት ላይ በደረሰው ውድመትና ቃጠሎ ኃላፊነታቸውን ያልተወጡ የመንግስት አመራሮች በቁጥጥር ስር ዋሉ።) -…",
+      "gold": [
+        [
+          "ውድመትና ቃጠሎ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ኃላፊነታቸውን ያልተወጡ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 333,
+      "text": "የ ጋላአጋሜ ወራሪ ሽብርተኛ አገር ሻጮች ከሰሩት የ አመት ጸረ አማራ ግፍ ዘረፋ ወረራ ግድያ ባለፈ አማራውን ጥሰው ፋኖን እንንካ የሚሉበት ድፍረት ከሰመረ አማራና የአማራው አለማቀፍ ድንቅ ታሪክ አፈታሪክ ነው ብዬ በራሴ እና ባባቶቼ አፍራለሁ ፋኖ የተነካ እለት የ ጋላአጋሜ ድልብ የዘረኛ ወንጀለኞች አገዛዝ ከቀጠለ አማራነት እውነትም የለም ብዬ እነሳለሁ",
+      "gold": [
+        [
+          "ግፍ ዘረፋ ወረራ ግድያ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሽብርተኛ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 334,
+      "text": "ናት እወነት እግዚአብሔር  ይመሰገን ደሰ ይላል ግን ነጋዴዎች  ትንሽ  ለህዝቡ  ብያሰቡ ጥሩ ነበር ሀገራችን  ምርት አላት ዋጋ  ብቀንሱ ጥሩ ነዉ",
+      "gold": [
+        [
+          "ዋጋ",
+          "ECONOMY#EMPLOYMENT",
+          "POSITIVE",
+          "ብቀንሱ ጥሩ ነዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 335,
+      "text": "የኢትዮጵያ መስቀል ማሀበር አለም አቀፉ መስቀል ኮሚቴ ቤተሰቦቻቸው በትግራይ ክልል ወገኖችን ለማገናኘት ...",
+      "gold": [
+        [
+          "የኢትዮጵያ መስቀል ማሀበር",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "POSITIVE",
+          "ወገኖችን ለማገናኘት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 336,
+      "text": "ተወያዩ ተወያዩ ብቻ መሬት ላይ ጠብ የምል ነገር የለም እዝጎ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ጠብ የምል ነገር የለም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 337,
+      "text": "የቐኔልና የኤርትራ ወታደሮች ጦርነት በመቃወም ሱዳን እየሄዱ በኮመንት",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ጦርነት በመቃወም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 338,
+      "text": "ከመቀሌ ሌላኛው ጉዙፉ መሰረተ ልማት ከመቀሌ ከተማ ርቀት የሚገኘው የንፋስ ሀይል ማመንጫ በቁጥጥር ውሏል የኢትዮጵያ መከላከያ ሰራዊት ስትራቴጂክ የሆነውንና ከመቀሌ ርቀት የሚገኘውን የአሸጎዳ የንፋስ ሀይል ማመንጫ በቁጥጥር ውሏል ጀግናው የመከላከያ ሰራዊት ዘመናዊ የሆነውንና ሚሊየን የአሜሪካ ዶላር የተሰራውንና ሜጋዋት የኤሌክትሪክ ሀይል ማመንጨት የሚችለውን ጣቢያ በቁጥጥር አውለውታል",
+      "gold": [
+        [
+          "የአሸጎዳ የንፋስ ሀይል ማመንጫ",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "በቁጥጥር ውሏል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 339,
+      "text": "እናስይዝ በዚህ ሰዓት ሰፊው ህዝብ ከኛ ህይወት ጋር ምን ያገናኘዋል እያለ ከራሱ ጋር እየሞገተ ነው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 340,
+      "text": "እኔም አህመድ ግራኝ ነኝ ምድረ ውሸታም እንዲህ በውሸት አሸማቀህ ሙስሊሙን አንገት የምታስደፋህ መስሎህ ከሆነ ከወያኔ የማትማር ድንጋይ ራስ መሆንህን እየነገርከን ነው አንተን ብሎ የእምነት ሰባኪ የኢትዮጰያ ህዝብ የእንዳንተ አይነቶች አክቲቪስቶችን ህዝብን በዘር እና ሀይማኖት በመከፋፈል ብዙ ፈንድ እንደሚለቀቅላችሁ እና ተንደላቃችሁ እንደምትኖሩ ጠንቆቆ ያውቃል ሰርታችሁ ገንዘብ መፍጠር ስለማትችሉ ይቅር ብለናችኋል",
+      "gold": [
+        [
+          "አክቲቪስቶችን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ህዝብን በዘር እና ሀይማኖት በመከፋፈል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 341,
+      "text": "የሌላ ሀገር ሳይንቲስት ምን ያጠናል የኛዎቹ ደግሞ ምን ያጠናሉ",
+      "gold": [
+        [
+          "ሳይንቲስት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 342,
+      "text": "“ከተማን በደም ለሚሠራ፥ ከተማንም በኃጢአት ለሚመሠርት ወዮለት!”— ዕንባቆም 2፥12 ይላል የሰራዊት ጌታ",
+      "gold": [
+        [
+          "ከተማንም",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "በደም ለሚሠራ፥"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 343,
+      "text": "ይሄው የአስራ ሁለተኛ ክፍል የማትሪክ ፈተና አዘርፎ እያጨበጨበ ነው",
+      "gold": [
+        [
+          "የማትሪክ ፈተና",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "አዘርፎ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 344,
+      "text": "ክልሉ ሰው ቢኖረው ጥሩ የውጭ ምንዛሬ ያስገኝ ነበር",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#TAXATION",
+          "POSITIVE",
+          "ጥሩ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 345,
+      "text": "ሌባን በደንብ አደርጎ ለአንዴና ለመጨርሻ ጊዜ ከኢትዬጵያ ጫንቃ ላይ በደንብ አድርጋችሁ እየመነጠራችሁ የህዝቡን ስቃይና መከራ መታደግ ያስፍልጋል በቀጣይ የሚፈጠርው ትውልድ ቢያንስ ሙስናን የሚጠየፍ ይሆነናል በርቱ。",
+      "gold": [
+        [
+          "ሙስናን",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "እየመነጠራችሁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 346,
+      "text": "የኢትዮጵያ ፖለቲከኛ ማለት ኮ “ትግራይ ለምን ለብቻዋ ሰላም ሆነች” ብሎ በቅናት የሚቃጠል ኋላቀር ፍጡር ነው። እናም ሰላሟን ለማደፍረስ ብዙ ሚልዮን በጀት መድቦ ሴራ ሲጎነጉን ያድራል ይውላል。",
+      "gold": [
+        [
+          "ሰላሟን",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ለማደፍረስ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 347,
+      "text": "ወያኔ በጎንደር ህዝብ ላይ ጦርነት አውጆ ንጹሀን ዜጎችን ማሸበሩን ተያይዞታል  የጎንደር ወጣት",
+      "gold": [
+        [
+          "ወያኔ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ንጹሀን ዜጎችን ማሸበሩን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 348,
+      "text": "አረ ፍልፍሎ ቤተ መንግስት ተመላለስክ ለነገሩ የአባትሕ ነው ዘና በል አባቴ ሚኒሊክ ነብሱን በገነት ያኑርልን እንጂ",
+      "gold": [
+        [
+          "ቤተ መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ዘና በል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 349,
+      "text": "ሀገሪቷ ኮምፓሷ ጠፍቶባት ቢሮ ተቀምጦ ካልሰራ የሀገሪቷ መጨረሻ ምን ሊሆን ነው",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ኮምፓሷ ጠፍቶባት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 350,
+      "text": "ለሀገራችን ለኢትዮጵያም የሄ አይነት ለውጥ ያስፈልጋተል 。",
+      "gold": [
+        [
+          "ለውጥ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "ያስፈልጋተል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 351,
+      "text": "አንተም መሪ ልትባል አውሬ ፈሳም",
+      "gold": [
+        [
+          "መሪ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አውሬ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 352,
+      "text": "በትግራይ ስለ መደበኛ አስተዳደርና  መጀመር ስለ ተፈናቀሉ ተጋሩ ችግር የሚያስብ መንግሥት ያለ አይመስልም",
+      "gold": [
+        [
+          "መንግሥት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ያለ አይመስልም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 353,
+      "text": "መተከል የጦርነት ቀጣና እየሆነች በመተከል ድባጤ ወረዳ ፓርዘይትና ሳንማደን ቀበሌዎች የጉምዝ ታጣቂዎች ሀይሎች የቀበሌውን ነዋሪዎች ከበው ተኩስ በጥይት የተገደለ በቀስት ተወግቶ ሆስፒታል ገብቷል መከላከያ አልገባም ያለለት ወንድዬ",
+      "gold": [
+        [
+          "መከላከያ",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "አልገባም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 354,
+      "text": "ህግማ ነበር በስራ ይፈቱ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 355,
+      "text": "ሚኒስቴር ሳይሆን ሚኒስትር ነው ሚባለው ሚኒስቴር የመቤቱ መጠሪያ ነው",
+      "gold": [
+        [
+          "ሚኒስትር",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 356,
+      "text": "ዶር አብይ ገና ሺ አመት ይነግሳል  ጆዋር ሲሙት ብህልሙ አይቶ ፈርቶ ነው ይሂ ሽንታም ክክክክክ",
+      "gold": [
+        [
+          "ዶር አብይ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 357,
+      "text": "ፍተሻው ይጠናከር ኮንትሮባንድ እቃ አደረጋችሁት  ልምድ ልውውጥ ኖሮበት ነው ሚገባ",
+      "gold": [
+        [
+          "ፍተሻው",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ይጠናከር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 358,
+      "text": "መጀመሩን !!! ?? ለካ እስካሁን ሙሰኛ መያዙን ትታችሁት ነበር ! አላወቅንም እኮ !",
+      "gold": [
+        [
+          "ሙሰኛ መያዙን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ትታችሁት ነበር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 359,
+      "text": "ፈተና መስረቅ እንደ ጀግንነት የሚቆጥሩት ሰዎች በጣም ይገርሙኛል  አኛ ወጣቶች ላሃገራችን ጥሩ ነገር ካላረግንላት አብሂወት ሞነራችን ፋይዳ ቢስ ነው ስንት የድሃ ልጅ ተማሪ ኣመት ሙሉ የለፋበት ፈተና የሃገር ፍቅርና ሃላፍነት በማይሰማቸው ሰዎች መውጣቱ ያሳዝናል ይህ ደሞ እልም ያለ ጠባብነት እንጂ ምንም ትርፍ የለው",
+      "gold": [
+        [
+          "ፈተና",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "መውጣቱ ያሳዝናል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 360,
+      "text": "አማራ ሱማሌ ሲዳሞ አፋር ኢትዮጵያ ተሳሳትኩ እንዴ ኢትዮጵያን ሊያፈርሱ የሚጥሩ ቁልቋልና ጋላ ገደል ይግቡ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 361,
+      "text": "አል ሲሲ በፎከሩ ቁጥር ኢትዮጵያ ትጠነክራለች  ፉከራዉ የበለጠ ያበረታታናል",
+      "gold": [
+        [
+          "ፉከራዉ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ያበረታታናል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 362,
+      "text": "የተከሰተው ድርቅ ኢትዮጵያን ብቻ የተገዳደረ አይደለም",
+      "gold": [
+        [
+          "ድርቅ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "የተገዳደረ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 363,
+      "text": "በሉ መሳሪያ ውን ደግሞ አብቹ አንድ ቀን ያስገበዋል ድል ለእማማ ኢትዮጵያ",
+      "gold": [
+        [
+          "መሳሪያ",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "POSITIVE",
+          "ድል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 364,
+      "text": "ዛሬ የብሔርብሔረሰብ ቀን ነው እንዴ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 365,
+      "text": "የሆነዉ ሁኗል ሠላምን ያምጣ ፈጣሪ",
+      "gold": [
+        [
+          "ሠላምን",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ያምጣ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 366,
+      "text": "፮ ♥??  ሰማዕቷ በምልጃ ፀሎቷ ሀገራችንን   ኢትዮጵያ ከክፉ ሁሉ ትታደግልን። አሜን   ሰላም ለሀገራችን????❤??",
+      "gold": [
+        [
+          "ሀገራችንን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ሰላም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 367,
+      "text": "ተዘቅዝቀህ ብትሰቀል አማራ ተመልሶ አይወድክም ከጠላንክ ጠላንክ ነው",
+      "gold": [
+        [
+          "አማራ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አይወድክም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 368,
+      "text": "የትምህርት መጨረሻው ነገር ማሳጠር ነው አንተ ግን ወደመግቢያው አካባቢ ምታጠፋው ጊዜ ግርም ይለኛለል",
+      "gold": [
+        [
+          "የትምህርት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "ግርም ይለኛለል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 369,
+      "text": "ከፎቶ ያለፈ ከአዴፓ አጠብቅም አቀመ ውስን ነው",
+      "gold": [
+        [
+          "ከአዴፓ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አቀመ ውስን ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 370,
+      "text": "መስጂድ ተቃጥሎ ሰላም አይኖርም",
+      "gold": [
+        [
+          "መስጂድ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ተቃጥሎ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 371,
+      "text": "አቶ አርከበ ዶሮ ብታልም ጥሬዋን አለ ያአገሬ ሰው አስር ዓመት ተመኘህ እመነኝ በዚህ በአጭር ጊዜ ውስጥ ኢትዮጵያ ከናንተ ፋሽስታዊ ትግሬ የባንዳ ልጆች ነጻ ወጥታ በአመጹ ተጨፍልቀህ ወይም ዘብጥያ ወርደህ ፍርድህን ትጠባበቃለህ መሰደድ እንዳታስብ ዓለም ለእናንተ ጠባለች እንኳን ተሰደህ እንዲሁም እያየኸው ነውና አትዘባርቅ እዚያው ደደቢት ላይ መቃብርህ ተቆፍሯል",
+      "gold": [
+        [
+          "ትግሬ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ፋሽስታዊ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 372,
+      "text": "ዘረኛ በሙሉ ይውደም:: ከዝንጀሮቆንጆ  .... ሁሉም ዘርኛ ዝንጅሮ ነው ለኔ",
+      "gold": [
+        [
+          "ዘረኛ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ይውደም::"
+        ],
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ዘረኛ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 373,
+      "text": "ኢትዮጵያዊ ባህላዊ እሴቶቻችን ላይ ለትውልድ ለማስተላለፍ በትኩረት ሊሰራ ይገባል በርቱ",
+      "gold": [
+        [
+          "ባህላዊ እሴቶቻችን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "በትኩረት ሊሰራ ይገባል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 374,
+      "text": "አንድ አንድ ሴቶች በመልካቸው ወንዶች ደግሞ በብራቸው ይኮራሉ The difference is visible እኛ ብሩን ጥረን ግረን እናመጠዋለን እነሱ ደሞ በተፈጥሮ ያገኙትን መልክ ተጠቅመው ሙድ ይይዛሉ",
+      "gold": [
+        [
+          "ሴቶች",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ሙድ ይይዛሉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 375,
+      "text": "አማራ ማለት ግን የአንተን ዘመዶች ቅማንቶች ይጨምራል አማራ የሚባል ብሄርም ህዝብም የለም",
+      "gold": [
+        [
+          "አማራ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "የለም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 376,
+      "text": "ህወሀት አቅጣጫ መቀሌ በሚወስዱት መንገዶች አራት ድልድዮችን አፍርሷቸዋል የአስቸኳይ አዋጅ መረጃ ማጣሪያ",
+      "gold": [
+        [
+          "ድልድዮችን አፍርሷቸዋል",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "NEGATIVE",
+          "አፍርሷቸዋል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 377,
+      "text": "ህዝብ ስለማጥፋቱስ ሽልማት ኣልተበረከለትም🤔",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ህዝብ ስለማጥፋቱስ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 378,
+      "text": "ያሀገረን ያልቻልከው ስለአፍርካ ወጣት ያወራል እንዴ ጉማር",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ጉማር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 379,
+      "text": "ከመቼ ወዲህ ነው ተለማኝ ወደ ለማኝ የሚሄደው ዘመነ ተገላቢጦሽ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተገላቢጦሽ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 380,
+      "text": "ወንጀለኛ መያዝ አለበት ካልን መንግስት መብቱን አሟጦ ይጠቀም",
+      "gold": [
+        [
+          "ወንጀለኛ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEUTRAL",
+          "መያዝ አለበት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 381,
+      "text": "እንጂማ ህጉ ለሁሉም እኩል እና ህይወት ያለው ቢሆን  በዚህ ማስረጃ ብቻ እኚህን ጀነራል ከስልጣናቸውም ሆነ ከመከላከያ ሰራዊት አባልነታቸውም ማንሳት ይገባ ነበር ግን ምን ያደርጋል ሀገሪቱ ኢትዮጵያ ነች",
+      "gold": [
+        [
+          "ህጉ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ማንሳት ይገባ ነበር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 382,
+      "text": "አይ ምን ይደረጋል ህግ ስለለ ነገም ምስኪኑ ድሀው ህዝብ መከራውን ይቀበላል",
+      "gold": [
+        [
+          "ህግ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ህግ ስለለ"
+        ],
+        [
+          "ህግ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ስለለ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 383,
+      "text": "\"የመጀመሪያው ትልቁ ችግር፤ ሠነዱ፣ የጋራ የምንለውን ሀገራዊ ታሪክ አኮስሶ፣ የየአካባቢውን በተለይም የተወሰኑ ህዝቦች ታሪክ አድርጐ ያስቀምጣል፡፡ ትልቁን ታሪክ አኮስሶ፣ የየአካባቢውን ታሪክ የሚያደምቅ ነው::\"\"\"\"",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አኮስሶ፣"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 384,
+      "text": "ሰበር ዜና አቶ ሽመልስ አብዲሳ ኦሮሚያን ትቸ አማራ ክልልን ብመራ ይሻለኛል አለ ይህ አበባሉ ለአንዳንዶች ግራ ያጋባ ቢሆንም እሱ ግን ሞጣን ለማስተዳደር ና ሰላም አሰፍናለሁ ብሎ ቃል ገብቷል መልካም ና ብሉት ሞጣወች",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "መልካም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 385,
+      "text": "አማራ ጥቃት ፈፅሟል የሚል ጭምጭምታ ሲኖር ተጠቂና አጥቂ ተብሎ የተፈረጁትን በስም ለመጥራት በብርሀን ፍጥነት ገለጣቹህት",
+      "gold": [
+        [
+          "ገለጣቹህት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "በብርሀን ፍጥነት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 386,
+      "text": "ከ አብን ማን የምን ሚኒስቴር ሆነ",
+      "gold": [
+        [
+          "አብን",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ],
+        [
+          "ሚኒስቴር",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 387,
+      "text": "ተቀማጭነታቸው አሁንም አንካራ ሆኖ ለካዛኪስታን የኢፌዲሪ ልዩ መልዕክተኛ ነው የሆኑት",
+      "gold": [
+        [
+          "ልዩ መልዕክተኛ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 388,
+      "text": "መሪ ያጣችዉ ኢትዬዽያም አሁንም ቤንሻንጉል ሰዉ እየሞተ",
+      "gold": [
+        [
+          "መሪ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ያጣችዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 389,
+      "text": "አይ ኢትዩጵያየሡን አላማ እሚቃወም እሥርቤት ይወርወራል እሡን እሚደግፍ ይሾማል ዶክተር ብርሀኑንም ሹመው አይፓለቲካ በቁሙ የሞተ",
+      "gold": [
+        [
+          "ሹመው",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "የሞተ"
+        ],
+        [
+          "NULL",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "በቁሙ የሞተ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 390,
+      "text": "ዉዱ መሪችን   ፈጣራ አመላክ ይጠብቂህ   በጣም ደሰ ብሎናል   አብያችን ኩራንብ አሁንም   እግዚአብሔር ድልን ይሰጥ",
+      "gold": [
+        [
+          "መሪችን",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ደሰ ብሎናል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 391,
+      "text": "ፋና የጋላ መሰብሰቢያ",
+      "gold": [
+        [
+          "ፋና",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "መሰብሰቢያ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 392,
+      "text": "እንደነ ጁቡቲ ኤሪትርያና ሶማልያ የሸጠ የምኒሊክ ዲቃላ ቆማጣ የንጉሱ አፍቃሪና የደርግ ርዝራዝ ተከታይ ትምክህተኛ የቅማንት ማንነት ብፈቅድና ቢሰጥ ችግሩ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ችግሩ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 393,
+      "text": "ጥያቄው የህዝብ ነው በእውነት ተረዱን",
+      "gold": [
+        [
+          "ጥያቄው",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "ተረዱን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 394,
+      "text": "በአዲስ አበባ አቃቂ ቃሊቲ አዲሱ ማረሚያ የተኩስ ድምጽ እየተሰማ ተባለ አሻራ ባህርዳር በአዲስ አበባ ቃሊቲ አቃቂ አዲሱ ማረሚያ ከጠዋቱ ሰአት የተኩስ ድምጽ ይሰማ የአካባቢው ነዋሪዎች ለአሻራ በተኩስ ልውውጡ ሳይሞት እንዳልቀረ የገለጹት የመረጃ ምንጫችን በግምት የተኩስ ድምጽ ይሰማ ነበርም ማረሚያ እንደተፈጠረ እርግጠኛ ባንችልም ጉዳዩ ከማረሚያ ፖሊሶች የመከላከያ ሰራዊት መጥቶ ተኩሱን ማስቆሙን ማወቅ ችለናል ገልጸውልናል አሻራ በቦታው የተፈጠረውን የደረሰውን ጉዳት መረጃዎችን እንዳገኘን ወደናንተ ይዘን እንቀርባለን አሻራ በዩዩቲዩብ በቴሌግራም ያግኙን",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "የተኩስ ድምጽ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 395,
+      "text": "አሁን እንደተረዳሁት መክሊትህ ስብከት እንጂ ስልጣን አይደለም ፤ ደግሞ አልቻልሁም ብሎ መተው ጀግንነት እንጂ ውርደት አይደለም 。",
+      "gold": [
+        [
+          "ስልጣን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አልቻልሁም ብሎ መተው ጀግንነት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 396,
+      "text": "ትርፋማ ነው ስትሉ አልነበር ብድር ይህ ተቋም ግን",
+      "gold": [
+        [
+          "ብድር",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 397,
+      "text": "እኛ ሠላም ነዉ የምነፈልገዉ",
+      "gold": [
+        [
+          "ሠላም",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "የምነፈልገዉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 398,
+      "text": "ይሄ ለከበቡሽ መርዶ ነው  አሜሪካኖች ለማ እና አቢይን ሊያሸማግሉ መሆን አለበት",
+      "gold": [
+        [
+          "ለማ እና አቢይን ሊያሸማግሉ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 399,
+      "text": "ሉቃስ 2 (Luke) 14፤ ክብር ለእግዚአብሔር በአርያም ይሁን ሰላምም በምድር ለሰውም በጎ ፈቃድ፡ አሉ። መልካም የጌታ ኢየሱስ ልደት????❤",
+      "gold": [
+        [
+          "ሰላምም",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "መልካም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 400,
+      "text": "እጅግ በጣም ዘመናዊና ምቹ አገልግሎት በቴሌ ብር እያመጣችሁ ስለሆነ ደስ ብሎኛል አመሠግናለሁ",
+      "gold": [
+        [
+          "አገልግሎት",
+          "INFRASTRUCTURE#UTILITIES",
+          "POSITIVE",
+          "ዘመናዊና ምቹ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 401,
+      "text": "ሕብረትሰብ በኑሮ እየተመረሩ ነው",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "እየተመረሩ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 402,
+      "text": "ሁሉም ኢቶጲያዊ መንግስትን ሊቃወም ይገባል ዝምታው ምንድነው ?እያንዳዳችን ክልልና ቤት እየገቡ እስኪጨርሱነወ? ሰሜን ወሎ ላይ ቁማሩን ቀጥሏል ለመሆኑ ነገ",
+      "gold": [
+        [
+          "መንግስትን",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ሊቃወም ይገባል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 403,
+      "text": "የኦሮሞ ቄስ ከየትኛውም የአማራ ቄስ በተሻለ ሰላምና ፍቅርን ይሰብካል",
+      "gold": [
+        [
+          "የኦሮሞ ቄስ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሰላምና ፍቅርን ይሰብካል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 404,
+      "text": "የፌደራል መንግስት በትግራይ ክልል ጣልቃ እንዲገባ ጊዜያዊ መንግስት እንዲቋቋም የቀረበው የውሳኔ ሀሳብ ጸደቀ አዲስ አበባ ጥቅምት የፌዴሬሽን የፌደራል መንግስት በትግራይ ክልል ጣልቃ እንዲገባ ጊዜያዊ መንግስት አስተዳደር እንዲቋቋም ያቀረበው የውሳኔ ሀሳብ ድምጽ ጸደቀ በዛሬው እለት አስቸኳይ ስብሰባውን አካሄዷል በስብሰባውም በቀረበው የውሳኔ ሀሳብ ተወያይቶ ድምጽ አጽድቆታል በሀብታሙ ተክለስላሴ",
+      "gold": [
+        [
+          "የፌደራል መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "የውሳኔ ሀሳብ ጸደቀ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 405,
+      "text": "አይ ኦቦ ሽመልስ! የሲሚንቶ እጥረት በአገሪቱ የተከሰተው በእርስዎ እና በቤተዘመድዎችዎ ምክንያት መሆኑ ጸሐይ የሞቀው ሐቅ መሆኑን አያውቁ ይሆን?",
+      "gold": [
+        [
+          "የሲሚንቶ እጥረት",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ሐቅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 406,
+      "text": "አብቹ የኛ ጀግና እንኩን ደስ አለህ ሁላችንንም እንኳን ደስ አለን",
+      "gold": [
+        [
+          "አብቹ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "የኛ ጀግና"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 407,
+      "text": "በሞጣ ከተማ በሃይማኖት ተቋማት እና በንግድ ተቋማት ላይ በደረሰው ጥቃት እጃቸው አለበት ተብለው የተጠረጠሩ ወደ 80 ያህል ግለሰቦች በቁጥጥር ስር እንደዋሉ የአማራ ክልል ርዕሰ መስተዳድር ተመስገን ጥሩነህ አስታወቁ。",
+      "gold": [
+        [
+          "ጥቃት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEUTRAL",
+          "በቁጥጥር ስር እንደዋሉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 408,
+      "text": "መልካም ዜና ይኼውልህ፦ የኢየሱስ ክርስቶስን ልደት ምክንያት በማድረግ ነገ ከጧቱ 12 ፡00 ላይ 9 ጊዜ መድፍ እንደሚተኮስ የመከላከያ ሚኒስቴር አስታወቀ。",
+      "gold": [
+        [
+          "የመከላከያ ሚኒስቴር",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "POSITIVE",
+          "መልካም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 409,
+      "text": "ለመሆኑ አሁን ምን ታየህ።መከላከያ ሲታረድ።ያ ሁሉ ወገን በማይካድራ ሲጨፈጨፍ ምነው ትንፍሽ ያላልክ።አንተን ብሎ ሠላም ሠባኪ።ራያና ወለቃይት ወደ ትግራይ ካልተ",
+      "gold": [
+        [
+          "ታየህ።መከላከያ",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "ሲታረድ።ያ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 410,
+      "text": "ኢትዬጵያን ውስጥ በውሸት ተናግሮ ትግሬ ነኝ ያለ ብቻ ነው ነፃነትና ጥሩ ስራ እድል የሚሰጠው በወያኔ ግዜ ለአንድ ዘር መብት ለቆሙት",
+      "gold": [
+        [
+          "ስራ እድል",
+          "ECONOMY#EMPLOYMENT",
+          "NEGATIVE",
+          "ትግሬ ነኝ ያለ ብቻ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 411,
+      "text": "በቀድሞው የብሔራዊ መረጃና ደኅንነት አገልግሎት ምክትል ኃላፊ ላይ የሚከናወነው ምርመራ በፍርድ ቤት ጥያቄ አስነሳ",
+      "gold": [
+        [
+          "ምርመራ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "ጥያቄ አስነሳ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 412,
+      "text": "የኢ/ያ አምላክ ይጠብቀን ጥንቃቄ ይደረግ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEUTRAL",
+          "ጥንቃቄ ይደረግ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 413,
+      "text": "ወደ ሶሻል ሚዲያም ሆነ ሚዲያ ተቻኩዬ የምወጣ የምናገር ሰው አይደለሁም :: ለገና በአል መልእክት ሳስተላልፍ ሙስሊሞቹ ያንተን መግለጫ ይጠብቃሉ ተብዬ ተገፋፍቼ ነው መግለጫ የሰጠሁት…",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 414,
+      "text": "ሚድያው እንዳለ የአንድ ወገን አፍ ሆኖ ሳለህ የምን ምክረወጣት ነው የምታካሂዱት",
+      "gold": [
+        [
+          "ሚድያው",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የአንድ ወገን አፍ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 415,
+      "text": "ከ በላይ ጎዳና ላይ የሚኖሩት ከተለያዩ የሀገሪቱ ክፍል የሚመጡ ህፃናት ናቸው ስለዚህ ክልሎች ላይ ብዙ መሰራት አለበት",
+      "gold": [
+        [
+          "ጎዳና ላይ የሚኖሩት",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "መሰራት አለበት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 416,
+      "text": "ሰበር በአማራ ክልል ጎንደር እስቴ አቅራቢያ አንዳቤት ጃራገዶ በተባለ አክራሪ ክርስቲያኖች መስጅድ ለማቃጠልና የሙስሊሞችን ንብረት ለመዘረፍ እየተንቀሳቀሱ ተሰምቷል ከአመት በእስቴ አሳዛኝ የመስጅድ ቃጠሎና ዝርፊያ በሙስሊሞች ሲከሰት አጥፊወች አስተማሪ ቅጣት ባለመሰጠቱ የልብ የተሰማቸው ዘራፊ ሌቦችና ሙስሊም ጠሎች አልባሌ እየፈለጉ ችሏቸው የሚኖረውን ሙስሊም ህዝብን ከትእግስት አልፈው ወንጀል ወንጀል እየጨመሩ የአማራ ክልል መጅሊስ በኋላ መስጅዶችና ሙስሊሞች ጥቃት ቢሰነዘር የክልሉ መንግስት ተጠያቂ ይሆናልም ሀላፊነትም ይወስዳል ብለው ጠንከር ደብዳቤ ከሞጣው ጉዳት በኋላ መጻፋቸው በአክራሪ የእርቶዶክስ መምህራንን የሚሰጠው ሙስሊም ቅስቀሳ አፍርቶ እነሆ ዛሬም ብልግናቸውን በአደባባይ እያስመሰከሩ ዛሬም ለጊዜው ወንጀለኛ አስረው የሚፈቱበትን ማህበረ ቅዱሳን የመንግስትና የጸጥታ አካላትናነ ፍትህ ተቋም እንደሚደግመው እናቃለን የክልሉ መንግስት ሀይሉን በፍጥነት በማሰማራት የበለጠ ወንጀል እንዳይፈጽም መከላከል ይገባዋል ከትላንት በማህበረ ቅዱሳን አደረጃጀት ያለው የመንግስት ሰራተኛ ወንጀለኛ እንዳይጠየቅ በህዝብ እያመካኘለጊዜው በወሩ እየለቀቀ ከእስቴ መስጅዶች ያየነው ድራማ ለዛሬው ወንጀል የልብልብ ሰጥቷቸዋል",
+      "gold": [
+        [
+          "መስጅድ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ለማቃጠልና"
+        ],
+        [
+          "የክልሉ መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ተጠያቂ ይሆናልም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 417,
+      "text": "ምኑ ነው አስተማሪ ?",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 418,
+      "text": "የሚበረድን እኛ የሚዘግቡት ሌሎች እነዚህ ስዎች ግን የትሆነው ነው የሚዘግቡት ብርርዱ ከወትሮ አይለይም የሚሉን",
+      "gold": [
+        [
+          "NULL",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 419,
+      "text": "እውነት እንናገር እስኪ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEUTRAL",
+          "እውነት እንናገር"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 420,
+      "text": "በርታልን ምርጡ መሪያችን",
+      "gold": [
+        [
+          "መሪያችን",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ምርጡ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 421,
+      "text": "አዳነች አብራቸው ፎቶ ከቸነሳቻቸው ሰዎች ምን ያህሉ በህይወት ይመለሳል አዳነች ግን በሞቀ ህይወት ትኖራለች... አይ ኢትዮጵያ 😣😪😪",
+      "gold": [
+        [
+          "አዳነች",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "በሞቀ ህይወት ትኖራለች..."
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 422,
+      "text": "ይህ ዜና አንድ ባለ ትዳር  ሰዉ ቤተሰቧ ቤተሰቡ ሁሌ ልጂ እንዲወልዱ ሲጠየቁ እሺ ይሉና የሆነ ቀን ደዉለዉ  ዛሬ ለመዉለድ ብሎ እንደመንገር ሆነብኝ",
+      "gold": [
+        [
+          "ዜና",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 423,
+      "text": "የሰው ህይወት እያለፈ ዳቦህን ቁረስ ይቁረስህ",
+      "gold": [
+        [
+          "ህይወት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "እያለፈ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 424,
+      "text": "ወንድ ልጅ ቆረጠ ሠሞኑን ሌላም ይቀጥላል አዋሽ  እና አዋሽ ፍርዳቸው ያልታወቀ የግል ወር ታሥረው ወይም ታግተው ያሉ የ መኪኖች ባለቤት ቤትና ሚሥታቸውን ትተው ጫካ ገብተዋል",
+      "gold": [
+        [
+          "ታሥረው",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ፍርዳቸው ያልታወቀ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 425,
+      "text": "መተንፈሻ እስከማይኖር ሰዉ እየጫኑ መስኮቱ እንዳይከፈት በሽቦ፣ በገመድ የሚያስሩ ርጉም ባለታክሲዎች ላይ ደህና መብረቅ የሚያወርድ አምላክ ጠፋ? ??",
+      "gold": [
+        [
+          "ባለታክሲዎች",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "NEGATIVE",
+          "ርጉም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 426,
+      "text": "መረጃ የአገር ክህደት ወንጀል በፈጸሙ የጁንታው ህወሀት ቡድን የፍርድ የመያዣ እንደወጣባቸው የፌደራል ፖሊስ ኮሚሽን ...",
+      "gold": [
+        [
+          "የፌደራል ፖሊስ ኮሚሽን",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "የመያዣ እንደወጣባቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 427,
+      "text": "ማስተላለፊያ ቱቦ ብቻ",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ቱቦ ብቻ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 428,
+      "text": "ዬት አትሽኮርመም አዲስ አበባ ወይስ ኦሮሞ ክልል ያልተሟላ መረጃ ዋጋ ቢሰ ነው",
+      "gold": [
+        [
+          "መረጃ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ያልተሟላ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 429,
+      "text": "ከህዝቡ ቁጥር በላይ አልያዛችሁም መሳርያና ጥይት ለምን አማራው እራሱን አገሩን እንዱያድን አታስታጥቁትም ከምታስጨርሱት",
+      "gold": [
+        [
+          "መሳርያና ጥይት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አታስታጥቁትም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 430,
+      "text": "ይህ ሚያሳየው ደም ሳይፈስ ብልጽግና የለም ተብለው ነው ከ ጠንቋይ ቤታቸው ስለሆነም የሆነ ፕሮጀክት ይመረቃል ሰሞኑን ጠብቁ",
+      "gold": [
+        [
+          "ብልጽግና",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ደም ሳይፈስ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 431,
+      "text": "አይ አማራ እንድሁ እነደ ጎረራችሁ ኖራችሁ ትሞታላችሁ",
+      "gold": [
+        [
+          "አማራ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ትሞታላችሁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 432,
+      "text": "ልጆቹን አታስጨንቋቸው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "አታስጨንቋቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 433,
+      "text": "አሳዘነችኝ ኦርቶዶክስ ተቆርቋሪ ስታጣ  እግዚአብሔር ይሁንሽ ሌላ ምን ይባላል",
+      "gold": [
+        [
+          "ኦርቶዶክስ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "NEGATIVE",
+          "ተቆርቋሪ ስታጣ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 434,
+      "text": "ክልል ቤንች ማጅ ዞን፣ ደቡብ ቤንች ወረዳ በሚኖሩ የአማራ ብሔር ተወላጆች ላይ በተሰነዘረ ጥቃት 9 መኖሪያ ቤቶች ተቃጠሉ። ጥቃት የተሰነዘረባቸው ነዋሪዎች ሸሽተው ወደ ሚዛን እና…",
+      "gold": [
+        [
+          "ጥቃት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መኖሪያ ቤቶች ተቃጠሉ።"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 435,
+      "text": "ቱሪናፋ መስበክማ ታውቅበት የለ የህግ የበላይነት ማስከበር አትችልምጅ  ቅዠታም",
+      "gold": [
+        [
+          "የህግ የበላይነት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አትችልምጅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 436,
+      "text": "ይህን ህንፃ ለመስራት አርክቴክት የነበረ ሰው ካለ በተገኘበት ደህና ነህ ወይ በሉልኝ",
+      "gold": [
+        [
+          "ህንፃ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 437,
+      "text": "ባህሎቻችንን ማከበር ለአንድነታችንና ለጠንካራ አገር ግንባታ ወሳኝ ነው",
+      "gold": [
+        [
+          "ባህሎቻችንን",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ወሳኝ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 438,
+      "text": "የዘር ዛር ሲይዝህ ህሊናህ ይሞታል። የዘር ፖለቲካ ነጋዴዎች ኢዜማና ብልፅግና ሊዋሀዱ ነው የምትል ሀሰት እራሳቸው ፈብርከው እራሳቸው መልሰው ድሮም እንዲህ እንደሚሆን ገምተናል ይሉሃል። ደነዝ ሁላ!",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 439,
+      "text": "አፉጣኝ ፍትህ ለወለኔ ህዝብ",
+      "gold": [
+        [
+          "ለወለኔ ህዝብ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ፍትህ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 440,
+      "text": "መንግስት ለዳቦ እጥረት እና ዋጋ ችግሩ ስንዴ መሆኑ ከፋብሪ ካግንባታ ቦሃላ ተረዳ ይሆን",
+      "gold": [
+        [
+          "መንግስት",
+          "ECONOMY#TAXATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 441,
+      "text": "እረ ጎበዝ የት ሂጀ ልሳቅ የክብር ዶክትሬት ዲግሪ እንደ ስኳርና ዘይት መከፋፈል ጀምሯል፡፡",
+      "gold": [
+        [
+          "የክብር ዶክትሬት ዲግሪ",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "መከፋፈል"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 442,
+      "text": "ሌባ ሁሉ ምን አገባን መሞታችን አላቆመ",
+      "gold": [
+        [
+          "መሞታችን",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "አላቆመ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 443,
+      "text": "ሀገርን ያቆመው የታረ አይደለም ሀገርን የሰሩት ህገ ልቦና ያላቸው ናቸው አሁን እናንተ ምሁር የምትሉት የተተበተበ አስተሳሰብ ያለው ለቁስ ራሱን ያስገዛ በደም እነና ለደም ያጋደለ ጎዶሎ ነው ለማንኛውም ምሁር እያላቹ ስትዘግቡ ይህ ለስንተኛ ጊዜ ነው",
+      "gold": [
+        [
+          "ምሁር",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "የተተበተበ አስተሳሰብ ያለው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 444,
+      "text": "እናንተም አታስቁን የምዕራባዉያኑ አይበቃንም",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አታስቁን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 445,
+      "text": "ምነው እናንተም ከሀገሪቱ ብታፈተልኩልን",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 446,
+      "text": "ትምህርት የህዝባችን መለኪያ መስፈርት ነው።",
+      "gold": [
+        [
+          "ትምህርት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "POSITIVE",
+          "መለኪያ መስፈርት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 447,
+      "text": "መልካም የኢየሱስ ክርስቶስ ልደት በአል",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "መልካም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 448,
+      "text": "ሠላም ትልቅ ነገር ነው   ምንም ይሁን ምን ጦርነት በምንም መስፈርት ሲጎዳ እንጂ ሲጠቅም አላየንም",
+      "gold": [
+        [
+          "ሠላም",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ትልቅ ነገር ነው"
+        ],
+        [
+          "ጦርነት",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሲጎዳ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 449,
+      "text": "ወለጋ ላይ ሚሞቱት ህፃናትስ  ምን ይሁኑ",
+      "gold": [
+        [
+          "ህፃናትስ",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ሚሞቱት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 450,
+      "text": "አረ ላሽ ስለብድለኛው መር ምን ተስበና ነው ስለ ምገባ የሚትለፈልፈው ድፍን",
+      "gold": [
+        [
+          "ምገባ",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 451,
+      "text": "እኔን የሚገርመኝ የህዝቡ ፍላጎት ምን እንደሆነ ነው",
+      "gold": [
+        [
+          "የህዝቡ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 452,
+      "text": "የህወሓት አመራሮች ላይ የምመለከተው የፈት ገፅታ በሙሉ ስመለከት የተፀፀቱ የመስለኛል",
+      "gold": [
+        [
+          "አመራሮች",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "የተፀፀቱ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 453,
+      "text": "የኦሮሞ ጥላቻ ያሳበዳችሁ ስብስቦች",
+      "gold": [
+        [
+          "የኦሮሞ ጥላቻ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ያሳበዳችሁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 454,
+      "text": "የተጠቃሚ ስም ዛሬ ስቴዲየም ብትኖር ትረዳ ነበረ",
+      "gold": [
+        [
+          "ስቴዲየም",
+          "PUBLIC_SAFETY#CRIME",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 455,
+      "text": "ከፓርቲ ውህደቱ ቅድሚያ ለሰላሙ ይሰራ የአማራን በየቦታው መሰቃየት መወገዝ አለበት",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "መወገዝ አለበት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 456,
+      "text": "ከብልጽግና ውጭ ሁሉም በብሔር የታወሩ ናቸው በተለይ መኢአድ የተባለ አንድ ቋንቋ እያለ ይፎክራል ሌላም ብሔርን መሠረት ያለደረጌ የክልል አወቃቀር  በመልካምድር የምትለው መቼም እንደማይተሰብ አትርሱ",
+      "gold": [
+        [
+          "የክልል አወቃቀር",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "በብሔር የታወሩ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 457,
+      "text": "ወንድም በአሁን ሰአት 45 ከፍተኝ ትምህርት ቤት አሉን ከዚህ ውስጥ 7ቱ ላይ ነው ችግር ያለው። እነዚህም የመቀበል አቅማችው ውስን እና አዳዲስ ቢሆኑም ችግር መፈ…",
+      "gold": [
+        [
+          "ትምህርት ቤት",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEGATIVE",
+          "ችግር ያለው።"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 458,
+      "text": "ለምትሰጡት አገልግሎት እባካችሁ ክፍያው የህብረተሰቡን የመግዛት አቅም ያማከለ ይሁን",
+      "gold": [
+        [
+          "ክፍያው",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 459,
+      "text": "የነውሩ ብዛት ይገርማል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የነውሩ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 460,
+      "text": "ባለስልጣን መሆን መልአክ እንደመሆን ተቆጠረና ማንም ዶማ ምንስቲር አገሪቱን የገበጣ መጨወቻ አደረጉዋት",
+      "gold": [
+        [
+          "ባለስልጣን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ዶማ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 461,
+      "text": "ፍትህ ኦሮሚያ ክልል በማንነታቸው ጀኖሳይድ ለደረሰባቸዉ አማራዎች",
+      "gold": [
+        [
+          "ፍትህ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 462,
+      "text": "ካድሬነት ክፉ በሽታ ነው",
+      "gold": [
+        [
+          "ካድሬነት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ክፉ በሽታ ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 463,
+      "text": "ትጥቅም ስንቅም  የሚሰፈርለት በአብይ አህመድ ነው  ውሸት መሆኑን አረጋግጠናል",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ውሸት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 464,
+      "text": "ሲመለሱ ደግሞ አደራ ዜናው እንደያመልጠን በጣም ስለምንጓጓ ፣ተመለሱ በሉን። ሌላ ጠቃሚ መረጃ መስጠትማ መች ታድለን።",
+      "gold": [
+        [
+          "መረጃ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "መች ታድለን።"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 465,
+      "text": "የትንሳዔ በዓል እኮ ለሳምንት  የሚከበረው ከውጪ ሲላክ እስከ  ለዚያውም ቦነሱ  ቀን ብቻ የማያገለግለው",
+      "gold": [
+        [
+          "ቦነሱ",
+          "INFRASTRUCTURE#UTILITIES",
+          "NEGATIVE",
+          "ቀን ብቻ የማያገለግለው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 466,
+      "text": "ጌታ ሆይ ይሄን ህዝብ በቃ ጨክነህ ለነዚህ ቁጭ በሉዎች ተውከው ማለት ነው……..መምጣትክን ተውከው በቃ ማለት ነው……..ፖለቲካውም ሀይማኖቱም የቁጭ በሉዎች መጫዎቻ ይሁን…",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "መጫዎቻ ይሁን…"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 467,
+      "text": "መልካም የሥራ ዘመን",
+      "gold": [
+        [
+          "የሥራ ዘመን",
+          "ECONOMY#EMPLOYMENT",
+          "POSITIVE",
+          "መልካም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 468,
+      "text": "የኢትዮ መከላከያ ሰራዊት ዜጎችን የማይጠብቅ የብልጽግና ቅምጥ",
+      "gold": [
+        [
+          "መከላከያ ሰራዊት",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "ዜጎችን የማይጠብቅ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 469,
+      "text": "TDF የትግራይ ሰራዊት ሁሉንም ማገት ወይም ማሰር አለበት❗️❗️❗️",
+      "gold": [
+        [
+          "TDF",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEGATIVE",
+          "ማገት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 470,
+      "text": "በጻድቅ ሰው ቤት ብዙ ሀይል አለ  ደብረ ሊባኖስ",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ሀይል አለ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 471,
+      "text": "በርቱ ማንንም እንዳትሰሙ ከጎናችሁ ነን",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ከጎናችሁ ነን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 472,
+      "text": "በየብሮው የቆመውን መኪና ሥርዓት ልታበጁለት ነዋ",
+      "gold": [
+        [
+          "መኪና",
+          "INFRASTRUCTURE#TRANSPORTATION",
+          "POSITIVE",
+          "ሥርዓት ልታበጁለት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 473,
+      "text": "ሌሎችማ አይደለም ችግኝ ሰዎችንም ሲያመክኑ ነው የኖሩት",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ሰዎችንም ሲያመክኑ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 474,
+      "text": "ምርጫ ደረሰ ማለት ነው አማራው ዱዲ ሳይሰጠው ለሚዲያ ፍጆታ ማዋል ወንጀል ነው",
+      "gold": [
+        [
+          "አማራው",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ዱዲ ሳይሰጠው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 475,
+      "text": "ቅማላሙ የትግሬ መንግስት ሀገራችንን ዘረፋት ዜጎቻችንን ለሰቆቃና ለሞት ዳረገ ወጣቶችን በዘርና በጎሳ አባላ ወደብ አሳጣን ኤርትራን ገነጠለ የጎንደርን መሬት ለሱዳን ገበረ ምን ያላረገን አለ",
+      "gold": [
+        [
+          "የትግሬ መንግስት",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ዘረፋት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 476,
+      "text": "የቆምጬ ዘረኝነት ደግሞ እንዴት ነው ሚከረፍው አንተ ጠባብ ዘረኛ ቡሽቲ የታሪክ ሌቦች ለእናንተ አማርኛ የሚናጋረ ሁሉ አማራ ነው እንዴ እኛ ምናቀው አማራ ሲለምን ነው ለማኝ",
+      "gold": [
+        [
+          "አማራ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ለማኝ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 477,
+      "text": "መንገድ የሚፈሰው የኦሮሞ በጭቆና አጋርነቱን ያሳያ አማራ በኦሮሚያ ከልብ መፍሰሱ አጥንት ዘልቆ ያማል ነውር ተሸክሞ የማይጮህ አማራ ቢሞት ይሻለዋል የአማራ ጠላት ሆዳም የአማራ ባለስልጣን ቢያደራጁት ቢሟገቱለት መቀለጃ አይሆንም የኦሮሞ የአፋር የትግሬ የሶማሌ ሀገር ይያዝልኝ አስቸኳይ አዋጅ ይታወጅ አማራ ማንም መንገደኛ እያረደው እየጨፈጨፈው ደሙን እያፈሰሰ አስከመቼ ይባላል ለሞተላት አማራ የማትሆን ሀገር ለማንም አትሆንም",
+      "gold": [
+        [
+          "የአማራ ባለስልጣን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ሆዳም"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 478,
+      "text": "ተረኛ ባዮች ሁለመናቸው የጁንታው ታሪክ ሊሰርቁ በሚዲያ ሲጥሩ ያሬድ ኦሮሞ እንድንናገር ካስገደዱን ኦሮሞ ኢትዮጵያን አረገጣትም አያቃትምም በቅዱስ ያሬድ ኢትዮጵያ ኦሮሞን ኦሮሞና ኢትዮጵያ አይተዋወቁም ንፍጥን ንፍጥ አይስክሪም አያውቅም",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "ሊሰርቁ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 479,
+      "text": "ኢትዮጵያ ባለፉት ሰአታት በተደረገ የላቦራቶሪ ናሙና ምርመራ በኮሮና ቫይረስ መያዛቸው ተገለጸ በአጠቃላይ በቫይረሱ የተያዙ ደርሷል",
+      "gold": [
+        [
+          "በኮሮና ቫይረስ",
+          "PUBLIC_SERVICES#HEALTHCARE",
+          "NEGATIVE",
+          "መያዛቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 480,
+      "text": "የሚገኘው ኦነግ ጎጠኛ ነው ጠባብ ነው ሠፈርተኛ ነው ኦነግና ጎመን ከፍ ሲሉ መቀንጠሥ ነው መነሻው መድረሻውም ጥፋት ነው ሲሉኝ አደኩ",
+      "gold": [
+        [
+          "ኦነግ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "ጎጠኛ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 481,
+      "text": "ጽህፉ የሚያሳየው ግእዝ መሆኑን ነው ግእዝ ደሞ የተመሰረተው ሀ ለ ሀ የሚሉ ፊደሎች የተመሰረተ በ ትግራይ አኽሱም ነው በዚ ርግጠኛ ሁን",
+      "gold": [
+        [
+          "ግእዝ",
+          "PUBLIC_SERVICES#EDUCATION",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 482,
+      "text": "የአፈር ማዳበሪያ ለማምረት እስካልደፈርን ድረስ የዕቅዳችን ውጤት በሌሎች ውሳኔ ላይ የተመሰረተ ነው:: ፓርኩን፠ቀነስ ያዝ አድርጉና ጠንከር ያለ ስራ ላይ አተኩሩ!",
+      "gold": [
+        [
+          "የአፈር ማዳበሪያ",
+          "ECONOMY#EMPLOYMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 483,
+      "text": "በእውቀት እና በሕዝባዊነት ስሜት ከሆነፈጣሪ ዘመንሽን ይባርከው",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "POSITIVE",
+          "ይባርከው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 484,
+      "text": "ዋና ዋና የመንግሥት እርሻዎች ያሉት የት ሆነና  አንተዉ በል እንጂ እኛማ እናውቃለን",
+      "gold": [
+        [
+          "የመንግሥት እርሻዎች",
+          "ECONOMY#EMPLOYMENT",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 485,
+      "text": "ምን አለ ለፎቶ እንኳ ከመንገድ የወጣት ፎቶ ብትጠቀሙ እውነትን አታዉቁት",
+      "gold": [
+        [
+          "NULL",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "እውነትን አታዉቁት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 486,
+      "text": "አሁንም አዴፓ በሞግዚት ነው የሚተዳደረው አሰዳቢዎች",
+      "gold": [
+        [
+          "አዴፓ",
+          "GOVERNANCE#CITIZEN_ENGAGEMENT",
+          "NEGATIVE",
+          "አሰዳቢዎች"
+        ],
+        [
+          "አዴፓ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "አሰዳቢዎች"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 487,
+      "text": "አንት ዝተት የኮምንኬሽን አተላ ያንተ መግለጫ ከጅምሩ በምን ተመስርተህ እንደሆን ይታወቃል የኢትዮጵያን ትልቁን ሀይማኖት የሆነዉን ኦርቶዶክስ እና እስልምና ማዳከምና ለኢሮፕ እና ለአሜሪካ እንዲበረከኩ መስራት ነዉ ስራህ ግን መቸም አይሳካልህም እንዴት መቶ ሃያ ሚሊየን ህዝብ በስድስት ሚሊየን ህዝብ ትታመስ ነበር ግን የኢትዮጵያን ሰላም የማይፈልጉ የአገሪቱ ባለስልጣን ናቸዉ የሚያምሱ እና ባለስልጣን የተባሉትን የፖለቲካ አመራሮች ላይ እርምጃ መዉድ በተገኘዉ አጋጣሚ ሁሉ መጀመር አለበት ምን በወጣዉ ገበሬ ወዛደር ተማሪ ወዘተ በማያልቅ ጦርነት ይለቅ ይቀጥላል",
+      "gold": [
+        [
+          "መግለጫ",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "ዝተት"
+        ],
+        [
+          "ባለስልጣን",
+          "GOVERNANCE#TRANSPARENCY",
+          "NEGATIVE",
+          "የማይፈልጉ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 488,
+      "text": "አይ ተረኝነት  ተመልከት አለም ባንክ ኢትዮ ነው ወይስ ኦሮምያ የሚያውቃት",
+      "gold": [
+        [
+          "ተረኝነት",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 489,
+      "text": "ኢትዮጵያ የፀጥታው ምክር ቤት ተለዋጭ አባል ሆና ተመረጠች ከ ድምፅ  በማግኝት",
+      "gold": [
+        [
+          "ኢትዮጵያ",
+          "GOVERNANCE#TRANSPARENCY",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 490,
+      "text": "የኢትዮጵያ ህዝብ አንተ ብለኸው ሳይሆን የአንተ ጌቶች ሁላ ጀግና እንደሆን ያውቃሉ",
+      "gold": [
+        [
+          "ህዝብ",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ጀግና"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 491,
+      "text": "በገዘብ ነው በመገዘብ ትጥቅ የሚፈታው አስተካክሉት",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEUTRAL",
+          "አስተካክሉት"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 492,
+      "text": "ለማጥፋት የሚሠሩት፤ ኦሮሞ የራሱ የጦር ሃይል፣ የፖለቲካና የኢኮኖሚ አቅም በማደራጀት ወደ ነፃይቱ ኦሮሚያ ግንባታ እንደሚገሠግስ ምንም ጥርጥር የለውም። ኦሮሞ ኦሮሞነቱን ጠብቆና ተንከ",
+      "gold": [
+        [
+          "ኦሮሞ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "ነፃይቱ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 493,
+      "text": "ስለዚህ እኛም ወሎየዎች አማራ ናችሁ አትበሉን እኛ አንድነታችን ከኦረሞ ሶማሌ አፋር ደቡቡጋ ነው  ነጥብ",
+      "gold": [
+        [
+          "አንድነታችን",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "POSITIVE",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 494,
+      "text": "ሰበር በኤርትራ የሁኑትን ምሽት ከቤታቸው እንዳይወጡና እንቅስቃሴያቸውን እንዲ ገድቡ መንግስት ለዜጎቹ አሳሰበ ማስረጃሰበር በኤርትራ የሁኑትን ምሽት ከቤታቸው እንዳይወጡና እንቅስቃሴያቸውን እንዲ ገድቡ መንግስት ለዜጎቹ አሳሰበ ማስረጃ",
+      "gold": [
+        [
+          "መንግስት",
+          "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+          "NEUTRAL",
+          "እንዲ ገድቡ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 495,
+      "text": "እስኪ አንድ ቀን እንኳን የራያ ህዝብን ሰቆቃ ለአለም አሰሙልን",
+      "gold": [
+        [
+          "ሰቆቃ",
+          "SOCIAL#EQUALITY_JUSTICE",
+          "NEGATIVE",
+          "አሰሙልን"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 496,
+      "text": "አይይይይይይ ደግሞ በዚህ ልጨርሱን ነው ወይ ግብፅ",
+      "gold": [
+        [
+          "NULL",
+          "PUBLIC_SAFETY#CRIME",
+          "NEGATIVE",
+          "ልጨርሱን ነው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 497,
+      "text": "እግዚአብሄር ይስጣቸው ይጠብቃቸው",
+      "gold": [
+        [
+          "NULL",
+          "SOCIAL#COMMUNITY_SUPPORT",
+          "POSITIVE",
+          "ይስጣቸው"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 498,
+      "text": "ማነሽ ጅጅ በብር ምችና ንገሪኝማ ስንት እደሚሆን",
+      "gold": [
+        [
+          "NULL",
+          "ECONOMY#TAXATION",
+          "NEUTRAL",
+          "NULL"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    },
+    {
+      "id": 499,
+      "text": "ወንጀልን ለመከላከል ግለሰቦቹን ይፋ ማድረግ ነው እንጅ የምን መደበቅ ነው",
+      "gold": [
+        [
+          "ወንጀልን",
+          "PUBLIC_SAFETY#CRIME",
+          "POSITIVE",
+          "ይፋ ማድረግ"
+        ]
+      ],
+      "pred": [],
+      "strict_tp": 0,
+      "norm_tp": 0
+    }
+  ]
+}

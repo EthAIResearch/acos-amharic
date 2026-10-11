@@ -1,0 +1,872 @@
+{
+  "400": [
+    [
+      "አገልግሎት",
+      "PUBLIC_SERVICES#UTILITIES",
+      "POSITIVE",
+      "እጅግ በጣም ዘመናዊና ምቹ"
+    ]
+  ],
+  "401": [
+    [
+      "ሕብረትሰብ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "በኑሮ እየተመረሩ ነው"
+    ]
+  ],
+  "402": [
+    [
+      "መንግስትን",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ሊቃወም ይገባል"
+    ],
+    [
+      "NULL",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "እየገቡ እስኪጨርሱነወ?"
+    ],
+    [
+      "ሰሜን ወሎ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ቁማሩን ቀጥሏል"
+    ]
+  ],
+  "403": [
+    [
+      "የኦሮሞ ቄስ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "በተሻለ ሰላምና ፍቅርን ይሰብካል"
+    ]
+  ],
+  "404": [],
+  "405": [
+    [
+      "ኦቦ ሽመልስ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "በእርስዎ እና በቤተዘመድዎችዎ ምክንያት"
+    ]
+  ],
+  "406": [
+    [
+      "አብቹ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "POSITIVE",
+      "የኛ ጀግና"
+    ]
+  ],
+  "407": [],
+  "408": [
+    [
+      "ዜና",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "መልካም"
+    ]
+  ],
+  "409": [
+    [
+      "መከላከያ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሲታረድ"
+    ],
+    [
+      "ወገን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በማይካድራ ሲጨፈጨፍ"
+    ]
+  ],
+  "410": [
+    [
+      "ትግሬ ነኝ ያለ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "POSITIVE",
+      "ነፃነትና ጥሩ ስራ እድል የሚሰጠው"
+    ],
+    [
+      "ወያኔ ግዜ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ለአንድ ዘር መብት ለቆሙት"
+    ]
+  ],
+  "411": [],
+  "412": [
+    [
+      "NULL",
+      "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+      "NEUTRAL",
+      "ጥንቃቄ ይደረግ"
+    ]
+  ],
+  "413": [],
+  "414": [
+    [
+      "ሚድያው",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "የአንድ ወገን አፍ ሆኖ"
+    ]
+  ],
+  "415": [
+    [
+      "ህፃናት",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ጎዳና ላይ የሚኖሩት"
+    ],
+    [
+      "ክልሎች",
+      "PUBLIC_SERVICES#COMMUNITY_SUPPORT",
+      "NEUTRAL",
+      "ብዙ መሰራት አለበት"
+    ]
+  ],
+  "416": [
+    [
+      "አክራሪ ክርስቲያኖች",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "አክራሪ"
+    ],
+    [
+      "አክራሪ ክርስቲያኖች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "መስጅድ ለማቃጠልና የሙስሊሞችን ንብረት ለመዘረፍ እየተንቀሳቀሱ"
+    ],
+    [
+      "ዘራፊ ሌቦችና ሙስሊም ጠሎች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ወንጀል ወንጀል እየጨመሩ"
+    ],
+    [
+      "የክልሉ መንግስት",
+      "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+      "NEUTRAL",
+      "ሀይሉን በፍጥነት በማሰማራት የበለጠ ወንጀል እንዳይፈጽም መከላከል ይገባዋል"
+    ]
+  ],
+  "417": [],
+  "418": [
+    [
+      "የሚዘግቡት",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "የትሆነው ነው የሚዘግቡት"
+    ]
+  ],
+  "419": [
+    [
+      "እውነት",
+      "GOVERNANCE#TRANSPARENCY",
+      "POSITIVE",
+      "እንናገር"
+    ]
+  ],
+  "420": [
+    [
+      "መሪያችን",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ምርጡ"
+    ]
+  ],
+  "421": [],
+  "422": [],
+  "423": [
+    [
+      "የሰው ህይወት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "እያለፈ"
+    ]
+  ],
+  "424": [
+    [
+      "የ መኪኖች ባለቤት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ታሥረው ወይም ታግተው ያሉ"
+    ]
+  ],
+  "425": [
+    [
+      "ባለታክሲዎች",
+      "INFRASTRUCTURE#TRANSPORTATION",
+      "NEGATIVE",
+      "መተንፈሻ እስከማይኖር ሰዉ እየጫኑ"
+    ],
+    [
+      "ባለታክሲዎች",
+      "INFRASTRUCTURE#TRANSPORTATION",
+      "NEGATIVE",
+      "መስኮቱ እንዳይከፈት በሽቦ፣ በገመድ የሚያስሩ"
+    ]
+  ],
+  "426": [
+    [
+      "የጁንታው ህወሀት ቡድን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "የአገር ክህደት ወንጀል በፈጸሙ"
+    ]
+  ],
+  "427": [
+    [
+      "NULL",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ማስተላለፊያ ቱቦ ብቻ"
+    ]
+  ],
+  "428": [
+    [
+      "ያልተሟላ መረጃ",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ዋጋ ቢሰ ነው"
+    ]
+  ],
+  "429": [
+    [
+      "አማራው",
+      "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+      "NEGATIVE",
+      "እራሱን አገሩን እንዱያድን አታስታጥቁትም"
+    ]
+  ],
+  "430": [
+    [
+      "ብልጽግና",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ደም ሳይፈስ ብልጽግና የለም"
+    ]
+  ],
+  "431": [
+    [
+      "አማራ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "እነደ ጎረራችሁ ኖራችሁ ትሞታላችሁ"
+    ]
+  ],
+  "432": [
+    [
+      "NULL",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "አታስጨንቋቸው"
+    ]
+  ],
+  "433": [
+    [
+      "ኦርቶዶክስ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ተቆርቋሪ ስታጣ"
+    ]
+  ],
+  "434": [
+    [
+      "9 መኖሪያ ቤቶች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ተቃጠሉ"
+    ],
+    [
+      "ነዋሪዎች",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሸሽተው"
+    ]
+  ],
+  "435": [
+    [
+      "NULL",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "የህግ የበላይነት ማስከበር አትችልም"
+    ],
+    [
+      "NULL",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ቅዠታም"
+    ]
+  ],
+  "436": [],
+  "437": [
+    [
+      "ባህሎቻችንን ማከበር",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ወሳኝ ነው"
+    ]
+  ],
+  "438": [
+    [
+      "የዘር ዛር",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ህሊናህ ይሞታል።"
+    ],
+    [
+      "የዘር ፖለቲካ ነጋዴዎች",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ሀሰት እራሳቸው ፈብርከው እራሳቸው መልሰው"
+    ]
+  ],
+  "439": [
+    [
+      "ወለኔ ህዝብ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "POSITIVE",
+      "አፉጣኝ ፍትህ"
+    ]
+  ],
+  "440": [],
+  "441": [
+    [
+      "የክብር ዶክትሬት ዲግሪ",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEGATIVE",
+      "እንደ ስኳርና ዘይት መከፋፈል ጀምሯል፡፡"
+    ]
+  ],
+  "442": [],
+  "443": [
+    [
+      "ህገ ልቦና ያላቸው",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ሀገርን የሰሩት"
+    ],
+    [
+      "ምሁር የምትሉት",
+      "SOCIAL#EDUCATION",
+      "NEGATIVE",
+      "የተተበተበ አስተሳሰብ ያለው"
+    ]
+  ],
+  "444": [
+    [
+      "ምዕራባዉያኑ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "አይበቃንም"
+    ]
+  ],
+  "445": [
+    [
+      "እናንተም",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ከሀገሪቱ ብታፈተልኩልን"
+    ]
+  ],
+  "446": [
+    [
+      "ትምህርት",
+      "PUBLIC_SERVICES#EDUCATION",
+      "POSITIVE",
+      "የህዝባችን መለኪያ መስፈርት ነው።"
+    ]
+  ],
+  "447": [
+    [
+      "የኢየሱስ ክርስቶስ ልደት በአል",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "መልካም"
+    ]
+  ],
+  "448": [
+    [
+      "ሠላም",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ትልቅ ነገር ነው"
+    ],
+    [
+      "ጦርነት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሲጎዳ እንጂ ሲጠቅም አላየንም"
+    ]
+  ],
+  "449": [
+    [
+      "ህፃናት",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሚሞቱት"
+    ]
+  ],
+  "450": [],
+  "451": [],
+  "452": [
+    [
+      "የህወሓት አመራሮች",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "የተፀፀቱ የመስለኛል"
+    ]
+  ],
+  "453": [
+    [
+      "ስብስቦች",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "የኦሮሞ ጥላቻ ያሳበዳችሁ"
+    ]
+  ],
+  "454": [],
+  "455": [
+    [
+      "ሰላሙ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEUTRAL",
+      "ይሰራ"
+    ],
+    [
+      "አማራን",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በየቦታው መሰቃየት"
+    ]
+  ],
+  "456": [
+    [
+      "ከብልጽግና ውጭ ሁሉም",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "በብሔር የታወሩ ናቸው"
+    ],
+    [
+      "መኢአድ",
+      "GOVERNANCE#CITIZEN_ENGAGEMENT",
+      "NEGATIVE",
+      "አንድ ቋንቋ እያለ ይፎክራል"
+    ]
+  ],
+  "457": [
+    [
+      "NULL",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEGATIVE",
+      "7ቱ ላይ ነው ችግር ያለው።"
+    ],
+    [
+      "NULL",
+      "PUBLIC_SERVICES#EDUCATION",
+      "NEGATIVE",
+      "የመቀበል አቅማችው ውስን"
+    ]
+  ],
+  "458": [
+    [
+      "ክፍያው",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEUTRAL",
+      "የህብረተሰቡን የመግዛት አቅም ያማከለ ይሁን"
+    ]
+  ],
+  "459": [
+    [
+      "የነውሩ ብዛት",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ይገርማል"
+    ]
+  ],
+  "460": [
+    [
+      "ማንም ዶማ ምንስቲር",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "አገሪቱን የገበጣ መጨወቻ አደረጉዋት"
+    ]
+  ],
+  "461": [
+    [
+      "አማራዎች",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "POSITIVE",
+      "ፍትህ"
+    ]
+  ],
+  "462": [
+    [
+      "ካድሬነት",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ክፉ በሽታ ነው"
+    ]
+  ],
+  "463": [
+    [
+      "ትጥቅም ስንቅም  የሚሰፈርለት በአብይ አህመድ ነው",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ውሸት መሆኑን አረጋግጠናል"
+    ]
+  ],
+  "464": [
+    [
+      "መረጃ",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ጠቃሚ መረጃ መስጠትማ መች ታድለን።"
+    ]
+  ],
+  "465": [
+    [
+      "ቦነሱ",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ቀን ብቻ የማያገለግለው"
+    ]
+  ],
+  "466": [
+    [
+      "ህዝብ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ለነዚህ ቁጭ በሉዎች ተውከው"
+    ],
+    [
+      "ፖለቲካውም ሀይማኖቱም",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "የቁጭ በሉዎች መጫዎቻ"
+    ]
+  ],
+  "467": [
+    [
+      "የሥራ ዘመን",
+      "ECONOMY#EMPLOYMENT",
+      "POSITIVE",
+      "መልካም"
+    ]
+  ],
+  "468": [
+    [
+      "የኢትዮ መከላከያ ሰራዊት",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEGATIVE",
+      "ዜጎችን የማይጠብቅ"
+    ],
+    [
+      "የኢትዮ መከላከያ ሰራዊት",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "የብልጽግና ቅምጥ"
+    ]
+  ],
+  "469": [
+    [
+      "NULL",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሁሉንም ማገት ወይም ማሰር አለበት❗️❗️❗️"
+    ]
+  ],
+  "470": [
+    [
+      "በጻድቅ ሰው ቤት",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ብዙ ሀይል አለ"
+    ]
+  ],
+  "471": [
+    [
+      "NULL",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ከጎናችሁ ነን"
+    ]
+  ],
+  "472": [
+    [
+      "የቆመውን መኪና ሥርዓት",
+      "INFRASTRUCTURE#TRANSPORTATION",
+      "NEUTRAL",
+      "ልታበጁለት ነዋ"
+    ]
+  ],
+  "473": [
+    [
+      "NULL",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ሰዎችንም ሲያመክኑ ነው የኖሩት"
+    ]
+  ],
+  "474": [
+    [
+      "ለሚዲያ ፍጆታ ማዋል",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "ወንጀል ነው"
+    ]
+  ],
+  "475": [
+    [
+      "የትግሬ መንግስት",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ቅማላሙ"
+    ],
+    [
+      "ሀገራችንን",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ዘረፋት"
+    ],
+    [
+      "ዜጎቻችንን",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ለሰቆቃና ለሞት ዳረገ"
+    ],
+    [
+      "የጎንደርን መሬት",
+      "GOVERNANCE#LEGISLATION",
+      "NEGATIVE",
+      "ለሱዳን ገበረ"
+    ]
+  ],
+  "476": [
+    [
+      "የቆምጬ ዘረኝነት",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ዘረኝነት"
+    ],
+    [
+      "አንተ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ጠባብ ዘረኛ ቡሽቲ የታሪክ ሌቦች"
+    ],
+    [
+      "አማራ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ሲለምን ነው ለማኝ"
+    ]
+  ],
+  "477": [
+    [
+      "አማራ በኦሮሚያ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ከልብ መፍሰሱ አጥንት ዘልቆ ያማል"
+    ],
+    [
+      "የአማራ ባለስልጣን",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ሆዳም"
+    ],
+    [
+      "አማራ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "ማንም መንገደኛ እያረደው እየጨፈጨፈው ደሙን እያፈሰሰ"
+    ],
+    [
+      "አስቸኳይ አዋጅ",
+      "PUBLIC_SAFETY#EMERGENCY_SERVICES",
+      "NEUTRAL",
+      "ይታወጅ"
+    ]
+  ],
+  "478": [
+    [
+      "ተረኛ ባዮች",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ታሪክ ሊሰርቁ በሚዲያ ሲጥሩ"
+    ],
+    [
+      "ኦሮሞ",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ኢትዮጵያን አረገጣትም አያቃትምም"
+    ]
+  ],
+  "479": [],
+  "480": [
+    [
+      "ኦነግ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ጎጠኛ ነው"
+    ],
+    [
+      "ኦነግ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ጠባብ ነው"
+    ],
+    [
+      "ኦነግ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ሠፈርተኛ ነው"
+    ],
+    [
+      "ኦነግ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "መነሻው መድረሻውም ጥፋት ነው"
+    ]
+  ],
+  "481": [],
+  "482": [
+    [
+      "የዕቅዳችን ውጤት",
+      "ECONOMY#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "በሌሎች ውሳኔ ላይ የተመሰረተ ነው"
+    ]
+  ],
+  "483": [
+    [
+      "NULL",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "በእውቀት እና በሕዝባዊነት ስሜት"
+    ]
+  ],
+  "484": [],
+  "485": [
+    [
+      "NULL",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "እውነትን አታዉቁት"
+    ]
+  ],
+  "486": [
+    [
+      "አዴፓ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "በሞግዚት ነው የሚተዳደረው"
+    ]
+  ],
+  "487": [
+    [
+      "NULL",
+      "GOVERNANCE#TRANSPARENCY",
+      "NEGATIVE",
+      "የኮምንኬሽን አተላ"
+    ],
+    [
+      "ኦርቶዶክስ እና እስልምና",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEGATIVE",
+      "ማዳከምና ለኢሮፕ እና ለአሜሪካ እንዲበረከኩ መስራት ነዉ ስራህ"
+    ],
+    [
+      "ስራህ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "መቸም አይሳካልህም"
+    ],
+    [
+      "የአገሪቱ ባለስልጣን",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "የኢትዮጵያን ሰላም የማይፈልጉ"
+    ],
+    [
+      "የፖለቲካ አመራሮች",
+      "SOCIAL#EQUALITY_JUSTICE",
+      "NEUTRAL",
+      "እርምጃ መዉድ በተገኘዉ አጋጣሚ ሁሉ መጀመር አለበት"
+    ]
+  ],
+  "488": [],
+  "489": [
+    [
+      "ኢትዮጵያ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "የፀጥታው ምክር ቤት ተለዋጭ አባል ሆና ተመረጠች"
+    ]
+  ],
+  "490": [
+    [
+      "አንተ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ጀግና እንደሆን"
+    ]
+  ],
+  "491": [],
+  "492": [
+    [
+      "ኦሮሞ",
+      "GOVERNANCE#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "የራሱ የጦር ሃይል፣ የፖለቲካና የኢኮኖሚ አቅም በማደራጀት ወደ ነፃይቱ ኦሮሚያ ግንባታ እንደሚገሠግስ ምንም ጥርጥር የለውም።"
+    ]
+  ],
+  "493": [
+    [
+      "አንድነታችን",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ከኦረሞ ሶማሌ አፋር ደቡቡጋ ነው"
+    ]
+  ],
+  "494": [],
+  "495": [
+    [
+      "የራያ ህዝብን ሰቆቃ",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "NEGATIVE",
+      "ሰቆቃ"
+    ]
+  ],
+  "496": [
+    [
+      "ግብፅ",
+      "PUBLIC_SAFETY#CRIME",
+      "NEGATIVE",
+      "በዚህ ልጨርሱን ነው"
+    ]
+  ],
+  "497": [
+    [
+      "NULL",
+      "SOCIAL#COMMUNITY_SUPPORT",
+      "POSITIVE",
+      "ይጠብቃቸው"
+    ]
+  ],
+  "498": [],
+  "499": [
+    [
+      "ግለሰቦቹን",
+      "PUBLIC_SAFETY#CRIME_SERVICES",
+      "NEUTRAL",
+      "ይፋ ማድረግ ነው"
+    ]
+  ]
+}

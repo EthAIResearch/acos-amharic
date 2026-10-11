@@ -1,0 +1,50 @@
+{
+  "samples_evaluated": 500,
+  "total_gold_quads": 522,
+  "category_sentiment_metrics": {
+    "precision": 0.23,
+    "recall": 0.22030651340996169,
+    "f1": 0.22504892367906065,
+    "tp": 115,
+    "fp": 385,
+    "fn": 407
+  },
+  "aope_metrics": {
+    "precision": 0.118,
+    "recall": 0.11302681992337164,
+    "f1": 0.11545988258317025,
+    "tp": 59,
+    "fp": 441,
+    "fn": 463
+  },
+  "aste_metrics": {
+    "precision": 0.108,
+    "recall": 0.10344827586206896,
+    "f1": 0.10567514677103719,
+    "tp": 54,
+    "fp": 446,
+    "fn": 468
+  },
+  "clitic_normalized_metrics": {
+    "precision": 0.084,
+    "recall": 0.08045977011494253,
+    "f1": 0.08219178082191782,
+    "tp": 42,
+    "fp": 458,
+    "fn": 480
+  },
+  "strict_metrics": {
+    "precision": 0.082,
+    "recall": 0.07854406130268199,
+    "f1": 0.08023483365949119,
+    "tp": 41,
+    "fp": 459,
+    "fn": 481
+  },
+  "error_distribution": {
+    "category_mismatches": 302,
+    "implicit_mismatches": 206,
+    "boundary_mismatches": 33,
+    "sentiment_mismatches": 268
+  }
+}
