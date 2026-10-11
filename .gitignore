@@ -7,6 +7,12 @@ __pycache__/
 # Data (raw TSVs likely hosted externally -- see data/README.md)
 data/raw/*.tsv
 data/raw_explicit/*.tsv
+data/books_raw/
+data/corpus/*.jsonl
+!data/corpus/*.jsonl.gz
+data/book_acos/*.bak
+data/prepared_candidates.jsonl
+data/prepared_reannotated.jsonl
 
 # Model checkpoints and tokenizer files (large -- use Git LFS or external hosting)
 results/**/*.pt
