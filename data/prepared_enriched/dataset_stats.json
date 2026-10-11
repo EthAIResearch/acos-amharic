@@ -1,0 +1,72 @@
+{
+  "total_sentences": 49077,
+  "total_quadruples": 53240,
+  "average_quads_per_sentence": 1.08,
+  "quadruple_count_distribution": {
+    "1_quads": 45486,
+    "2_quads": 3170,
+    "3_quads": 322,
+    "4_quads": 66,
+    "5_quads": 22,
+    "6_quads": 6,
+    "7_quads": 2,
+    "8_quads": 3
+  },
+  "multi_quad_percentage": 7.32,
+  "sentiment_distribution": {
+    "NEGATIVE": 34547,
+    "NEUTRAL": 4624,
+    "POSITIVE": 14069
+  },
+  "category_distribution": {
+    "GOVERNANCE#TRANSPARENCY": 12845,
+    "INFRASTRUCTURE#TRANSPORTATION": 983,
+    "PUBLIC_SERVICES#EDUCATION": 1683,
+    "INFRASTRUCTURE#UTILITIES": 2527,
+    "GOVERNANCE#CITIZEN_ENGAGEMENT": 6364,
+    "PUBLIC_SAFETY#CRIME": 7880,
+    "PUBLIC_SERVICES#UTILITIES": 222,
+    "SOCIAL#COMMUNITY_SUPPORT": 5577,
+    "SOCIAL#EQUALITY_JUSTICE": 8244,
+    "PUBLIC_SAFETY#EMERGENCY_SERVICES": 1546,
+    "ECONOMY#TAXATION": 1407,
+    "ECONOMY#EMPLOYMENT": 1504,
+    "PUBLIC_SAFETY#CRIME_SERVICES": 173,
+    "ECONOMY#COMMUNITY_SUPPORT": 50,
+    "GOVERNANCE#LEGISLATION": 513,
+    "ECONOMY#UTILITIES": 304,
+    "PUBLIC_SERVICES#HEALTHCARE": 817,
+    "GOVERNANCE#COMMUNITY_SUPPORT": 237,
+    "SOCIAL#EDUCATION": 88,
+    "HEALTHCARE#GENERAL": 17,
+    "PUBLIC_SERVICES#INFRASTRUCTURE": 174,
+    "PUBLIC_SERVICES#COMMUNITY_SUPPORT": 30,
+    "PUBLIC_SERVICES#EMERGENCY_SERVICES": 55
+  },
+  "splits": {
+    "train": {
+      "sentences": 39261,
+      "quadruples": 42768,
+      "multi_quad_sentences": 3003,
+      "multi_quad_percentage": 7.65,
+      "enriched_replacements": 2551,
+      "categories_present": 23
+    },
+    "dev": {
+      "sentences": 4907,
+      "quadruples": 5235,
+      "multi_quad_sentences": 294,
+      "multi_quad_percentage": 5.99,
+      "enriched_replacements": 163,
+      "categories_present": 20
+    },
+    "test": {
+      "sentences": 4909,
+      "quadruples": 5237,
+      "multi_quad_sentences": 294,
+      "multi_quad_percentage": 5.99,
+      "enriched_replacements": 152,
+      "categories_present": 23
+    }
+  }
+}
