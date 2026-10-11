@@ -1,0 +1,68 @@
+{
+  "total_sentences": 1181,
+  "total_quadruples": 2056,
+  "average_quads_per_sentence": 1.74,
+  "quadruple_count_distribution": {
+    "1_quads": 413,
+    "2_quads": 676,
+    "3_quads": 79,
+    "4_quads": 11,
+    "5_quads": 2
+  },
+  "multi_quad_percentage": 65.0,
+  "sentiment_distribution": {
+    "NEGATIVE": 666,
+    "POSITIVE": 869,
+    "NEUTRAL": 521
+  },
+  "category_distribution": {
+    "PUBLIC_SAFETY#CRIME": 74,
+    "PUBLIC_SAFETY#CRIME_SERVICES": 47,
+    "SOCIAL#EQUALITY_JUSTICE": 296,
+    "GOVERNANCE#TRANSPARENCY": 85,
+    "SOCIAL#EDUCATION": 309,
+    "PUBLIC_SERVICES#EDUCATION": 114,
+    "GOVERNANCE#COMMUNITY_SUPPORT": 29,
+    "SOCIAL#COMMUNITY_SUPPORT": 227,
+    "ECONOMY#EMPLOYMENT": 64,
+    "ECONOMY#COMMUNITY_SUPPORT": 58,
+    "INFRASTRUCTURE#TRANSPORTATION": 52,
+    "PUBLIC_SERVICES#INFRASTRUCTURE": 77,
+    "GOVERNANCE#CITIZEN_ENGAGEMENT": 127,
+    "PUBLIC_SERVICES#COMMUNITY_SUPPORT": 13,
+    "HEALTHCARE#GENERAL": 74,
+    "PUBLIC_SERVICES#HEALTHCARE": 78,
+    "PUBLIC_SERVICES#EMERGENCY_SERVICES": 18,
+    "GOVERNANCE#LEGISLATION": 174,
+    "PUBLIC_SERVICES#UTILITIES": 37,
+    "INFRASTRUCTURE#UTILITIES": 11,
+    "PUBLIC_SAFETY#EMERGENCY_SERVICES": 25,
+    "ECONOMY#TAXATION": 64,
+    "ECONOMY#UTILITIES": 3
+  },
+  "aspect_types": {
+    "explicit": 1884,
+    "implicit": 172
+  },
+  "opinion_types": {
+    "explicit": 1823,
+    "implicit": 233
+  },
+  "splits": {
+    "train": {
+      "sentences": 946,
+      "quadruples": 1631,
+      "multi_quad_sentences": 606
+    },
+    "dev": {
+      "sentences": 117,
+      "quadruples": 210,
+      "multi_quad_sentences": 81
+    },
+    "test": {
+      "sentences": 118,
+      "quadruples": 215,
+      "multi_quad_sentences": 81
+    }
+  }
+}
