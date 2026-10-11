@@ -1,0 +1,4588 @@
+{
+  "generated_at": "2026-10-10T09:51:32Z",
+  "total_documents": 457,
+  "skipped_or_failed": 13,
+  "total_words": 8175259,
+  "total_characters": 43164165,
+  "total_ethiopic_characters": 30560352,
+  "average_words_per_doc": 17889.0,
+  "overall_ethiopic_char_ratio": 0.708,
+  "output_files": {
+    "oscar_compressed": "/home/codeknight/Documents/work/INSA/acos-amharic/data/corpus/amharic_corpus_oscar.jsonl.gz",
+    "oscar_jsonl": "/home/codeknight/Documents/work/INSA/acos-amharic/data/corpus/amharic_corpus_oscar.jsonl",
+    "mc4_compressed": "/home/codeknight/Documents/work/INSA/acos-amharic/data/corpus/amharic_corpus_mc4.jsonl.gz",
+    "mc4_jsonl": "/home/codeknight/Documents/work/INSA/acos-amharic/data/corpus/amharic_corpus_mc4.jsonl"
+  },
+  "included_books": [
+    {
+      "id": 0,
+      "title": "The drunkard of Gulelle የጉለሌዉ ሰካራም: Temesgen Gebre Translated By Fikresilassie Yemane",
+      "author": "Temesgen Gebre Translated By Fikresilassie Yemane",
+      "extraction_method": "cached_ocr",
+      "words": 5276,
+      "characters": 31850,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/the-drunkard-of-gulelle-ye-gulalew-sekaram-english"
+    },
+    {
+      "id": 1,
+      "title": "ሁ ቱትሲ Hu Tutsi Amharic Book: ማኪዩሌ ኢሊባጊዛ translated by Mezemir Girma",
+      "author": "ማኪዩሌ ኢሊባጊዛ translated by Mezemir Girma",
+      "extraction_method": "digital",
+      "words": 54338,
+      "characters": 286024,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/hu-tutsi-free-amharic-book-mezemir-girma"
+    },
+    {
+      "id": 2,
+      "title": "Aleka Gebrehana Keldoch አለቃ ገብረሃና ቀልዶች : Ethio Book Review",
+      "author": "Ethio Book Review",
+      "extraction_method": "cached_ocr",
+      "words": 6015,
+      "characters": 30049,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/aleka-gebrehana-keldoch"
+    },
+    {
+      "id": 3,
+      "title": "Ethiopian Orthodox Amharic Bible: Ethiopian Orthodox Tewahdo Church",
+      "author": "Ethiopian Orthodox Tewahdo Church",
+      "extraction_method": "digital",
+      "words": 63674,
+      "characters": 2401766,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/ethiopian-orthodox-amharic-bible"
+    },
+    {
+      "id": 4,
+      "title": "እሳት ወይ አበባ: Tsegaye Gebremedhin",
+      "author": "Tsegaye Gebremedhin",
+      "extraction_method": "cached_ocr",
+      "words": 4160,
+      "characters": 21562,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/esat-wey-abeba-tsegaye-gebremedhin-1999"
+    },
+    {
+      "id": 5,
+      "title": "አምስት ስድስት ሰባት: Sebhat Gebregziabher",
+      "author": "Sebhat Gebregziabher",
+      "extraction_method": "cached_ocr",
+      "words": 6151,
+      "characters": 27528,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/amest-sedist-sebat-567-sebhat-gebre-egziabher-1981"
+    },
+    {
+      "id": 6,
+      "title": "የጉለሌው ሰካራም: Temesgen Gebre",
+      "author": "Temesgen Gebre",
+      "extraction_method": "digital",
+      "words": 2188,
+      "characters": 10562,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/yegulalew-sekaram-temesgen-gebre"
+    },
+    {
+      "id": 7,
+      "title": "የበደል ካሳ: Atnafseged Yilma",
+      "author": "Atnafseged Yilma",
+      "extraction_method": "cached_ocr",
+      "words": 7051,
+      "characters": 36078,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/yebedel-kasa-atnafseged-yilma"
+    },
+    {
+      "id": 8,
+      "title": "ኦሮማይ: Bealu Girma",
+      "author": "Bealu Girma",
+      "extraction_method": "cached_ocr",
+      "words": 10558,
+      "characters": 46661,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/oromay-bealu-girma"
+    },
+    {
+      "id": 9,
+      "title": "የግጥም ጉባኤ: Mengistu Lemma",
+      "author": "Mengistu Lemma",
+      "extraction_method": "cached_ocr",
+      "words": 6219,
+      "characters": 22517,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/yegetim-gubae-mengistu-lema"
+    },
+    {
+      "id": 10,
+      "title": "የጋብቻ እንቆቅልሾችና መፍትሔዎቻቸው: Fekade Gebre, Moges Alemayehu and Worku H/mariam",
+      "author": "Fekade Gebre, Moges Alemayehu and Worku H/mariam",
+      "extraction_method": "cached_ocr",
+      "words": 4788,
+      "characters": 25533,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/yegacha-enkoklshochna-mefthewochachew-fekade-moges"
+    },
+    {
+      "id": 11,
+      "title": "የትንፋሽ ማዕበል: Kitaw Teklemariam",
+      "author": "Kitaw Teklemariam",
+      "extraction_method": "digital",
+      "words": 23114,
+      "characters": 116335,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/yetenfash-maebel-kitaw-teklemariam"
+    },
+    {
+      "id": 12,
+      "title": "ከፖርኖግራፊ ሱስ መውጣት ይቻላል: Ermias Kiros",
+      "author": "Ermias Kiros",
+      "extraction_method": "digital",
+      "words": 3528,
+      "characters": 18690,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/ke-pornography-netsa-mewtat-ermias-kiros"
+    },
+    {
+      "id": 13,
+      "title": "አንጋፋ ፈላስፋ: Moges Ekub Giorgis",
+      "author": "Moges Ekub Giorgis",
+      "extraction_method": "cached_ocr",
+      "words": 8819,
+      "characters": 41142,
+      "source": "ethiobookreview.com",
+      "url": "https://www.ethiobookreview.com/free_books/angafa-felasfa-moges-ekub-giorgis"
+    },
+    {
+      "id": 14,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 5927,
+      "characters": 26969,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library1a6a.html"
+    },
+    {
+      "id": 15,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 6654,
+      "characters": 29626,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library1a6a.html"
+    },
+    {
+      "id": 16,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9339,
+      "characters": 48886,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf7b9.html"
+    },
+    {
+      "id": 17,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11591,
+      "characters": 59933,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf7b9.html"
+    },
+    {
+      "id": 18,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11071,
+      "characters": 57188,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf7b9.html"
+    },
+    {
+      "id": 19,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7142,
+      "characters": 36366,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryecbe.html"
+    },
+    {
+      "id": 20,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7003,
+      "characters": 35577,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryecbe.html"
+    },
+    {
+      "id": 21,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10901,
+      "characters": 48334,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library71d8.html"
+    },
+    {
+      "id": 22,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9684,
+      "characters": 42337,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library71d8.html"
+    },
+    {
+      "id": 23,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11700,
+      "characters": 51349,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library71d8.html"
+    },
+    {
+      "id": 24,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9986,
+      "characters": 51509,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd6ed.html"
+    },
+    {
+      "id": 25,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11190,
+      "characters": 58283,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd6ed.html"
+    },
+    {
+      "id": 26,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10027,
+      "characters": 52543,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd6ed.html"
+    },
+    {
+      "id": 27,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10378,
+      "characters": 54416,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd6ed.html"
+    },
+    {
+      "id": 28,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11857,
+      "characters": 59322,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryc205.html"
+    },
+    {
+      "id": 29,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12747,
+      "characters": 64750,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryc205.html"
+    },
+    {
+      "id": 30,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 13036,
+      "characters": 65236,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryc205.html"
+    },
+    {
+      "id": 31,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8643,
+      "characters": 43417,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5fe6.html"
+    },
+    {
+      "id": 32,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9028,
+      "characters": 43761,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5fe6.html"
+    },
+    {
+      "id": 33,
+      "title": "allaboutETHIO",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9134,
+      "characters": 45141,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5fe6.html"
+    },
+    {
+      "id": 34,
+      "title": "Tsehai 1 A",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4717,
+      "characters": 17419,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd122.html"
+    },
+    {
+      "id": 35,
+      "title": "Tsehai 1 A",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4014,
+      "characters": 15232,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd122.html"
+    },
+    {
+      "id": 36,
+      "title": "Grad",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10548,
+      "characters": 46084,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5b20.html"
+    },
+    {
+      "id": 37,
+      "title": "Grad",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10316,
+      "characters": 45434,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5b20.html"
+    },
+    {
+      "id": 38,
+      "title": "Grad",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10192,
+      "characters": 46031,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5b20.html"
+    },
+    {
+      "id": 39,
+      "title": "Grad",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10065,
+      "characters": 44782,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5b20.html"
+    },
+    {
+      "id": 40,
+      "title": "Funeral",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 15214,
+      "characters": 53640,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye94f.html"
+    },
+    {
+      "id": 41,
+      "title": "Funeral",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 17648,
+      "characters": 62500,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye94f.html"
+    },
+    {
+      "id": 42,
+      "title": "Funeral",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 16813,
+      "characters": 60394,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye94f.html"
+    },
+    {
+      "id": 43,
+      "title": "Funeral",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 17179,
+      "characters": 59919,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye94f.html"
+    },
+    {
+      "id": 44,
+      "title": "Funeral",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 16849,
+      "characters": 59688,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye94f.html"
+    },
+    {
+      "id": 45,
+      "title": "Funeral",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 16167,
+      "characters": 58531,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye94f.html"
+    },
+    {
+      "id": 46,
+      "title": "Sandal",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9701,
+      "characters": 49388,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library6e03-2.html"
+    },
+    {
+      "id": 47,
+      "title": "Spear",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8313,
+      "characters": 43679,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5828.html"
+    },
+    {
+      "id": 48,
+      "title": "Amharic Book (library3c7f)",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10785,
+      "characters": 49539,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3c7f.html"
+    },
+    {
+      "id": 49,
+      "title": "Amharic Book (library3c7f)",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11895,
+      "characters": 55767,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3c7f.html"
+    },
+    {
+      "id": 50,
+      "title": "Amharic Book (library3c7f)",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8375,
+      "characters": 44292,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3c7f.html"
+    },
+    {
+      "id": 51,
+      "title": "Him 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3234,
+      "characters": 15125,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye426.html"
+    },
+    {
+      "id": 52,
+      "title": "Morris All",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9842,
+      "characters": 50509,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9b7e.html"
+    },
+    {
+      "id": 53,
+      "title": "90 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 6587,
+      "characters": 34197,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf633.html"
+    },
+    {
+      "id": 54,
+      "title": "90 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7640,
+      "characters": 40300,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf633.html"
+    },
+    {
+      "id": 55,
+      "title": "90 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7820,
+      "characters": 41007,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf633.html"
+    },
+    {
+      "id": 56,
+      "title": "Yellowbk",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7766,
+      "characters": 38880,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0e57.html"
+    },
+    {
+      "id": 57,
+      "title": "Yellowbk",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8548,
+      "characters": 42148,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0e57.html"
+    },
+    {
+      "id": 58,
+      "title": "Singer",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7545,
+      "characters": 38239,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye7d2.html"
+    },
+    {
+      "id": 59,
+      "title": "Singer",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8149,
+      "characters": 41962,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye7d2.html"
+    },
+    {
+      "id": 60,
+      "title": "Sparks",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11076,
+      "characters": 55779,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf48b.html"
+    },
+    {
+      "id": 61,
+      "title": "Stephen",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 6572,
+      "characters": 40723,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3fbd.html"
+    },
+    {
+      "id": 62,
+      "title": "Stephen",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10865,
+      "characters": 56891,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3fbd.html"
+    },
+    {
+      "id": 63,
+      "title": "Stephen",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10448,
+      "characters": 54972,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3fbd.html"
+    },
+    {
+      "id": 64,
+      "title": "Stephen",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11127,
+      "characters": 58294,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3fbd.html"
+    },
+    {
+      "id": 65,
+      "title": "Stephen",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9871,
+      "characters": 51096,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3fbd.html"
+    },
+    {
+      "id": 66,
+      "title": "Stephen",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9525,
+      "characters": 49419,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3fbd.html"
+    },
+    {
+      "id": 67,
+      "title": "Agetenee",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12055,
+      "characters": 63308,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfa5c.html"
+    },
+    {
+      "id": 68,
+      "title": "Agetenee",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12717,
+      "characters": 67668,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfa5c.html"
+    },
+    {
+      "id": 69,
+      "title": "Jagema",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10087,
+      "characters": 50451,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryaf09.html"
+    },
+    {
+      "id": 70,
+      "title": "Jagema",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12117,
+      "characters": 60695,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryaf09.html"
+    },
+    {
+      "id": 71,
+      "title": "Jagema",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7388,
+      "characters": 37909,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryaf09.html"
+    },
+    {
+      "id": 72,
+      "title": "Trial",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8435,
+      "characters": 45601,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0c15.html"
+    },
+    {
+      "id": 73,
+      "title": "Trial",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8714,
+      "characters": 46822,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0c15.html"
+    },
+    {
+      "id": 74,
+      "title": "Trial",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8303,
+      "characters": 44805,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0c15.html"
+    },
+    {
+      "id": 75,
+      "title": "Trial",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9960,
+      "characters": 53601,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0c15.html"
+    },
+    {
+      "id": 76,
+      "title": "Trial",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9466,
+      "characters": 49458,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0c15.html"
+    },
+    {
+      "id": 77,
+      "title": "Castle",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 13108,
+      "characters": 69074,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryc649.html"
+    },
+    {
+      "id": 78,
+      "title": "Castle",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10584,
+      "characters": 52885,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryc649.html"
+    },
+    {
+      "id": 79,
+      "title": "Hair",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7444,
+      "characters": 39067,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library064c.html"
+    },
+    {
+      "id": 80,
+      "title": "Demakoch 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7706,
+      "characters": 39265,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb246.html"
+    },
+    {
+      "id": 81,
+      "title": "Demakoch 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7600,
+      "characters": 39617,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb246.html"
+    },
+    {
+      "id": 82,
+      "title": "Demakoch 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7561,
+      "characters": 39154,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb246.html"
+    },
+    {
+      "id": 83,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 4848,
+      "characters": 27730,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 84,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8560,
+      "characters": 45755,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 85,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7679,
+      "characters": 40732,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 86,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8084,
+      "characters": 43140,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 87,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7216,
+      "characters": 37059,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 88,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7766,
+      "characters": 41010,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 89,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7216,
+      "characters": 38602,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 90,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7731,
+      "characters": 41390,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 91,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7975,
+      "characters": 41854,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 92,
+      "title": "Qedemawi",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7128,
+      "characters": 38037,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9885.html"
+    },
+    {
+      "id": 93,
+      "title": "Theodore",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 781,
+      "characters": 3227,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5844.html"
+    },
+    {
+      "id": 94,
+      "title": "Theodore",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10662,
+      "characters": 50014,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5844.html"
+    },
+    {
+      "id": 95,
+      "title": "Eritrea 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10610,
+      "characters": 56034,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf3b7.html"
+    },
+    {
+      "id": 96,
+      "title": "Capitol 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 13354,
+      "characters": 64544,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydd61.html"
+    },
+    {
+      "id": 97,
+      "title": "Capitol 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12386,
+      "characters": 59410,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydd61.html"
+    },
+    {
+      "id": 98,
+      "title": "Capitol 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 13161,
+      "characters": 64224,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydd61.html"
+    },
+    {
+      "id": 99,
+      "title": "Rejem 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10930,
+      "characters": 53246,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library70e1.html"
+    },
+    {
+      "id": 100,
+      "title": "Rejem 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 13845,
+      "characters": 64529,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library70e1.html"
+    },
+    {
+      "id": 101,
+      "title": "Rejem 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 13652,
+      "characters": 64202,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library70e1.html"
+    },
+    {
+      "id": 102,
+      "title": "Worldhist 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 3918,
+      "characters": 15497,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5e11.html"
+    },
+    {
+      "id": 103,
+      "title": "Worldhist 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11568,
+      "characters": 43382,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5e11.html"
+    },
+    {
+      "id": 104,
+      "title": "Worldhist 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12190,
+      "characters": 45681,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5e11.html"
+    },
+    {
+      "id": 105,
+      "title": "Worldhist 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12055,
+      "characters": 46276,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5e11.html"
+    },
+    {
+      "id": 106,
+      "title": "Nubia 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12913,
+      "characters": 53332,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library03a0.html"
+    },
+    {
+      "id": 107,
+      "title": "Nubia 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 14115,
+      "characters": 54824,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library03a0.html"
+    },
+    {
+      "id": 108,
+      "title": "1Ethhist 1",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11410,
+      "characters": 43343,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library91b8.html"
+    },
+    {
+      "id": 109,
+      "title": "Getahun 1B",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11043,
+      "characters": 59283,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd62f.html"
+    },
+    {
+      "id": 110,
+      "title": "Getahun 1B",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11739,
+      "characters": 62770,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd62f.html"
+    },
+    {
+      "id": 111,
+      "title": "Getahun 1B",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 12727,
+      "characters": 67735,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd62f.html"
+    },
+    {
+      "id": 112,
+      "title": "Yohannes",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 7577,
+      "characters": 37623,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybf08.html"
+    },
+    {
+      "id": 113,
+      "title": "Yohannes",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10216,
+      "characters": 49533,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybf08.html"
+    },
+    {
+      "id": 114,
+      "title": "Yohannes",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 9531,
+      "characters": 45033,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybf08.html"
+    },
+    {
+      "id": 115,
+      "title": "Yohannes",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 11082,
+      "characters": 53158,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybf08.html"
+    },
+    {
+      "id": 116,
+      "title": "Yohannes",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10907,
+      "characters": 51750,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybf08.html"
+    },
+    {
+      "id": 117,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6471,
+      "characters": 34629,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 118,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9297,
+      "characters": 48735,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 119,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9433,
+      "characters": 50162,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 120,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6071,
+      "characters": 31962,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 121,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8748,
+      "characters": 47222,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 122,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7904,
+      "characters": 42129,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 123,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6628,
+      "characters": 35296,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 124,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8213,
+      "characters": 43629,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 125,
+      "title": "Eritrea",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8126,
+      "characters": 43327,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2237.html"
+    },
+    {
+      "id": 126,
+      "title": "Italiya",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15031,
+      "characters": 77726,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydbb1.html"
+    },
+    {
+      "id": 127,
+      "title": "Italiya",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16241,
+      "characters": 82980,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydbb1.html"
+    },
+    {
+      "id": 128,
+      "title": "Italiya",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15469,
+      "characters": 78093,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydbb1.html"
+    },
+    {
+      "id": 129,
+      "title": "Italiya",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 14019,
+      "characters": 69867,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydbb1.html"
+    },
+    {
+      "id": 130,
+      "title": "Italiya",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13979,
+      "characters": 70570,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydbb1.html"
+    },
+    {
+      "id": 131,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7591,
+      "characters": 36282,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 132,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11574,
+      "characters": 54674,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 133,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8213,
+      "characters": 38012,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 134,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9772,
+      "characters": 45373,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 135,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10215,
+      "characters": 48267,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 136,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10402,
+      "characters": 49387,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 137,
+      "title": "Menelik",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9466,
+      "characters": 44107,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library169e.html"
+    },
+    {
+      "id": 138,
+      "title": "Drum",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6195,
+      "characters": 29547,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library27be.html"
+    },
+    {
+      "id": 139,
+      "title": "Rearing All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5917,
+      "characters": 30998,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye935.html"
+    },
+    {
+      "id": 140,
+      "title": "Noah All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2794,
+      "characters": 14277,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4cf1.html"
+    },
+    {
+      "id": 141,
+      "title": "Kitty1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9911,
+      "characters": 48996,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library486c.html"
+    },
+    {
+      "id": 142,
+      "title": "Kitty1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10019,
+      "characters": 50187,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library486c.html"
+    },
+    {
+      "id": 143,
+      "title": "Birhan",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8888,
+      "characters": 44497,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf772.html"
+    },
+    {
+      "id": 144,
+      "title": "Birhan",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9390,
+      "characters": 47672,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf772.html"
+    },
+    {
+      "id": 145,
+      "title": "Abraham2",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4669,
+      "characters": 23982,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydc45.html"
+    },
+    {
+      "id": 146,
+      "title": "Puppy All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3358,
+      "characters": 17053,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2f85.html"
+    },
+    {
+      "id": 147,
+      "title": "Star",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 973,
+      "characters": 4778,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7202.html"
+    },
+    {
+      "id": 148,
+      "title": "Camel All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2579,
+      "characters": 13082,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye29d.html"
+    },
+    {
+      "id": 149,
+      "title": "Advice",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8659,
+      "characters": 32102,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarya556.html"
+    },
+    {
+      "id": 150,
+      "title": "Tadagi",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4038,
+      "characters": 18892,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library484d.html"
+    },
+    {
+      "id": 151,
+      "title": "Ebsdict",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9533,
+      "characters": 49965,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0641.html"
+    },
+    {
+      "id": 152,
+      "title": "Ebsdict",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12045,
+      "characters": 64571,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0641.html"
+    },
+    {
+      "id": 153,
+      "title": "Ebsdict",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12093,
+      "characters": 64627,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0641.html"
+    },
+    {
+      "id": 154,
+      "title": "Ebsdict",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11731,
+      "characters": 62649,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0641.html"
+    },
+    {
+      "id": 155,
+      "title": "Concord Ha No",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3223,
+      "characters": 15662,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd1d2.html"
+    },
+    {
+      "id": 156,
+      "title": "Concord Ha No",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2851,
+      "characters": 13998,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd1d2.html"
+    },
+    {
+      "id": 157,
+      "title": "Leslau Eng A C",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12425,
+      "characters": 70725,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycf28.html"
+    },
+    {
+      "id": 158,
+      "title": "Leslau Eng A C",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13082,
+      "characters": 75748,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycf28.html"
+    },
+    {
+      "id": 159,
+      "title": "Leslau Eng A C",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13045,
+      "characters": 75466,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycf28.html"
+    },
+    {
+      "id": 160,
+      "title": "Leslau Eng A C",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13656,
+      "characters": 78015,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycf28.html"
+    },
+    {
+      "id": 161,
+      "title": "Leslau Eng A C",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13889,
+      "characters": 79918,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycf28.html"
+    },
+    {
+      "id": 162,
+      "title": "Leslau Eng A C",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13309,
+      "characters": 72954,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycf28.html"
+    },
+    {
+      "id": 163,
+      "title": "Leslau1 Ha Le Me",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13621,
+      "characters": 80672,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library357b.html"
+    },
+    {
+      "id": 164,
+      "title": "Leslau1 Ha Le Me",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13648,
+      "characters": 79879,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library357b.html"
+    },
+    {
+      "id": 165,
+      "title": "Leslau1 Ha Le Me",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13762,
+      "characters": 78890,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library357b.html"
+    },
+    {
+      "id": 166,
+      "title": "Leslau1 Ha Le Me",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13584,
+      "characters": 78071,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library357b.html"
+    },
+    {
+      "id": 167,
+      "title": "Leslau1 Ha Le Me",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13803,
+      "characters": 79692,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library357b.html"
+    },
+    {
+      "id": 168,
+      "title": "Leslau1 Ha Le Me",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 14117,
+      "characters": 81673,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library357b.html"
+    },
+    {
+      "id": 169,
+      "title": "Nigiger Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3780,
+      "characters": 18183,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library56d0.html"
+    },
+    {
+      "id": 170,
+      "title": "Nigiger Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4412,
+      "characters": 17056,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library56d0.html"
+    },
+    {
+      "id": 171,
+      "title": "Nigiger Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4218,
+      "characters": 16736,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library56d0.html"
+    },
+    {
+      "id": 172,
+      "title": "Nigiger Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4267,
+      "characters": 16717,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library56d0.html"
+    },
+    {
+      "id": 173,
+      "title": "Nigiger Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4884,
+      "characters": 19303,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library56d0.html"
+    },
+    {
+      "id": 174,
+      "title": "Nigiger Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4833,
+      "characters": 18217,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library56d0.html"
+    },
+    {
+      "id": 175,
+      "title": "Dict Science",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10860,
+      "characters": 60789,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7513.html"
+    },
+    {
+      "id": 176,
+      "title": "Dict Science",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9194,
+      "characters": 51456,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7513.html"
+    },
+    {
+      "id": 177,
+      "title": "Dict Science",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11990,
+      "characters": 70304,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7513.html"
+    },
+    {
+      "id": 178,
+      "title": "Dict Science",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12477,
+      "characters": 70205,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7513.html"
+    },
+    {
+      "id": 179,
+      "title": "Dict Mosback  S Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11508,
+      "characters": 58512,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydc59.html"
+    },
+    {
+      "id": 180,
+      "title": "Dict Mosback  S Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10754,
+      "characters": 55495,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydc59.html"
+    },
+    {
+      "id": 181,
+      "title": "Dict Mosback  S Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11609,
+      "characters": 58837,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydc59.html"
+    },
+    {
+      "id": 182,
+      "title": "Dict Mosback  S Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11695,
+      "characters": 59229,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarydc59.html"
+    },
+    {
+      "id": 183,
+      "title": "Feleet1 Ha Ke",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7470,
+      "characters": 36197,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4137.html"
+    },
+    {
+      "id": 184,
+      "title": "Feleet1 Ha Ke",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6252,
+      "characters": 32348,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4137.html"
+    },
+    {
+      "id": 185,
+      "title": "Feleet1 Ha Ke",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6219,
+      "characters": 33982,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4137.html"
+    },
+    {
+      "id": 186,
+      "title": "Dict Amsel",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4552,
+      "characters": 22265,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd2b8.html"
+    },
+    {
+      "id": 187,
+      "title": "Dict Amsel",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4795,
+      "characters": 22287,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd2b8.html"
+    },
+    {
+      "id": 188,
+      "title": "Dict Amsel",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2712,
+      "characters": 12019,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd2b8.html"
+    },
+    {
+      "id": 189,
+      "title": "Dict Geta A E",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8266,
+      "characters": 40642,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9585.html"
+    },
+    {
+      "id": 190,
+      "title": "Dict Geta A E",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9867,
+      "characters": 46816,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9585.html"
+    },
+    {
+      "id": 191,
+      "title": "Dict Geta A E",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11036,
+      "characters": 52219,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9585.html"
+    },
+    {
+      "id": 192,
+      "title": "Dict Mulu R Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10731,
+      "characters": 54104,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryce9e.html"
+    },
+    {
+      "id": 193,
+      "title": "Dict Mulu R Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10269,
+      "characters": 53243,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryce9e.html"
+    },
+    {
+      "id": 194,
+      "title": "Dict Mulu R Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10799,
+      "characters": 57617,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryce9e.html"
+    },
+    {
+      "id": 195,
+      "title": "Dict Mulu R Z",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10412,
+      "characters": 53872,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryce9e.html"
+    },
+    {
+      "id": 196,
+      "title": "Mega Dict Q S",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12719,
+      "characters": 68432,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library408e.html"
+    },
+    {
+      "id": 197,
+      "title": "Mega Dict Q S",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12675,
+      "characters": 67958,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library408e.html"
+    },
+    {
+      "id": 198,
+      "title": "Mega Dict Q S",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11909,
+      "characters": 62788,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library408e.html"
+    },
+    {
+      "id": 199,
+      "title": "Mega Dict Q S",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13772,
+      "characters": 73332,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library408e.html"
+    },
+    {
+      "id": 200,
+      "title": "Mega Dict Q S",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11623,
+      "characters": 59523,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library408e.html"
+    },
+    {
+      "id": 201,
+      "title": "Mega Dict Q S",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11699,
+      "characters": 59813,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library408e.html"
+    },
+    {
+      "id": 202,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2573,
+      "characters": 14228,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 203,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2579,
+      "characters": 14535,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 204,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2620,
+      "characters": 13919,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 205,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2353,
+      "characters": 12271,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 206,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3958,
+      "characters": 21741,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 207,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 1869,
+      "characters": 10088,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 208,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2882,
+      "characters": 15361,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 209,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2389,
+      "characters": 12565,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 210,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 1054,
+      "characters": 5762,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 211,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2946,
+      "characters": 15127,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 212,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3680,
+      "characters": 21325,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 213,
+      "title": "Visual 11",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 25514,
+      "characters": 149785,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb2b1.html"
+    },
+    {
+      "id": 214,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16231,
+      "characters": 70325,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 215,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15674,
+      "characters": 69182,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 216,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15582,
+      "characters": 69452,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 217,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15964,
+      "characters": 71332,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 218,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15591,
+      "characters": 68695,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 219,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15811,
+      "characters": 69406,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 220,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16190,
+      "characters": 72143,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 221,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15473,
+      "characters": 68195,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 222,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16201,
+      "characters": 72296,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 223,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15531,
+      "characters": 68882,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 224,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15669,
+      "characters": 67845,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 225,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15877,
+      "characters": 69964,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 226,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15838,
+      "characters": 71356,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 227,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15938,
+      "characters": 70167,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 228,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16274,
+      "characters": 70267,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 229,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15644,
+      "characters": 68744,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 230,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 189,
+      "characters": 1504,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 231,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15550,
+      "characters": 70298,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 232,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15681,
+      "characters": 70912,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 233,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15574,
+      "characters": 68160,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 234,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15606,
+      "characters": 72295,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 235,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15133,
+      "characters": 65982,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 236,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15395,
+      "characters": 70996,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 237,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15604,
+      "characters": 70194,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 238,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15975,
+      "characters": 68918,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 239,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16097,
+      "characters": 68651,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 240,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15509,
+      "characters": 71366,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 241,
+      "title": "Context28 Wed Zoo",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7324,
+      "characters": 40751,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryb540.html"
+    },
+    {
+      "id": 242,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5222,
+      "characters": 25014,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 243,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13932,
+      "characters": 66378,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 244,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13401,
+      "characters": 64180,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 245,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13412,
+      "characters": 64192,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 246,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12511,
+      "characters": 59286,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 247,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13954,
+      "characters": 66788,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 248,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12967,
+      "characters": 62801,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 249,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13527,
+      "characters": 66044,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 250,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12286,
+      "characters": 57771,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 251,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 14671,
+      "characters": 69642,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 252,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 14085,
+      "characters": 66759,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 253,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12846,
+      "characters": 61392,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 254,
+      "title": "Mezgeb Intro",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4870,
+      "characters": 28250,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryfe2a.html"
+    },
+    {
+      "id": 255,
+      "title": "Treewalk",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7426,
+      "characters": 39416,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye2ca.html"
+    },
+    {
+      "id": 256,
+      "title": "Treewalk",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9473,
+      "characters": 52314,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye2ca.html"
+    },
+    {
+      "id": 257,
+      "title": "Head",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5655,
+      "characters": 30288,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library592b.html"
+    },
+    {
+      "id": 258,
+      "title": "Gichet",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9739,
+      "characters": 52673,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library8162.html"
+    },
+    {
+      "id": 259,
+      "title": "Gichet",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13683,
+      "characters": 74018,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library8162.html"
+    },
+    {
+      "id": 260,
+      "title": "Gichet",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13572,
+      "characters": 72959,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library8162.html"
+    },
+    {
+      "id": 261,
+      "title": "Gichet",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12612,
+      "characters": 69207,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library8162.html"
+    },
+    {
+      "id": 262,
+      "title": "Gichet",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13163,
+      "characters": 71178,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library8162.html"
+    },
+    {
+      "id": 263,
+      "title": "Yetidar",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7778,
+      "characters": 38770,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library94c6.html"
+    },
+    {
+      "id": 264,
+      "title": "Yetidar",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8041,
+      "characters": 40160,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library94c6.html"
+    },
+    {
+      "id": 265,
+      "title": "Table",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5809,
+      "characters": 29833,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye27a.html"
+    },
+    {
+      "id": 266,
+      "title": "Table",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6131,
+      "characters": 31478,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye27a.html"
+    },
+    {
+      "id": 267,
+      "title": "5 Alama Toc",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 209,
+      "characters": 1131,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3234.html"
+    },
+    {
+      "id": 268,
+      "title": "5 Alama Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4037,
+      "characters": 20772,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3234.html"
+    },
+    {
+      "id": 269,
+      "title": "5 Alama Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4764,
+      "characters": 23930,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3234.html"
+    },
+    {
+      "id": 270,
+      "title": "5 Gospmus Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 812,
+      "characters": 3801,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye8ec.html"
+    },
+    {
+      "id": 271,
+      "title": "5 Gospmus Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9242,
+      "characters": 48689,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye8ec.html"
+    },
+    {
+      "id": 272,
+      "title": "5 Gospmus Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11679,
+      "characters": 62031,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye8ec.html"
+    },
+    {
+      "id": 273,
+      "title": "5 Gospmus Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5271,
+      "characters": 28131,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye8ec.html"
+    },
+    {
+      "id": 274,
+      "title": "5 Indyres Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 510,
+      "characters": 1967,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf3bc.html"
+    },
+    {
+      "id": 275,
+      "title": "5 Indyres Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4001,
+      "characters": 20320,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf3bc.html"
+    },
+    {
+      "id": 276,
+      "title": "5 Indyres Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4711,
+      "characters": 24846,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryf3bc.html"
+    },
+    {
+      "id": 277,
+      "title": "5 Share Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 194,
+      "characters": 1366,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library02b6.html"
+    },
+    {
+      "id": 278,
+      "title": "5 Share Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5608,
+      "characters": 30227,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library02b6.html"
+    },
+    {
+      "id": 279,
+      "title": "5 Share Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6181,
+      "characters": 32924,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library02b6.html"
+    },
+    {
+      "id": 280,
+      "title": "5 Koran 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 18443,
+      "characters": 72186,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye783.html"
+    },
+    {
+      "id": 281,
+      "title": "5 Koran 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 20971,
+      "characters": 79202,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye783.html"
+    },
+    {
+      "id": 282,
+      "title": "5 Koran 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 20633,
+      "characters": 76422,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye783.html"
+    },
+    {
+      "id": 283,
+      "title": "5 Koran 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 18143,
+      "characters": 68070,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarye783.html"
+    },
+    {
+      "id": 284,
+      "title": "5Answers All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5883,
+      "characters": 31438,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5cee.html"
+    },
+    {
+      "id": 285,
+      "title": "5Onegod All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5576,
+      "characters": 26903,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0d7d.html"
+    },
+    {
+      "id": 286,
+      "title": "Ketab Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 131,
+      "characters": 948,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4893.html"
+    },
+    {
+      "id": 287,
+      "title": "Ketab Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5158,
+      "characters": 27947,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4893.html"
+    },
+    {
+      "id": 288,
+      "title": "Nabe All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5489,
+      "characters": 28843,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library367a.html"
+    },
+    {
+      "id": 289,
+      "title": "Weeyet All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3694,
+      "characters": 19477,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarya9d2.html"
+    },
+    {
+      "id": 290,
+      "title": "Abdala All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5441,
+      "characters": 29080,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library4a77.html"
+    },
+    {
+      "id": 291,
+      "title": "Taresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4763,
+      "characters": 24792,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3d04.html"
+    },
+    {
+      "id": 292,
+      "title": "Taresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5106,
+      "characters": 27305,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3d04.html"
+    },
+    {
+      "id": 293,
+      "title": "Taresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 1874,
+      "characters": 10374,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3d04.html"
+    },
+    {
+      "id": 294,
+      "title": "1000Years 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9746,
+      "characters": 53774,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3c3b.html"
+    },
+    {
+      "id": 295,
+      "title": "1000Years 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10847,
+      "characters": 58929,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3c3b.html"
+    },
+    {
+      "id": 296,
+      "title": "1000Years 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11050,
+      "characters": 59187,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library3c3b.html"
+    },
+    {
+      "id": 297,
+      "title": "Bookscales",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10881,
+      "characters": 56373,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5276.html"
+    },
+    {
+      "id": 298,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11869,
+      "characters": 61150,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 299,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13345,
+      "characters": 67887,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 300,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12848,
+      "characters": 65197,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 301,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 27240,
+      "characters": 133632,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 302,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13007,
+      "characters": 66908,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 303,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12899,
+      "characters": 66031,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 304,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13227,
+      "characters": 66712,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 305,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12683,
+      "characters": 64932,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 306,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11733,
+      "characters": 61694,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 307,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11973,
+      "characters": 62065,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 308,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12075,
+      "characters": 62146,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 309,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6220,
+      "characters": 32449,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 310,
+      "title": "Ntdiglot Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12731,
+      "characters": 63464,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybc58.html"
+    },
+    {
+      "id": 311,
+      "title": "Ps",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8938,
+      "characters": 45519,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9421.html"
+    },
+    {
+      "id": 312,
+      "title": "Ps",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10103,
+      "characters": 51025,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9421.html"
+    },
+    {
+      "id": 313,
+      "title": "Ps",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8932,
+      "characters": 45353,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9421.html"
+    },
+    {
+      "id": 314,
+      "title": "3 Apoch 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 30993,
+      "characters": 142171,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library47c2.html"
+    },
+    {
+      "id": 315,
+      "title": "Hiyaw Matt Mark",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 20498,
+      "characters": 101663,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9dbc.html"
+    },
+    {
+      "id": 316,
+      "title": "Hiyaw Matt Mark",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11604,
+      "characters": 58838,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9dbc.html"
+    },
+    {
+      "id": 317,
+      "title": "Hiyaw Matt Mark",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9494,
+      "characters": 49027,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9dbc.html"
+    },
+    {
+      "id": 318,
+      "title": "Hiyaw Matt Mark",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7772,
+      "characters": 40312,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9dbc.html"
+    },
+    {
+      "id": 319,
+      "title": "Hiyaw Matt Mark",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11205,
+      "characters": 56912,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9dbc.html"
+    },
+    {
+      "id": 320,
+      "title": "Hiyaw Matt Mark",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23860,
+      "characters": 117636,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9dbc.html"
+    },
+    {
+      "id": 321,
+      "title": "Proverb Complete",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8341,
+      "characters": 42384,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library004c.html"
+    },
+    {
+      "id": 322,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 24831,
+      "characters": 119625,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 323,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 22482,
+      "characters": 106671,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 324,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15259,
+      "characters": 71838,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 325,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 27245,
+      "characters": 131036,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 326,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 14611,
+      "characters": 71286,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 327,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 11125,
+      "characters": 60871,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 328,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23185,
+      "characters": 113901,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 329,
+      "title": "3 Common Ma Ma",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13453,
+      "characters": 62846,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybce2.html"
+    },
+    {
+      "id": 330,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 13008,
+      "characters": 97813,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 331,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7492,
+      "characters": 54216,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 332,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12058,
+      "characters": 92626,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 333,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9094,
+      "characters": 73471,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 334,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12738,
+      "characters": 102820,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 335,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5261,
+      "characters": 41476,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 336,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 9590,
+      "characters": 74517,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 337,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6662,
+      "characters": 52316,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 338,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5597,
+      "characters": 42885,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 339,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10327,
+      "characters": 77041,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 340,
+      "title": "3 Flad Matt",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6194,
+      "characters": 45996,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library09c3.html"
+    },
+    {
+      "id": 341,
+      "title": "Awaled All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8419,
+      "characters": 44034,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9b05.html"
+    },
+    {
+      "id": 342,
+      "title": "Awaled All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 279,
+      "characters": 1357,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library9b05.html"
+    },
+    {
+      "id": 343,
+      "title": "Biblehist All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3753,
+      "characters": 19882,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library29b3.html"
+    },
+    {
+      "id": 344,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 19360,
+      "characters": 101644,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 345,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 24843,
+      "characters": 125657,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 346,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23874,
+      "characters": 120951,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 347,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23532,
+      "characters": 121110,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 348,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 26293,
+      "characters": 138813,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 349,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 27273,
+      "characters": 141130,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 350,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 18430,
+      "characters": 95851,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 351,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23539,
+      "characters": 122032,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 352,
+      "title": "Ibs Matt All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 19947,
+      "characters": 106256,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2e5b.html"
+    },
+    {
+      "id": 353,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 24121,
+      "characters": 131821,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 354,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23725,
+      "characters": 124912,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 355,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7169,
+      "characters": 36489,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 356,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 24873,
+      "characters": 125674,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 357,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 21191,
+      "characters": 106357,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 358,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 23312,
+      "characters": 118119,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 359,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12706,
+      "characters": 64004,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 360,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 24700,
+      "characters": 132603,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 361,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 18782,
+      "characters": 102506,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 362,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 22184,
+      "characters": 117252,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 363,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 10090,
+      "characters": 51026,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 364,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8700,
+      "characters": 43898,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 365,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 8546,
+      "characters": 46410,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 366,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 15895,
+      "characters": 82639,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 367,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16045,
+      "characters": 84602,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 368,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6268,
+      "characters": 33487,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 369,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 12746,
+      "characters": 69281,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 370,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2196,
+      "characters": 11568,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 371,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4624,
+      "characters": 23867,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 372,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6684,
+      "characters": 36078,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 373,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3984,
+      "characters": 21228,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 374,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4197,
+      "characters": 22699,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 375,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3766,
+      "characters": 20062,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 376,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4316,
+      "characters": 23004,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 377,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 16488,
+      "characters": 90259,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 378,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5652,
+      "characters": 31021,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 379,
+      "title": "Ibs Genesis All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2921,
+      "characters": 15300,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library889a.html"
+    },
+    {
+      "id": 380,
+      "title": "Huyb",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 128,
+      "characters": 637,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7845.html"
+    },
+    {
+      "id": 381,
+      "title": "Huyb",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 1113,
+      "characters": 6054,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7845.html"
+    },
+    {
+      "id": 382,
+      "title": "Huyb",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 404,
+      "characters": 1996,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7845.html"
+    },
+    {
+      "id": 383,
+      "title": "Huyb",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5876,
+      "characters": 31198,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7845.html"
+    },
+    {
+      "id": 384,
+      "title": "Huyb",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5632,
+      "characters": 30230,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library7845.html"
+    },
+    {
+      "id": 385,
+      "title": "Bgeog",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4119,
+      "characters": 19008,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library1398.html"
+    },
+    {
+      "id": 386,
+      "title": "Bgeog",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3165,
+      "characters": 14095,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library1398.html"
+    },
+    {
+      "id": 387,
+      "title": "Ss Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 160,
+      "characters": 994,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd575.html"
+    },
+    {
+      "id": 388,
+      "title": "Ss Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 891,
+      "characters": 5049,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd575.html"
+    },
+    {
+      "id": 389,
+      "title": "Ss Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4982,
+      "characters": 26837,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd575.html"
+    },
+    {
+      "id": 390,
+      "title": "Ss Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5352,
+      "characters": 27988,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd575.html"
+    },
+    {
+      "id": 391,
+      "title": "Ss Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4241,
+      "characters": 22861,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryd575.html"
+    },
+    {
+      "id": 392,
+      "title": "Zede All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5426,
+      "characters": 28636,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryc17f.html"
+    },
+    {
+      "id": 393,
+      "title": "Confuse All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5223,
+      "characters": 27918,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarya7a0.html"
+    },
+    {
+      "id": 394,
+      "title": "Destiny All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 3768,
+      "characters": 19890,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2497.html"
+    },
+    {
+      "id": 395,
+      "title": "Gib All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 2932,
+      "characters": 15970,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarycd1a.html"
+    },
+    {
+      "id": 396,
+      "title": "Fee Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 92,
+      "characters": 549,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryca2e.html"
+    },
+    {
+      "id": 397,
+      "title": "Fee Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6117,
+      "characters": 32751,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryca2e.html"
+    },
+    {
+      "id": 398,
+      "title": "Fee Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5743,
+      "characters": 31234,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryca2e.html"
+    },
+    {
+      "id": 399,
+      "title": "Fee Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6030,
+      "characters": 32928,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryca2e.html"
+    },
+    {
+      "id": 400,
+      "title": "Fee Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5970,
+      "characters": 32324,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryca2e.html"
+    },
+    {
+      "id": 401,
+      "title": "Lali All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4441,
+      "characters": 23838,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library2372.html"
+    },
+    {
+      "id": 402,
+      "title": "Pill2 Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 399,
+      "characters": 1905,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybd12.html"
+    },
+    {
+      "id": 403,
+      "title": "Pill2 Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5164,
+      "characters": 26765,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybd12.html"
+    },
+    {
+      "id": 404,
+      "title": "Pill2 Toc",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5924,
+      "characters": 31139,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarybd12.html"
+    },
+    {
+      "id": 405,
+      "title": "Teachzede All",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5298,
+      "characters": 28480,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/libraryac0b.html"
+    },
+    {
+      "id": 406,
+      "title": "Choir 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4313,
+      "characters": 22870,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarya3ed.html"
+    },
+    {
+      "id": 407,
+      "title": "Choir 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4495,
+      "characters": 24093,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarya3ed.html"
+    },
+    {
+      "id": 408,
+      "title": "Choir 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4418,
+      "characters": 23599,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/librarya3ed.html"
+    },
+    {
+      "id": 409,
+      "title": "Sileresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 5353,
+      "characters": 28675,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5384.html"
+    },
+    {
+      "id": 410,
+      "title": "Sileresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6827,
+      "characters": 36506,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5384.html"
+    },
+    {
+      "id": 411,
+      "title": "Sileresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6900,
+      "characters": 37317,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5384.html"
+    },
+    {
+      "id": 412,
+      "title": "Sileresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6368,
+      "characters": 33410,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5384.html"
+    },
+    {
+      "id": 413,
+      "title": "Sileresa 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 4734,
+      "characters": 25764,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library5384.html"
+    },
+    {
+      "id": 414,
+      "title": "Skate 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6580,
+      "characters": 36328,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0d10.html"
+    },
+    {
+      "id": 415,
+      "title": "Skate 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6453,
+      "characters": 35507,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0d10.html"
+    },
+    {
+      "id": 416,
+      "title": "Skate 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 6697,
+      "characters": 36950,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0d10.html"
+    },
+    {
+      "id": 417,
+      "title": "Skate 1",
+      "author": null,
+      "extraction_method": "ocr",
+      "words": 7443,
+      "characters": 41111,
+      "source": "allaboutethio.com",
+      "url": "https://allaboutethio.com/library0d10.html"
+    },
+    {
+      "id": 418,
+      "title": "ከሰውነት ውጪ የሆነ ልምድ",
+      "author": "ጳጉሜን",
+      "extraction_method": "direct_text",
+      "words": 15636,
+      "characters": 88352,
+      "source": "archive.org",
+      "url": "https://archive.org/details/20240120_20240120_0927"
+    },
+    {
+      "id": 419,
+      "title": "ከሰውነት ውጪ የሆነ ልምድ",
+      "author": "ጳጉሜን",
+      "extraction_method": "digital",
+      "words": 12679,
+      "characters": 65601,
+      "source": "archive.org",
+      "url": "https://archive.org/details/20240120_20240120_0927"
+    },
+    {
+      "id": 420,
+      "title": "የጳጉሜን ጥቅሶች",
+      "author": "ጳጉሜን",
+      "extraction_method": "direct_text",
+      "words": 1868,
+      "characters": 10066,
+      "source": "archive.org",
+      "url": "https://archive.org/details/20240120_20240120_0948"
+    },
+    {
+      "id": 421,
+      "title": "የጳጉሜን ጥቅሶች",
+      "author": "ጳጉሜን",
+      "extraction_method": "digital",
+      "words": 1936,
+      "characters": 10054,
+      "source": "archive.org",
+      "url": "https://archive.org/details/20240120_20240120_0948"
+    },
+    {
+      "id": 422,
+      "title": "ጉራማይሌ",
+      "author": "Unknown",
+      "extraction_method": "ocr",
+      "words": 1110,
+      "characters": 9985,
+      "source": "archive.org",
+      "url": "https://archive.org/details/guramaile-1"
+    },
+    {
+      "id": 423,
+      "title": "ተሰማ እሸቴ (Tessema Eshete)",
+      "author": "ተሰማ እሸቴ",
+      "extraction_method": "ocr",
+      "words": 2199,
+      "characters": 12022,
+      "source": "archive.org",
+      "url": "https://archive.org/details/tessemaeshete"
+    },
+    {
+      "id": 424,
+      "title": "ተሰማ እሸቴ (Tessema Eshete)",
+      "author": "ተሰማ እሸቴ",
+      "extraction_method": "ocr",
+      "words": 2181,
+      "characters": 11839,
+      "source": "archive.org",
+      "url": "https://archive.org/details/tessemaeshete"
+    },
+    {
+      "id": 425,
+      "title": "የካቲት መጽሔት (Yekatit Magazine)",
+      "author": "የካቲት",
+      "extraction_method": "direct_text",
+      "words": 11725,
+      "characters": 54442,
+      "source": "archive.org",
+      "url": "https://archive.org/details/yekatit-magazine-1970-ec"
+    },
+    {
+      "id": 426,
+      "title": "የካቲት መጽሔት (Yekatit Magazine)",
+      "author": "የካቲት",
+      "extraction_method": "digital",
+      "words": 1605,
+      "characters": 7362,
+      "source": "archive.org",
+      "url": "https://archive.org/details/yekatit-magazine-1970-ec"
+    },
+    {
+      "id": 427,
+      "title": "የካቲት መጽሔት (Yekatit Magazine)",
+      "author": "የካቲት",
+      "extraction_method": "ocr",
+      "words": 1670,
+      "characters": 7644,
+      "source": "archive.org",
+      "url": "https://archive.org/details/yekatit-magazine-1970-ec"
+    },
+    {
+      "id": 428,
+      "title": "የካቲት መጽሔት (Yekatit Magazine)",
+      "author": "የካቲት",
+      "extraction_method": "digital",
+      "words": 8693,
+      "characters": 39297,
+      "source": "archive.org",
+      "url": "https://archive.org/details/yekatit-magazine-1970-ec"
+    },
+    {
+      "id": 429,
+      "title": "አፄ ዮሐንስ አራተኛ (Atse Yohannes IV)",
+      "author": "Unknown",
+      "extraction_method": "direct_text",
+      "words": 103030,
+      "characters": 492397,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AtseYohannesIV"
+    },
+    {
+      "id": 430,
+      "title": "አፄ ዮሐንስ አራተኛ (Atse Yohannes IV)",
+      "author": "Unknown",
+      "extraction_method": "digital",
+      "words": 102199,
+      "characters": 490734,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AtseYohannesIV"
+    },
+    {
+      "id": 431,
+      "title": "አፄ ዮሐንስ አራተኛ (Atse Yohannes IV)",
+      "author": "Unknown",
+      "extraction_method": "ocr",
+      "words": 7489,
+      "characters": 36847,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AtseYohannesIV"
+    },
+    {
+      "id": 432,
+      "title": "Amharic Bible Dictionary",
+      "author": "EOTC",
+      "extraction_method": "direct_text",
+      "words": 127333,
+      "characters": 674714,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AmharicBibleDictionary"
+    },
+    {
+      "id": 433,
+      "title": "Amharic Bible Dictionary",
+      "author": "EOTC",
+      "extraction_method": "digital",
+      "words": 126593,
+      "characters": 673174,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AmharicBibleDictionary"
+    },
+    {
+      "id": 434,
+      "title": "Translation of the Holy Quran in Amharic",
+      "author": "Unknown",
+      "extraction_method": "ocr",
+      "words": 18534,
+      "characters": 72117,
+      "source": "archive.org",
+      "url": "https://archive.org/details/TranslationOfTheHolyQuranInAmharic"
+    },
+    {
+      "id": 435,
+      "title": "Amharic Bible",
+      "author": "Bible Society of Ethiopia",
+      "extraction_method": "ocr",
+      "words": 1878,
+      "characters": 8996,
+      "source": "archive.org",
+      "url": "https://archive.org/details/rosettaproject_amh_gen-1"
+    },
+    {
+      "id": 436,
+      "title": "New Standard Amharic Bible( Scanned) V 2.0",
+      "author": "Unknown",
+      "extraction_method": "direct_text",
+      "words": 1311213,
+      "characters": 7240513,
+      "source": "archive.org",
+      "url": "https://archive.org/details/NewStandardAmharicBibleScannedV2.0"
+    },
+    {
+      "id": 437,
+      "title": "Amharic Bible Scanned V 1.0",
+      "author": "Unknown",
+      "extraction_method": "direct_text",
+      "words": 627325,
+      "characters": 2899656,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AmharicBibleScannedV1.0"
+    },
+    {
+      "id": 438,
+      "title": "Amharic Bible Scanned V 1.0",
+      "author": "Unknown",
+      "extraction_method": "digital",
+      "words": 255,
+      "characters": 1006,
+      "source": "archive.org",
+      "url": "https://archive.org/details/AmharicBibleScannedV1.0"
+    },
+    {
+      "id": 439,
+      "title": "Kidan Sewasew - መዝገበ ቃላት",
+      "author": "Kidane Wold Kifle - Fesseha Atlaw",
+      "extraction_method": "direct_text",
+      "words": 529413,
+      "characters": 2492818,
+      "source": "archive.org",
+      "url": "https://archive.org/details/kidan-sewasew"
+    },
+    {
+      "id": 440,
+      "title": "ERIC ED100127: Basic Amharic Dictionary: Amharic-English, English-Amharic. Final Report.",
+      "author": "ERIC",
+      "extraction_method": "ocr",
+      "words": 5410,
+      "characters": 33730,
+      "source": "archive.org",
+      "url": "https://archive.org/details/ERIC_ED100127"
+    },
+    {
+      "id": 441,
+      "title": "amharic_bible_2013",
+      "author": "Unknown",
+      "extraction_method": "digital",
+      "words": 454615,
+      "characters": 2273793,
+      "source": "archive.org",
+      "url": "https://archive.org/details/amharic_bible_2013"
+    },
+    {
+      "id": 442,
+      "title": "Dictionary of the Amharic language : in two parts, Amharic and English and English and Amharic",
+      "author": "Isenberg, Charles William, 1806-1864",
+      "extraction_method": "ocr",
+      "words": 7080,
+      "characters": 37726,
+      "source": "archive.org",
+      "url": "https://archive.org/details/dictionaryofamha00isen"
+    },
+    {
+      "id": 443,
+      "title": "አማርኛ ቅኔ ከነመፍቻው 34",
+      "author": "Mahteme Selassie ; Fesseha Atlaw Collection",
+      "extraction_method": "direct_text",
+      "words": 110162,
+      "characters": 406850,
+      "source": "archive.org",
+      "url": "https://archive.org/details/34_20220320"
+    },
+    {
+      "id": 444,
+      "title": "አማርኛ ቅኔ ከነመፍቻው 34",
+      "author": "Mahteme Selassie ; Fesseha Atlaw Collection",
+      "extraction_method": "digital",
+      "words": 109162,
+      "characters": 404754,
+      "source": "archive.org",
+      "url": "https://archive.org/details/34_20220320"
+    },
+    {
+      "id": 445,
+      "title": "አማርኛ ሠዋሰው ( 1963 ዓም) 1",
+      "author": "Unknown",
+      "extraction_method": "direct_text",
+      "words": 8193,
+      "characters": 33490,
+      "source": "archive.org",
+      "url": "https://archive.org/details/1963-Amharic-Sewasew-part-1"
+    },
+    {
+      "id": 446,
+      "title": "አማርኛ ሠዋሰው ( 1963 ዓም) 1",
+      "author": "Unknown",
+      "extraction_method": "ocr",
+      "words": 3422,
+      "characters": 14839,
+      "source": "archive.org",
+      "url": "https://archive.org/details/1963-Amharic-Sewasew-part-1"
+    },
+    {
+      "id": 447,
+      "title": "አማርኛ ሠዋሰው ( 1963 ዓም) 1",
+      "author": "Unknown",
+      "extraction_method": "digital",
+      "words": 9737,
+      "characters": 34726,
+      "source": "archive.org",
+      "url": "https://archive.org/details/1963-Amharic-Sewasew-part-1"
+    },
+    {
+      "id": 448,
+      "title": "የጳውሎስ መልዕክት፡ ወደ ሮሜ ሰዎች Book of Romans Bible Commentary, Amharic version",
+      "author": "Dr. Bob Utley",
+      "extraction_method": "digital",
+      "words": 97585,
+      "characters": 514349,
+      "source": "archive.org",
+      "url": "https://archive.org/details/BookOfRomansBibleCommentaryAmharicVersion"
+    },
+    {
+      "id": 449,
+      "title": "Mezgebe Qalat Tigrinya Amharic Yohannes Gebre Egziabher",
+      "author": "Tekeste",
+      "extraction_method": "direct_text",
+      "words": 25850,
+      "characters": 141213,
+      "source": "archive.org",
+      "url": "https://archive.org/details/mezgebe-qalat-tigrinya-amharic-yohannes-gebre-egziabher"
+    },
+    {
+      "id": 450,
+      "title": "02Addiskidanintro",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 3315,
+      "characters": 16685,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    },
+    {
+      "id": 451,
+      "title": "04Addiskidanintro",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 4670,
+      "characters": 21586,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    },
+    {
+      "id": 452,
+      "title": "13 Lqanepapapst",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 4062,
+      "characters": 20074,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    },
+    {
+      "id": 453,
+      "title": "25Th Jublee",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 8614,
+      "characters": 42604,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    },
+    {
+      "id": 454,
+      "title": "Introduction To Bible Study Part One",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 3855,
+      "characters": 21903,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    },
+    {
+      "id": 455,
+      "title": "Introduction To Eotc",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 4163,
+      "characters": 22953,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    },
+    {
+      "id": 456,
+      "title": "01Meserethaimanot",
+      "author": null,
+      "extraction_method": "cached_ocr",
+      "words": 10977,
+      "characters": 50846,
+      "source": "ethiopianorthodox.org",
+      "url": "https://www.ethiopianorthodox.org/amharic/holybooks/"
+    }
+  ]
+}
