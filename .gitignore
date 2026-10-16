@@ -32,3 +32,6 @@ node_modules/
 *.pdf
 !docs/*.pdf
 
+
+# Raw and intermediate large CSV data files
+data/*.csv

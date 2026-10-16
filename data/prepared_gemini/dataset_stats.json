@@ -1,0 +1,51 @@
+{
+  "total_sentences": 80054,
+  "total_quads": 133030,
+  "seen_unseen_ratios": {
+    "dev": {
+      "aspect": {
+        "seen_pct": 69.88,
+        "unseen_pct": 30.12,
+        "seen": 1784,
+        "total": 2553
+      },
+      "opinion": {
+        "seen_pct": 69.88,
+        "unseen_pct": 30.12,
+        "seen": 1784,
+        "total": 2553
+      }
+    },
+    "test": {
+      "aspect": {
+        "seen_pct": 70.15,
+        "unseen_pct": 29.85,
+        "seen": 1779,
+        "total": 2536
+      },
+      "opinion": {
+        "seen_pct": 70.15,
+        "unseen_pct": 29.85,
+        "seen": 1779,
+        "total": 2536
+      }
+    }
+  },
+  "splits": {
+    "train": {
+      "sentences": 76054,
+      "quads": 127941,
+      "multi_quad_sentences": 28587
+    },
+    "dev": {
+      "sentences": 2000,
+      "quads": 2553,
+      "multi_quad_sentences": 442
+    },
+    "test": {
+      "sentences": 2000,
+      "quads": 2536,
+      "multi_quad_sentences": 445
+    }
+  }
+}
