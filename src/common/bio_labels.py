@@ -10,7 +10,7 @@ def build_word_bio(n_tokens: int, spans: list[tuple[int, int]]) -> list[str]:
     are simply unioned onto the same tag sequence -- pairing is resolved in stage 2."""
     tags = ["O"] * n_tokens
     for start, end in spans:
-        if start == -1 or end == -1:
+        if start == -1 or end == -1 or start >= end:
             continue
         if not (0 <= start < end <= n_tokens):
             raise ValueError(f"Span ({start},{end}) out of range for {n_tokens} tokens")
@@ -53,7 +53,7 @@ def build_word_bio_5way(
     """
     tags = ["O"] * n_tokens
     for start, end in aspect_spans:
-        if start == -1 or end == -1:
+        if start == -1 or end == -1 or start >= end:
             continue
         if not (0 <= start < end <= n_tokens):
             raise ValueError(f"Span ({start},{end}) out of range for {n_tokens} tokens")
@@ -62,7 +62,7 @@ def build_word_bio_5way(
             tags[i] = "I-ASP"
 
     for start, end in opinion_spans:
-        if start == -1 or end == -1:
+        if start == -1 or end == -1 or start >= end:
             continue
         if not (0 <= start < end <= n_tokens):
             raise ValueError(f"Span ({start},{end}) out of range for {n_tokens} tokens")

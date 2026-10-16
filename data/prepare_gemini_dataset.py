@@ -91,27 +91,32 @@ def trim_opinion_span(a_s: int, a_e: int, o_s: int, o_e: int, tokens: List[str])
     # Exactly identical -> implicit opinion on the aspect
     if a_s == o_s and a_e == o_e:
         return -1, -1
+
+    res_s, res_e = o_s, o_e
     # Aspect inside opinion
     if o_s <= a_s and a_e <= o_e:
         left_len = a_s - o_s
         right_len = o_e - a_e
         if right_len > 0 and left_len == 0:
-            return a_e, o_e
+            res_s, res_e = a_e, o_e
         elif left_len > 0 and right_len == 0:
-            return o_s, a_s
+            res_s, res_e = o_s, a_s
         else:
             # In Amharic (SOV language), sentiment predicate is on the right
             right_toks = [t.strip(".,!?:;፤፡፦\"'()") for t in tokens[a_e:o_e]]
             if any(t for t in right_toks):
-                return a_e, o_e
+                res_s, res_e = a_e, o_e
             else:
-                return o_s, a_s
-    # Overlap on edges
-    if a_s < o_s < a_e <= o_e:
-        return a_e, o_e
-    if o_s <= a_s < o_e < a_e:
-        return o_s, a_s
-    return o_s, o_e
+                res_s, res_e = o_s, a_s
+    elif a_s < o_s < a_e <= o_e:
+        res_s, res_e = a_e, o_e
+    elif o_s <= a_s < o_e < a_e:
+        res_s, res_e = o_s, a_s
+
+    # Final guard: must be a strictly non-empty, positive-length span
+    if res_s >= res_e or res_s < 0:
+        return -1, -1
+    return res_s, res_e
 
 
 def quad_key(q: dict) -> tuple:
@@ -173,6 +178,12 @@ def prepare_dataset(
             if trim_overlap and a_s != -1 and o_s != -1 and not (a_e <= o_s or o_e <= a_s):
                 o_s, o_e = trim_opinion_span(a_s, a_e, o_s, o_e, tokens)
                 trimmed_overlap_count += 1
+
+            # Ensure valid, strictly positive span lengths
+            if a_s != -1 and (a_s >= a_e or a_s < 0):
+                a_s, a_e = -1, -1
+            if o_s != -1 and (o_s >= o_e or o_s < 0):
+                o_s, o_e = -1, -1
 
             q = {
                 "a_start": a_s,
