@@ -1,0 +1,33 @@
+# ByT5-Base Configuration for End-to-End Amharic ACOS Quadruple Extraction
+# Trained on the calibrated Gemini-labeled dataset (prepared_gemini)
+# =======================================================================
+model_name: google/byt5-base
+output_dir: results/stage_byt5_acos/byt5_base_gemini_run1
+
+data:
+  train: data/prepared_gemini/train.jsonl
+  dev: data/prepared_gemini/dev.jsonl
+  test: data/prepared_gemini/test.jsonl
+
+model:
+  max_source_length: 768    # Raw UTF-8 bytes for Amharic input sentences
+  max_target_length: 256    # Raw UTF-8 bytes for linearized quadruple targets
+
+training:
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  epochs: 10
+  lr: 1.0e-4
+  optimizer: adafactor
+  weight_decay: 0.01
+  precision: auto
+  eval_batch_size: 16
+  eval_samples: 1000
+  warmup_ratio: 0.05
+
+evaluation:
+  batch_size: 16
+  num_beams: 4
+  length_penalty: 1.0
+  repetition_penalty: 1.2
+  constrained: true
