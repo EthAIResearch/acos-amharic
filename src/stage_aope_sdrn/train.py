@@ -267,6 +267,8 @@ def main():
                      help="Automatically resume training from latest checkpoint in output_dir if present.")
     ap.add_argument("--resume_from_checkpoint", type=str, default=None,
                      help="Path to specific checkpoint file (.pt) to resume training from.")
+    ap.add_argument("--start_epoch", type=int, default=None,
+                     help="Explicit 1-based epoch to start/resume training from (e.g. --start_epoch 8).")
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
 
@@ -341,6 +343,7 @@ def main():
         elif os.path.exists(best_ckpt):
             resume_path = best_ckpt
 
+    restored_scheduler = False
     if resume_path and os.path.exists(resume_path):
         print(f"\n>>> Resuming training from checkpoint: {resume_path}")
         ckpt_data = torch.load(resume_path, map_location=device)
@@ -354,6 +357,7 @@ def main():
             if "scheduler_state_dict" in ckpt_data and scheduler is not None:
                 try:
                     scheduler.load_state_dict(ckpt_data["scheduler_state_dict"])
+                    restored_scheduler = True
                 except (RuntimeError, KeyError, ValueError) as e:
                     print(f"Warning: could not restore scheduler state: {e}")
             if "scaler_state_dict" in ckpt_data and scaler is not None and ckpt_data.get("scaler_state_dict"):
@@ -366,7 +370,31 @@ def main():
             print(f">>> Resumed from epoch {start_epoch} (best F1 so far: {best_f1:.4f})\n")
         else:
             model.load_state_dict(ckpt_data, strict=False)
-            print(">>> Loaded model weights from checkpoint.\n")
+            print(">>> Loaded model weights from checkpoint.")
+            # Check if metrics json has previous best F1
+            best_dev_json = os.path.join(args.output_dir, "best_dev_metrics.json")
+            if os.path.exists(best_dev_json):
+                try:
+                    with open(best_dev_json) as f:
+                        saved_m = json.load(f)
+                        best_f1 = saved_m.get("f1", -1.0)
+                        if "epoch" in saved_m and args.start_epoch is None:
+                            start_epoch = saved_m["epoch"]
+                            print(f">>> Detected previous completed epoch {start_epoch} from {best_dev_json}")
+                except (KeyError, ValueError, OSError):
+                    pass
+
+    # Explicit user override for starting epoch
+    if args.start_epoch is not None:
+        start_epoch = args.start_epoch - 1 if args.start_epoch >= 1 else args.start_epoch
+        print(f">>> Explicit start epoch configured: starting at epoch {start_epoch + 1}/{args.epochs}\n")
+
+    # Fast-forward scheduler if starting midway without saved scheduler state
+    if start_epoch > 0 and not restored_scheduler:
+        fast_forward_steps = start_epoch * len(train_loader)
+        print(f">>> Fast-forwarding LR scheduler by {fast_forward_steps} steps to epoch {start_epoch + 1}...")
+        for _ in range(fast_forward_steps):
+            scheduler.step()
 
     for epoch in range(start_epoch, args.epochs):
         model.train()
@@ -404,12 +432,14 @@ def main():
             best_f1 = metrics["f1"]
             torch.save(model.state_dict(), os.path.join(args.output_dir, "best_model.pt"))
             tokenizer.save_pretrained(args.output_dir)
+            metrics_to_save = dict(metrics)
+            metrics_to_save["epoch"] = epoch + 1
             if dev_ds is not None:
                 with open(os.path.join(args.output_dir, "best_dev_metrics.json"), "w") as f:
-                    json.dump(metrics, f, indent=2)
+                    json.dump(metrics_to_save, f, indent=2)
             else:
                 with open(os.path.join(args.output_dir, "best_metrics.json"), "w") as f:
-                    json.dump(metrics, f, indent=2)
+                    json.dump(metrics_to_save, f, indent=2)
             print(f"  -> new best ({eval_name} pair F1={best_f1:.4f}), checkpoint saved")
 
         # Save checkpoint_last.pt for seamless resumption
