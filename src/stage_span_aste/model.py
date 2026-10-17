@@ -17,7 +17,7 @@ from span_utils import (
     compute_span_distance,
 )
 from torch import nn
-from transformers import AutoConfig, AutoModel
+from transformers import AutoModel
 
 
 class MLP(nn.Module):

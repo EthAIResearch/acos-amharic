@@ -35,7 +35,6 @@ from transformers import AutoConfig, AutoModel
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "common"))
 sys.path.insert(0, os.path.dirname(__file__))
-from bio_labels import decode_5way_bio_spans, decode_bio_spans
 from crf import LinearChainCRF
 from loss import MultiClassDiceLoss
 

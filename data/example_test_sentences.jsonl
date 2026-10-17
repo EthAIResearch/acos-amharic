@@ -1,0 +1,20 @@
+{"id": 1, "domain": "Telecom", "text": "የኢንተርኔት ፍጥነቱ በጣም ፈጣን እና አስተማማኝ ነው", "expected_aspects": ["የኢንተርኔት ፍጥነቱ"], "expected_opinions": ["በጣም ፈጣን እና አስተማማኝ ነው"]}
+{"id": 2, "domain": "Telecom", "text": "የደንበኞች አገልግሎት ሰራተኞች በጣም ጨዋ እና ተባባሪ ናቸው", "expected_aspects": ["የደንበኞች አገልግሎት ሰራተኞች"], "expected_opinions": ["በጣም ጨዋ እና ተባባሪ ናቸው"]}
+{"id": 3, "domain": "Telecom", "text": "የጥሪ ጥራቱ በጣም ጥሩ ቢሆንም የኢንተርኔት ፓኬጁ ዋጋ ግን ውድ ነው", "expected_aspects": ["የጥሪ ጥራቱ", "የኢንተርኔት ፓኬጁ ዋጋ"], "expected_opinions": ["በጣም ጥሩ", "ውድ ነው"]}
+{"id": 4, "domain": "Banking", "text": "የሞባይል ባንኪንግ አፕሊኬሽኑ ለመጠቀም በጣም ቀላል እና ምቹ ነው", "expected_aspects": ["የሞባይል ባንኪንግ አፕሊኬሽኑ"], "expected_opinions": ["ለመጠቀም በጣም ቀላል እና ምቹ ነው"]}
+{"id": 5, "domain": "Banking", "text": "የሲስተም መቆራረጥ በተደጋጋሚ ስለሚያጋጥም ገንዘብ ለማስተላለፍ አስቸጋሪ ነው", "expected_aspects": ["የሲስተም መቆራረጥ", "ገንዘብ ለማስተላለፍ"], "expected_opinions": ["በተደጋጋሚ ስለሚያጋጥም", "አስቸጋሪ ነው"]}
+{"id": 6, "domain": "Banking", "text": "የኤቲኤም አገልግሎት ሁልጊዜ ክፍት እና ፈጣን ነው", "expected_aspects": ["የኤቲኤም አገልግሎት"], "expected_opinions": ["ሁልጊዜ ክፍት እና ፈጣን ነው"]}
+{"id": 7, "domain": "Restaurant", "text": "ምግቡ በጣም ጣፋጭ ነው ነገር ግን ዋጋው ትንሽ ከፍ ይላል", "expected_aspects": ["ምግቡ", "ዋጋው"], "expected_opinions": ["በጣም ጣፋጭ ነው", "ትንሽ ከፍ ይላል"]}
+{"id": 8, "domain": "Restaurant", "text": "የአስተናጋጆቹ ቅልጥፍና እና እንክብካቤ እጅግ በጣም አስደሳች ነው", "expected_aspects": ["የአስተናጋጆቹ ቅልጥፍና እና እንክብካቤ"], "expected_opinions": ["እጅግ በጣም አስደሳች ነው"]}
+{"id": 9, "domain": "Restaurant", "text": "የቦታው ፅዳት እና ድባብ በጣም ማራኪ ነው", "expected_aspects": ["የቦታው ፅዳት እና ድባብ"], "expected_opinions": ["በጣም ማራኪ ነው"]}
+{"id": 10, "domain": "Electronics", "text": "የስልኩ ባትሪ እድሜ ለሁለት ሙሉ ቀን ይቆያል", "expected_aspects": ["የስልኩ ባትሪ እድሜ"], "expected_opinions": ["ለሁለት ሙሉ ቀን ይቆያል"]}
+{"id": 11, "domain": "Electronics", "text": "የካሜራው ጥራት በጨለማ ውስጥም ቢሆን እጅግ ግልጽ ፎቶዎችን ያነሳል", "expected_aspects": ["የካሜራው ጥራት"], "expected_opinions": ["እጅግ ግልጽ ፎቶዎችን ያነሳል"]}
+{"id": 12, "domain": "Electronics", "text": "የስክሪኑ ብሩህነት ለፀሐይ ብርሃን በቂ አይደለም", "expected_aspects": ["የስክሪኑ ብሩህነት"], "expected_opinions": ["በቂ አይደለም"]}
+{"id": 13, "domain": "Transport", "text": "ሹፌሩ ጨዋ እና ጥንቃቄ የተሞላበት አነዳድ አለው", "expected_aspects": ["ሹፌሩ", "አነዳድ"], "expected_opinions": ["ጨዋ", "ጥንቃቄ የተሞላበት"]}
+{"id": 14, "domain": "Transport", "text": "ታክሲው በሰዓቱ ደርሷል ነገር ግን የታሪፍ ክፍያው ከልክ በላይ ጨምሯል", "expected_aspects": ["ታክሲው", "የታሪፍ ክፍያው"], "expected_opinions": ["በሰዓቱ ደርሷል", "ከልክ በላይ ጨምሯል"]}
+{"id": 15, "domain": "Healthcare", "text": "የዶክተሮቹ ሙያዊ ብቃት እና ትዕግስት በጣም የሚመሰገን ነው", "expected_aspects": ["የዶክተሮቹ ሙያዊ ብቃት እና ትዕግስት"], "expected_opinions": ["በጣም የሚመሰገን ነው"]}
+{"id": 16, "domain": "Healthcare", "text": "የመድሃኒት መደብሩ ሁልጊዜ አስፈላጊ የሆኑ መድሃኒቶች እጥረት አለበት", "expected_aspects": ["የመድሃኒት መደብሩ"], "expected_opinions": ["አስፈላጊ የሆኑ መድሃኒቶች እጥረት አለበት"]}
+{"id": 17, "domain": "Hotels", "text": "ክፍሉ በጣም ንፁህ እና ሰፊ ነው አልጋውም እጅግ ምቹ ነው", "expected_aspects": ["ክፍሉ", "አልጋውም"], "expected_opinions": ["በጣም ንፁህ እና ሰፊ ነው", "እጅግ ምቹ ነው"]}
+{"id": 18, "domain": "Hotels", "text": "የሆቴሉ መስተንግዶ ደካማ እና አሰልቺ ነበር", "expected_aspects": ["የሆቴሉ መስተንግዶ"], "expected_opinions": ["ደካማ እና አሰልቺ ነበር"]}
+{"id": 19, "domain": "E-commerce", "text": "የእቃው ጥራት ከተጠበቀው በላይ ምርጥ ሆኖ ተገኝቷል", "expected_aspects": ["የእቃው ጥራት"], "expected_opinions": ["ከተጠበቀው በላይ ምርጥ ሆኖ ተገኝቷል"]}
+{"id": 20, "domain": "E-commerce", "text": "የእቃ ማድረሻ ጊዜው በጣም ዘግይቷል ማሸጊያውም ተጎድቷል", "expected_aspects": ["የእቃ ማድረሻ ጊዜው", "ማሸጊያውም"], "expected_opinions": ["በጣም ዘግይቷል", "ተጎድቷል"]}

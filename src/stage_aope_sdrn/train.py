@@ -25,10 +25,9 @@ import torch
 import yaml
 from align import (
     ID2LABEL_5WAY,
-    decode_subword_predictions,
     decode_subword_predictions_5way,
 )
-from bio_labels import decode_5way_bio_spans, decode_bio_spans
+from bio_labels import decode_5way_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
 from relation_utils import (
@@ -264,6 +263,10 @@ def main():
     ap.add_argument("--no_word_level", dest="word_level", action="store_false")
     ap.add_argument("--max_words", type=int, default=128,
                      help="Max words per sequence in word-level SDRN.")
+    ap.add_argument("--resume", action="store_true", default=False,
+                     help="Automatically resume training from latest checkpoint in output_dir if present.")
+    ap.add_argument("--resume_from_checkpoint", type=str, default=None,
+                     help="Path to specific checkpoint file (.pt) to resume training from.")
     ap.set_defaults(**config_defaults)
     args = ap.parse_args(remaining_argv)
 
@@ -326,8 +329,46 @@ def main():
     eval_ds = dev_ds if dev_ds is not None else test_ds
     eval_name = "dev" if dev_ds is not None else "test"
 
+    start_epoch = 0
     best_f1 = -1.0
-    for epoch in range(args.epochs):
+
+    resume_path = args.resume_from_checkpoint
+    if resume_path is None and args.resume:
+        last_ckpt = os.path.join(args.output_dir, "checkpoint_last.pt")
+        best_ckpt = os.path.join(args.output_dir, "best_model.pt")
+        if os.path.exists(last_ckpt):
+            resume_path = last_ckpt
+        elif os.path.exists(best_ckpt):
+            resume_path = best_ckpt
+
+    if resume_path and os.path.exists(resume_path):
+        print(f"\n>>> Resuming training from checkpoint: {resume_path}")
+        ckpt_data = torch.load(resume_path, map_location=device)
+        if isinstance(ckpt_data, dict) and "model_state_dict" in ckpt_data:
+            model.load_state_dict(ckpt_data["model_state_dict"], strict=False)
+            if "optimizer_state_dict" in ckpt_data and optimizer is not None:
+                try:
+                    optimizer.load_state_dict(ckpt_data["optimizer_state_dict"])
+                except (RuntimeError, KeyError, ValueError) as e:
+                    print(f"Warning: could not restore optimizer state: {e}")
+            if "scheduler_state_dict" in ckpt_data and scheduler is not None:
+                try:
+                    scheduler.load_state_dict(ckpt_data["scheduler_state_dict"])
+                except (RuntimeError, KeyError, ValueError) as e:
+                    print(f"Warning: could not restore scheduler state: {e}")
+            if "scaler_state_dict" in ckpt_data and scaler is not None and ckpt_data.get("scaler_state_dict"):
+                try:
+                    scaler.load_state_dict(ckpt_data["scaler_state_dict"])
+                except (RuntimeError, KeyError, ValueError) as e:
+                    print(f"Warning: could not restore scaler state: {e}")
+            start_epoch = ckpt_data.get("epoch", 0)
+            best_f1 = ckpt_data.get("best_f1", -1.0)
+            print(f">>> Resumed from epoch {start_epoch} (best F1 so far: {best_f1:.4f})\n")
+        else:
+            model.load_state_dict(ckpt_data, strict=False)
+            print(">>> Loaded model weights from checkpoint.\n")
+
+    for epoch in range(start_epoch, args.epochs):
         model.train()
         pbar = tqdm(train_loader, desc=f"epoch {epoch+1}/{args.epochs}")
         for batch in pbar:
@@ -370,6 +411,17 @@ def main():
                 with open(os.path.join(args.output_dir, "best_metrics.json"), "w") as f:
                     json.dump(metrics, f, indent=2)
             print(f"  -> new best ({eval_name} pair F1={best_f1:.4f}), checkpoint saved")
+
+        # Save checkpoint_last.pt for seamless resumption
+        checkpoint_state = {
+            "epoch": epoch + 1,
+            "best_f1": best_f1,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "scheduler_state_dict": scheduler.state_dict(),
+            "scaler_state_dict": scaler.state_dict() if scaler else None,
+        }
+        torch.save(checkpoint_state, os.path.join(args.output_dir, "checkpoint_last.pt"))
 
     print(f"\nDone training. Best {eval_name} pair F1 = {best_f1:.4f}. Checkpoint: {args.output_dir}/best_model.pt")
 
