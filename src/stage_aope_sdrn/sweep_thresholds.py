@@ -23,10 +23,9 @@ import torch
 import yaml
 from align import (
     ID2LABEL_5WAY,
-    decode_subword_predictions,
     decode_subword_predictions_5way,
 )
-from bio_labels import decode_5way_bio_spans, decode_bio_spans
+from bio_labels import decode_5way_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
 from relation_utils import (

@@ -25,10 +25,9 @@ import torch
 import yaml
 from align import (
     ID2LABEL_5WAY,
-    decode_subword_predictions,
     decode_subword_predictions_5way,
 )
-from bio_labels import decode_5way_bio_spans, decode_bio_spans
+from bio_labels import decode_5way_bio_spans
 from dataset import JointAOPEDataset, collate_fn
 from model import JointAOPESDRN
 from relation_utils import (
@@ -350,17 +349,17 @@ def main():
             if "optimizer_state_dict" in ckpt_data and optimizer is not None:
                 try:
                     optimizer.load_state_dict(ckpt_data["optimizer_state_dict"])
-                except Exception as e:
+                except (RuntimeError, KeyError, ValueError) as e:
                     print(f"Warning: could not restore optimizer state: {e}")
             if "scheduler_state_dict" in ckpt_data and scheduler is not None:
                 try:
                     scheduler.load_state_dict(ckpt_data["scheduler_state_dict"])
-                except Exception as e:
+                except (RuntimeError, KeyError, ValueError) as e:
                     print(f"Warning: could not restore scheduler state: {e}")
             if "scaler_state_dict" in ckpt_data and scaler is not None and ckpt_data.get("scaler_state_dict"):
                 try:
                     scaler.load_state_dict(ckpt_data["scaler_state_dict"])
-                except Exception as e:
+                except (RuntimeError, KeyError, ValueError) as e:
                     print(f"Warning: could not restore scaler state: {e}")
             start_epoch = ckpt_data.get("epoch", 0)
             best_f1 = ckpt_data.get("best_f1", -1.0)

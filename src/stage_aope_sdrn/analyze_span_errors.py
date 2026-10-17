@@ -9,7 +9,6 @@ Usage:
         --config configs/stage_aope_sdrn.yaml
 """
 import argparse
-import json
 import os
 import sys
 

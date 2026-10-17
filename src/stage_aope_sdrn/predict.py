@@ -42,8 +42,8 @@ from relation_utils import correlation_degree
 
 try:
     import torch
-    from transformers import AutoTokenizer
     from model import JointAOPESDRN
+    from transformers import AutoTokenizer
     TORCH_AVAILABLE = True
 except ImportError:
     torch = None
@@ -188,7 +188,7 @@ def predict_sentence(
     }
 
 
-def print_prediction_card(pred: dict, expected: dict = None, index: int = None):
+def print_prediction_card(pred: dict, expected: dict | None = None, index: int | None = None):
     header = f"=== Example {index} ===" if index is not None else "=== Prediction ==="
     print("\n" + "=" * 65)
     print(header)

@@ -26,8 +26,8 @@ import sys
 
 try:
     import torch
-    import torch.nn as nn
     import torch.nn.functional as F
+    from torch import nn
     from transformers import AutoConfig, AutoModel, AutoTokenizer
     TORCH_AVAILABLE = True
 except ImportError:
@@ -189,7 +189,7 @@ class LinearChainCRF(nn.Module):
 class RelationAttention(nn.Module):
     """Biaffine Relation Attention Unit (Chen et al. 2020, Eq. 4-5)."""
 
-    def __init__(self, hidden_dim: int, attention_dim: int = None):
+    def __init__(self, hidden_dim: int, attention_dim: int | None = None):
         super().__init__()
         self.hidden_dim = hidden_dim
         self.attention_dim = attention_dim or hidden_dim
@@ -488,7 +488,7 @@ def predict_sentence(
     }
 
 
-def print_prediction_card(pred: dict, expected: dict = None, index: int = None):
+def print_prediction_card(pred: dict, expected: dict | None = None, index: int | None = None):
     header = f"=== Example {index} ===" if index is not None else "=== Prediction ==="
     print("\n" + "=" * 65)
     print(header)
@@ -546,7 +546,7 @@ def main():
     print(f"Loading tokenizer: {args.model_name}...")
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
 
-    print(f"Initializing model architecture...")
+    print("Initializing model architecture...")
     model = JointAOPESDRN(
         model_name=args.model_name,
         num_recurrent_steps=2,
@@ -571,7 +571,7 @@ def main():
                 break
         if not found:
             print(f"\n[Warning] Checkpoint '{args.checkpoint}' not found.")
-            print(f"Running model with untrained base weights for demonstration purposes.\n")
+            print("Running model with untrained base weights for demonstration purposes.\n")
 
     if os.path.exists(ckpt_path):
         print(f"Loading weights from: {ckpt_path}")
