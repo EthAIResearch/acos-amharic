@@ -318,13 +318,16 @@ if TORCH_AVAILABLE:
             if self.enforce_bio_constraints and self.num_tags == 3:
                 self._validate_gold_paths(packed_tags, packed_mask, lengths)
 
-            # Transpose to (T_packed, B, K)
-            feats = packed_emissions.transpose(0, 1)  # (T, B, K)
+            # Transpose to (T_packed, B, K) and compute in float32 for numerical stability under AMP/fp16
+            feats = packed_emissions.transpose(0, 1).float()  # (T, B, K)
             tags_t = packed_tags.transpose(0, 1)  # (T, B)
             mask_t = packed_mask.transpose(0, 1)  # (T, B)
             T_packed = feats.shape[0]
 
             transitions, start_transitions = self._get_constrained_transitions()
+            transitions = transitions.float()
+            start_transitions = start_transitions.float()
+            end_transitions = self.end_transitions.float()
 
             # 1. Forward algorithm: partition function log Z
             forward_var = start_transitions.unsqueeze(0) + feats[0]  # (B, K)
@@ -336,7 +339,7 @@ if TORCH_AVAILABLE:
                 next_var = torch.logsumexp(next_var, dim=1)  # (B, K)
                 forward_var = torch.where(mask_t[t].unsqueeze(1), next_var, forward_var)
 
-            terminal_var = forward_var + self.end_transitions.unsqueeze(0)  # (B, K)
+            terminal_var = forward_var + end_transitions.unsqueeze(0)  # (B, K)
             log_Z = torch.logsumexp(terminal_var, dim=-1)  # (B,)
 
             # 2. Gold path score
@@ -351,7 +354,7 @@ if TORCH_AVAILABLE:
 
             last_indices = (lengths - 1).clamp(min=0).unsqueeze(0)  # (1, B)
             last_tags = torch.gather(tags_t, 0, last_indices).squeeze(0)  # (B,)
-            gold_score = gold_score + self.end_transitions[last_tags]
+            gold_score = gold_score + end_transitions[last_tags]
 
             nll_raw = log_Z - gold_score
             # Empty sequences contribute zero NLL

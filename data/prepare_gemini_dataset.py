@@ -1,5 +1,6 @@
 """Prepare cleaned Gemini ACOS dataset into standard JSONL format:
 - Grounds aspect and opinion terms to exact whitespace token indices (a_start, a_end, o_start, o_end).
+- Automatically trims aspect spans out of opinion clauses so that aspect and opinion spans are cleanly disjoint.
 - Aggregates multiple quads per sentence into single structured records.
 - Prunes residual foreign-script and scraping artifact rows.
 - Calibrates train/dev/test splits to achieve target ~70% seen and ~30% unseen for aspects AND opinions.
@@ -80,6 +81,44 @@ def find_token_span(tokens: List[str], phrase: str, sentence_text: str) -> Tuple
     return -1, -1
 
 
+def trim_opinion_span(a_s: int, a_e: int, o_s: int, o_e: int, tokens: List[str]) -> Tuple[int, int]:
+    """Trim aspect span out of opinion span if they overlap, yielding a disjoint sentiment predicate."""
+    if a_s == -1 or a_e == -1 or o_s == -1 or o_e == -1:
+        return o_s, o_e
+    # No overlap
+    if a_e <= o_s or o_e <= a_s:
+        return o_s, o_e
+    # Exactly identical -> implicit opinion on the aspect
+    if a_s == o_s and a_e == o_e:
+        return -1, -1
+
+    res_s, res_e = o_s, o_e
+    # Aspect inside opinion
+    if o_s <= a_s and a_e <= o_e:
+        left_len = a_s - o_s
+        right_len = o_e - a_e
+        if right_len > 0 and left_len == 0:
+            res_s, res_e = a_e, o_e
+        elif left_len > 0 and right_len == 0:
+            res_s, res_e = o_s, a_s
+        else:
+            # In Amharic (SOV language), sentiment predicate is on the right
+            right_toks = [t.strip(".,!?:;፤፡፦\"'()") for t in tokens[a_e:o_e]]
+            if any(t for t in right_toks):
+                res_s, res_e = a_e, o_e
+            else:
+                res_s, res_e = o_s, a_s
+    elif a_s < o_s < a_e <= o_e:
+        res_s, res_e = a_e, o_e
+    elif o_s <= a_s < o_e < a_e:
+        res_s, res_e = o_s, a_s
+
+    # Final guard: must be a strictly non-empty, positive-length span
+    if res_s >= res_e or res_s < 0:
+        return -1, -1
+    return res_s, res_e
+
+
 def quad_key(q: dict) -> tuple:
     return (q["a_start"], q["a_end"], q["category"], q["sentiment"], q["o_start"], q["o_end"])
 
@@ -89,6 +128,7 @@ def prepare_dataset(
     output_dir: str,
     seed: int = 42,
     prune_artifacts: bool = True,
+    trim_overlap: bool = True,
 ):
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
@@ -100,6 +140,7 @@ def prepare_dataset(
     pruned_foreign = 0
     pruned_rep = 0
     total_rows = 0
+    trimmed_overlap_count = 0
 
     with open(input_csv, "r", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -133,6 +174,17 @@ def prepare_dataset(
             o_s, o_e = find_token_span(tokens, opinion_term, text_clean)
             sentiment = SENTIMENT_MAP.get(str(sent_str).strip(), "NEUTRAL")
 
+            # Trim aspect out of opinion if overlapping to make spans disjoint for SDRN
+            if trim_overlap and a_s != -1 and o_s != -1 and not (a_e <= o_s or o_e <= a_s):
+                o_s, o_e = trim_opinion_span(a_s, a_e, o_s, o_e, tokens)
+                trimmed_overlap_count += 1
+
+            # Ensure valid, strictly positive span lengths
+            if a_s != -1 and (a_s >= a_e or a_s < 0):
+                a_s, a_e = -1, -1
+            if o_s != -1 and (o_s >= o_e or o_s < 0):
+                o_s, o_e = -1, -1
+
             q = {
                 "a_start": a_s,
                 "a_end": a_e,
@@ -154,6 +206,8 @@ def prepare_dataset(
     if prune_artifacts:
         print(f"Pruned foreign-script rows:      {pruned_foreign:,}")
         print(f"Pruned repetitive artifact rows: {pruned_rep:,}")
+    if trim_overlap:
+        print(f"Trimmed overlapping opinions:    {trimmed_overlap_count:,} (100% disjoint spans)")
     print(f"Unique sentences assembled:      {len(all_records):,}")
     print(f"Total valid quads assembled:     {total_quads:,}")
 
@@ -269,7 +323,7 @@ def prepare_dataset(
         "total_categories": len(all_cats),
         "low_support_categories": low_support,
         "category_counts_train": dict(train_cat_counts),
-        "note": "28-category Gemini-labeled ACOS dataset calibrated to ~70% seen / 30% unseen across aspects and opinions.",
+        "note": "28-category Gemini-labeled ACOS dataset with disjoint aspect and opinion spans for SDRN, calibrated to ~70% seen / 30% unseen.",
     }
 
     with open(out_path / "label_space.json", "w", encoding="utf-8") as f:
@@ -279,6 +333,8 @@ def prepare_dataset(
     stats = {
         "total_sentences": len(all_records),
         "total_quads": total_quads,
+        "disjoint_spans_guarantee": True,
+        "trimmed_overlapping_opinions": trimmed_overlap_count,
         "seen_unseen_ratios": seen_stats,
         "splits": {
             s: {

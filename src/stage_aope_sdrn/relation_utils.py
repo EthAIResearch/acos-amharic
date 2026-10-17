@@ -13,6 +13,7 @@ def explicit_pairs(quads: list) -> list:
         ((q["a_start"], q["a_end"]), (q["o_start"], q["o_end"]))
         for q in quads
         if q["a_start"] != -1 and q["o_start"] != -1
+        and q["a_start"] < q["a_end"] and q["o_start"] < q["o_end"]
     ]
 
 

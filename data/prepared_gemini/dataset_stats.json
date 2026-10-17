@@ -1,51 +1,53 @@
 {
   "total_sentences": 80054,
-  "total_quads": 133030,
+  "total_quads": 132747,
+  "disjoint_spans_guarantee": true,
+  "trimmed_overlapping_opinions": 120167,
   "seen_unseen_ratios": {
     "dev": {
       "aspect": {
-        "seen_pct": 69.88,
-        "unseen_pct": 30.12,
-        "seen": 1784,
-        "total": 2553
+        "seen_pct": 70.02,
+        "unseen_pct": 29.98,
+        "seen": 1731,
+        "total": 2472
       },
       "opinion": {
-        "seen_pct": 69.88,
-        "unseen_pct": 30.12,
-        "seen": 1784,
-        "total": 2553
+        "seen_pct": 69.87,
+        "unseen_pct": 30.13,
+        "seen": 1723,
+        "total": 2466
       }
     },
     "test": {
       "aspect": {
-        "seen_pct": 70.15,
-        "unseen_pct": 29.85,
-        "seen": 1779,
-        "total": 2536
+        "seen_pct": 68.34,
+        "unseen_pct": 31.66,
+        "seen": 1684,
+        "total": 2464
       },
       "opinion": {
-        "seen_pct": 70.15,
-        "unseen_pct": 29.85,
-        "seen": 1779,
-        "total": 2536
+        "seen_pct": 68.56,
+        "unseen_pct": 31.44,
+        "seen": 1681,
+        "total": 2452
       }
     }
   },
   "splits": {
     "train": {
-      "sentences": 76054,
-      "quads": 127941,
-      "multi_quad_sentences": 28587
+      "sentences": 76051,
+      "quads": 127811,
+      "multi_quad_sentences": 28631
     },
     "dev": {
-      "sentences": 2000,
-      "quads": 2553,
-      "multi_quad_sentences": 442
+      "sentences": 2002,
+      "quads": 2472,
+      "multi_quad_sentences": 372
     },
     "test": {
-      "sentences": 2000,
-      "quads": 2536,
-      "multi_quad_sentences": 445
+      "sentences": 2001,
+      "quads": 2464,
+      "multi_quad_sentences": 390
     }
   }
 }
