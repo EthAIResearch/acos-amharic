@@ -1,0 +1,86 @@
+{
+  "total_sentences": 80054,
+  "total_quads": 132714,
+  "disjoint_spans_guarantee": true,
+  "trimmed_overlapping_opinions": 120167,
+  "seen_unseen_ratios": {
+    "dev": {
+      "aspect": {
+        "seen_pct": 65.6,
+        "unseen_pct": 34.4,
+        "seen": 1857,
+        "total": 2831
+      },
+      "opinion": {
+        "seen_pct": 54.3,
+        "unseen_pct": 45.7,
+        "seen": 1535,
+        "total": 2827
+      }
+    },
+    "test": {
+      "aspect": {
+        "seen_pct": 61.87,
+        "unseen_pct": 38.13,
+        "seen": 1564,
+        "total": 2528
+      },
+      "opinion": {
+        "seen_pct": 48.48,
+        "unseen_pct": 51.52,
+        "seen": 1224,
+        "total": 2525
+      }
+    }
+  },
+  "category_counts": {
+    "Other": 28913,
+    "Governance and Legislation(Policy Change)": 12196,
+    "Public Safety(Crime)": 9658,
+    "Governance and Legislation(Elections)": 7969,
+    "Defense and Security(Military Operations)": 7015,
+    "Governance and Legislation(Transparency)": 6174,
+    "Economy(Trade & Investment)": 5613,
+    "Public Services(Healthcare)": 5210,
+    "Social Issues(Justice)": 5151,
+    "Local Relations(Conflict)": 5124,
+    "Social Issues(Community Support)": 4755,
+    "Infrastructure(Transportation)": 4684,
+    "Public Services(Education)": 4281,
+    "Governance and Legislation(Citizen Engagement)": 3950,
+    "Infrastructure(Utilities)": 3768,
+    "Social Issues(Equality)": 3101,
+    "International Relations(Diplomacy)": 2698,
+    "Public Safety(Emergency Services)": 1972,
+    "International Relations(Conflict)": 1680,
+    "Environment(Climate & Agriculture)": 1600,
+    "Economy(Job Opportunities)": 1258,
+    "Social Issues(Human Rights)": 1121,
+    "Economy(Share)": 905,
+    "Governance and Legislation(Resignation)": 836,
+    "Local Relations(Displaced Persons & Refugees)": 775,
+    "Economy(Inflation & Cost of Living)": 591,
+    "International Relations(Economic Relations)": 551,
+    "Governance and Legislation(New Appointment)": 542,
+    "Economy(Taxation)": 366,
+    "International Relations(Sanctions & Aid)": 255,
+    "Environment(Natural Disaster)": 251,
+    "Defense and Security(Peacekeeping)": 98,
+    "Local Relations(Border & Territorial Dispute)": 41,
+    "Local Relations(Regional Relations)": 16
+  },
+  "splits": {
+    "train": {
+      "sentences": 76273,
+      "quads": 127355
+    },
+    "dev": {
+      "sentences": 2004,
+      "quads": 2831
+    },
+    "test": {
+      "sentences": 1777,
+      "quads": 2528
+    }
+  }
+}
