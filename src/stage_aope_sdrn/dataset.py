@@ -25,8 +25,21 @@ class JointAOPEDataset(Dataset):
         self.max_words = max_words
         self.records = []
         with open(jsonl_path, encoding="utf-8") as f:
-            for line in f:
-                self.records.append(json.loads(line))
+            for lineno, raw_line in enumerate(f, 1):
+                line = raw_line.strip()
+                if not line:
+                    continue
+                if line.startswith("version https://git-lfs"):
+                    raise RuntimeError(
+                        f"File '{jsonl_path}' is a Git LFS pointer stub instead of actual data.\n"
+                        "Please run `git lfs install && git lfs pull` to download the dataset files."
+                    )
+                try:
+                    self.records.append(json.loads(line))
+                except json.JSONDecodeError as err:
+                    raise ValueError(
+                        f"Failed parsing JSON on line {lineno} of '{jsonl_path}': {err}"
+                    ) from err
 
     def __len__(self):
         return len(self.records)
