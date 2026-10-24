@@ -1,0 +1,35 @@
+# Joint Aspect-Opinion Pair Extraction (AOPE), SDRN-style
+# Trained on the clean, noise-removed Gemini-labeled dataset (prepared_gemini_reannotated)
+
+model_name: Davlan/afro-xlmr-base
+use_crf: true                 # Linear-Chain CRF for structured BIO sequence decoding
+word_level: true              # Phase 3: Subword-to-word pooling, word-level CRF and relation attention
+num_recurrent_steps: 2       # SDRN paper: best on 3/3 benchmarks, more steps show diminishing returns
+relation_threshold: 0.1      # beta in RSM (Eq. 12)
+pair_accept_threshold: 0.5   # delta-hat in Eq. 17
+
+data:
+  train: data/prepared_gemini_reannotated/train.jsonl
+  dev: data/prepared_gemini_reannotated/dev.jsonl
+  test: data/prepared_gemini_reannotated/test.jsonl
+  max_length: 256
+  max_words: 128
+
+training:
+  epochs: 10
+  batch_size: 8
+  lr: 2.0e-5
+  warmup_ratio: 0.1
+  seed: 42
+  weight_decay: 0.01
+  fp16: true
+  bio_class_weights: [1.0, 4.0, 4.0, 8.0, 8.0]
+  span_loss_weight: 2.0
+  dice_loss_weight: 1.0
+
+output_dir: results/stage_aope_sdrn/afroxlmr_gemini_reannotated_run1
+
+notes: >
+  Training run on data/prepared_gemini_reannotated with AfroXLMR-base, Word-Level SDRN architecture,
+  subword-to-word pooling, 5-way BIO word-level Linear-Chain CRF, active Multi-Class Dice Loss,
+  strict deterministic noise removal (zero Turkish, zero aspect-not-in-opinion, 34-category taxonomy).
