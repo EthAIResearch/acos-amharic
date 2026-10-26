@@ -1,0 +1,23 @@
+# Stage 1 — joint Aspect Term Extraction + Opinion Term Extraction
+# Backbone: Multilingual XLM-RoBERTa base (xlm-roberta-base)
+# Dataset: Calibrated Gemini-labeled dataset (data/prepared_gemini)
+
+model_name: xlm-roberta-base
+
+data:
+  train: data/prepared_gemini/train.jsonl
+  test: data/prepared_gemini/test.jsonl
+  max_length: 256
+
+training:
+  epochs: 8
+  batch_size: 16
+  lr: 3.0e-5
+  warmup_ratio: 0.06
+  seed: 42
+
+output_dir: results/stage1/xlm_roberta_gemini_run1
+
+notes: >
+  Multilingual XLM-RoBERTa-base baseline for Stage 1 joint Aspect Term Extraction
+  (ATE) and Opinion Term Extraction (OTE) on Gemini-prepared data.
